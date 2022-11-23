@@ -11,20 +11,9 @@
 *.gch
 *.pch
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
 # Fortran module files
 *.mod
 *.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
 
 # Executables
 *.exe
@@ -38,10 +27,9 @@
 *.user
 _ReSharper.*/
 *.sdf
-bin/
-obj/
-Debug/
-Release/
+MonDesigner/bin/
+MonDesigner/obj/
+x64/
 *.opensdf
 *.tlog
 *.log
