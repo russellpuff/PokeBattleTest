@@ -3,26 +3,11 @@
 // This project was made as CSCI201 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "EventListener.h"
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
-
+    Events::EventListener(window); // When this returns, PokeBattleTest execution ends. If MonDesigner started this, it should return control back to MonDesigner.
     return 0;
 }

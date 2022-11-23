@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\Ben\Source\repos\PokeBattleTest\x64\Debug\PokeBattleTest.exe</FullPath>
+      <FullPath>C:\Users\Ben\source\repos\PokeBattleTest\output\PokeBattleTest.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
