@@ -1,0 +1,106 @@
+args
+
+who it targets
+------
+-s = self
+-o = other
+-a = all
+
+how long it lasts
+-------
+-# = number of turns
+-i = indefinite
+
+chance to occur
+-------
+-# = #/100% chance
+
+special args
+--------
+see below
+
+battleeffects
+
+mods, raises or lowers the associated stat by a number of stages | -r -# or -l -# to raise or lower
+----- 
+ModAttack
+ModDefense
+ModSpecialAttack
+ModSpecialDefense
+ModSpeed
+ModCritRatio
+ModAccuracy
+ModEvasion
+
+status effects
+-----
+Burn = target takes 1/16 max hp in damage each turn and suffers a 50% reduction in their attack stat
+Drowsy = target has a 25% chance to not be able to move and take 125% damage
+Paralysis = target has a 25% chance to not be able to move and suffers a 50% reduction in their speed stat
+Frostbite = target takes 1/16 max hp in damage each turn and suffers a 50% reduction in their special attack stat
+Poison = target loses 1/8 max hp every turn
+BadlyPoisoned = target loses 1/16 max hp every turn cumulative
+Confusion = 33% chance to ignore move and instead damage self
+
+weather, the list of things each one does is pretty long
+-----
+ElectricTerrain
+PsychicTerrain
+MistyTerrain
+GrassyTerrain
+HarshSunlight
+Rain
+Hail
+Sandstorm
+StrongWinds
+IntenseGravity
+
+barrier, protects users team in some fashion
+-----
+LightScreen = user and allies take half damage from special moves
+Reflect = user and allies take half damage from physical moves
+
+
+other
+-----
+InstantHeal = heal self or target | -m/-d for maxhp/damage dealt, -# for #/100% healed.
+HealOverTime = 
+PowerMod = modifies power before a move is used depending on circumstance, args will cover circumstances.
+MultiHit = the attack will hit multiple times | -c -# for constant number of hits, -r -# -# for a range of hits with random chance
+Flinch = if target has not gone this turn, they are flinched and skips turn
+IgnoreEvasion = move skips calculating the opponent's evasion | -d to also skip calculating defense
+Protect = user is immune to certain types of moves based on args
+Snatch = if the user goes first, it copies the target's beneficial status move and blocks its usage
+Taunt = target cannot use status moves
+Contrary = reverses certain types of stat changes based on args
+Torment = target cannot select the same move twice in a row
+Fixated = user attacks repeatedly for a period of turns, after the effect ends it confuses the user. Ends immediately if the user cannot move.
+Charge = user does nothing the turn the move is selected and commits the move on the second turn
+Recharge = user cannot move the turn after using the move that caused this
+SemiInvulnerable = target of this effect can only be hit by certain moves while this is active
+Recoil = user takes damage based on the damage dealt | -# for #/100% damage taken
+DamageOverTime = user takes a percentage of their max hp as damage every turn | -# for #/1000 damage dealt
+IonDeluge = all normal moves become electric
+Levitate = user becomes immune to ground moves, spikes, toxic spikes, and arena trap
+ShedType = user removes the indicated typing from themselves, if they only had one type and it's removed, they become normal
+RemoveBarrier = removes light screen, reflect, and aurora veil from the target's side of the field
+Counterattack = user deals twice as much damage as they took if the damaging move's type matches the move that caused this
+MysticalPower = raises user's special attack or special defense depending on which is higher
+AlternateDamageStat = user's move uses a different stat to calculate damage, args determins what gets used
+GuardSplit = user and target have their defensive stats averaged with each other
+GuardSwap = user and target swap defense and special defense raw stats
+NoHeal = target cannot regain HP in any way
+
+
+
+
+
+UNUSED
+StealItem = removes the target's item and places it in the user's item slot, fails if user has an item | -c if the item is consumed immediately
+RemoveItem = removes the target's item
+EntryHazard = sets up an entry hazard on the opponent's side that does something unique | args to choose the hazard
+Embargo = target doesn't benefit from held item, nor can it use one, its trainer cannot use items on it
+Memento = kills user, target's attack and special attack are lowered 2 stages each
+PartingShot = lowers target's attack and special attack by 1 stage and switches out the user
+Attract = paralyzes or confuses the target based on gender
+HealWish = kills user, next allied pokemon to switch in regains all hp and is cured of status effects

@@ -141,7 +141,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Battle.cpp" />
-    <ClCompile Include="Battle2.cpp" />
+    <ClCompile Include="BattleTurn.cpp" />
+    <ClCompile Include="Pokemon.cpp" />
     <ClCompile Include="EventListener.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
@@ -190,6 +191,9 @@
     <ClInclude Include="Battle.h" />
     <ClInclude Include="date.h" />
     <ClInclude Include="EventListener.h" />
+    <ClInclude Include="PBTExceptions.h" />
+    <ClInclude Include="Pokemon.h" />
+    <ClInclude Include="TypeFixer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
