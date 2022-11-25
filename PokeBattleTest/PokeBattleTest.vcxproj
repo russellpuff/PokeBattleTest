@@ -111,13 +111,14 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)PokeBattleTest;$(SolutionDir)PokeBattleTest\SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)PokeBattleTest;$(SolutionDir)PokeBattleTest\SQLite3;$(SolutionDir)PokeBattleTest\SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>$(SolutionDir)PokeBattleTest\SQLite3;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(SolutionDir)PokeBattleTest\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionDir)PokeBattleTest\SFML\lib\sfml-graphics-d.lib;$(SolutionDir)PokeBattleTest\SFML\lib\sfml-window-d.lib;$(SolutionDir)PokeBattleTest\SFML\lib\sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)PokeBattleTest\SQLite3;$(SolutionDir)PokeBattleTest\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(SolutionDir)PokeBattleTest\SFML\lib\sfml-graphics-d.lib;$(SolutionDir)PokeBattleTest\SFML\lib\sfml-window-d.lib;$(SolutionDir)PokeBattleTest\SFML\lib\sfml-system-d.lib;$(SolutionDir)PokeBattleTest\SQLite3\sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -128,20 +129,20 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)PokeBattleTest;$(SolutionDir)PokeBattleTest\SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)PokeBattleTest;$(SolutionDir)PokeBattleTest\SQLite3;$(SolutionDir)PokeBattleTest\SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>$(SolutionDir)PokeBattleTest\SQLite3;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(SolutionDir)PokeBattleTest\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionDir)PokeBattleTest\SFML\lib\sfml-graphics.lib;$(SolutionDir)PokeBattleTest\SFML\lib\sfml-window.lib;$(SolutionDir)PokeBattleTest\SFML\lib\sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)PokeBattleTest\SQLite3;$(SolutionDir)PokeBattleTest\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(SolutionDir)PokeBattleTest\SFML\lib\sfml-graphics.lib;$(SolutionDir)PokeBattleTest\SFML\lib\sfml-window.lib;$(SolutionDir)PokeBattleTest\SFML\lib\sfml-system.lib;$(SolutionDir)PokeBattleTest\SQLite3\sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Battle.cpp" />
-    <ClCompile Include="BattleTurn.cpp" />
     <ClCompile Include="Pokemon.cpp" />
     <ClCompile Include="EventListener.cpp" />
     <ClCompile Include="Program.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="PBTExceptions.h" />
     <ClInclude Include="Pokemon.h" />
     <ClInclude Include="TypeFixer.h" />
+    <ClInclude Include="UUID.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

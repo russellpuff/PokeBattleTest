@@ -7,7 +7,7 @@ namespace tf {
 	/*
 	I may have made a fucky wucky with inconsistent casing for these, so this is an allpurpose redefiner.
 	It's all alone in its own file because grouping it with the others in the mon namespace generated exactly 250 compiler errors.
-	I'd call this quarantine.
+	It's quarantined for the good of the project.
 	*/
 	std::map<std::string, mon::Type> strToType{ 
 		{"Normal", mon::Type::Normal},
