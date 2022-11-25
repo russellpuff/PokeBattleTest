@@ -36,7 +36,6 @@
             this.mfPokemon1ComboBox = new System.Windows.Forms.ComboBox();
             this.mfType11ComboBox = new System.Windows.Forms.ComboBox();
             this.mfType21ComboBox = new System.Windows.Forms.ComboBox();
-            this.mfHP1ProgressBar = new MonDesigner.MainForm.ColorProgressBar();
             this.mfDef1Label = new System.Windows.Forms.Label();
             this.mfSpAtk1Label = new System.Windows.Forms.Label();
             this.mfAtk1Label = new System.Windows.Forms.Label();
@@ -46,11 +45,6 @@
             this.mfPlayerTableLayout = new System.Windows.Forms.TableLayoutPanel();
             this.mfMove31Button = new System.Windows.Forms.Button();
             this.mfMove21Label = new System.Windows.Forms.Label();
-            this.mfAtk1ProgressBar = new MonDesigner.MainForm.ColorProgressBar();
-            this.mfDef1ProgressBar = new MonDesigner.MainForm.ColorProgressBar();
-            this.mfSpAtk1ProgressBar = new MonDesigner.MainForm.ColorProgressBar();
-            this.mfSpDef1ProgressBar = new MonDesigner.MainForm.ColorProgressBar();
-            this.mfSpd1ProgressBar = new MonDesigner.MainForm.ColorProgressBar();
             this.mfMove11Label = new System.Windows.Forms.Label();
             this.mfMove31Label = new System.Windows.Forms.Label();
             this.mfMove41Label = new System.Windows.Forms.Label();
@@ -64,11 +58,6 @@
             this.mfMove32Button = new System.Windows.Forms.Button();
             this.mfMove22Label = new System.Windows.Forms.Label();
             this.mfPokemon2ComboBox = new System.Windows.Forms.ComboBox();
-            this.mfAtk2ProgressBar = new MonDesigner.MainForm.ColorProgressBar();
-            this.mfDef2ProgressBar = new MonDesigner.MainForm.ColorProgressBar();
-            this.mfSpAtk2ProgressBar = new MonDesigner.MainForm.ColorProgressBar();
-            this.mfSpDef2ProgressBar = new MonDesigner.MainForm.ColorProgressBar();
-            this.mfSpd2ProgressBar = new MonDesigner.MainForm.ColorProgressBar();
             this.mfOpponentPokemonLabel = new System.Windows.Forms.Label();
             this.mfSpd2Label = new System.Windows.Forms.Label();
             this.mfSpDef2Label = new System.Windows.Forms.Label();
@@ -76,7 +65,6 @@
             this.mfDef2Label = new System.Windows.Forms.Label();
             this.mfAtk2Label = new System.Windows.Forms.Label();
             this.mfHP2Label = new System.Windows.Forms.Label();
-            this.mfHP2ProgressBar = new MonDesigner.MainForm.ColorProgressBar();
             this.mfType12ComboBox = new System.Windows.Forms.ComboBox();
             this.mfType22ComboBox = new System.Windows.Forms.ComboBox();
             this.mfMove12Label = new System.Windows.Forms.Label();
@@ -89,18 +77,25 @@
             this.mfForm2Label = new System.Windows.Forms.Label();
             this.mfForm2ComboBox = new System.Windows.Forms.ComboBox();
             this.mfVert2Label = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.mfCustomStatLabel = new System.Windows.Forms.Label();
+            this.mfCustomStatNumUpDown = new System.Windows.Forms.NumericUpDown();
+            this.mfChangeCustomStatButton = new System.Windows.Forms.Button();
+            this.mfProblemFixTableLayout = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.mfJokePictureBox)).BeginInit();
             this.mfPlayerTableLayout.SuspendLayout();
             this.mfOpponentTableLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mfCustomStatNumUpDown)).BeginInit();
+            this.mfProblemFixTableLayout.SuspendLayout();
             this.SuspendLayout();
             // 
             // mfRunBattleButton
             // 
-            this.mfRunBattleButton.Location = new System.Drawing.Point(12, 407);
+            this.mfRunBattleButton.Location = new System.Drawing.Point(12, 464);
             this.mfRunBattleButton.Name = "mfRunBattleButton";
             this.mfRunBattleButton.Size = new System.Drawing.Size(122, 26);
             this.mfRunBattleButton.TabIndex = 0;
-            this.mfRunBattleButton.Text = "Run PokeBattleTest";
+            this.mfRunBattleButton.Text = "Save and run PBT";
             this.mfRunBattleButton.UseVisualStyleBackColor = true;
             this.mfRunBattleButton.Click += new System.EventHandler(this.RunBattleButton_Click);
             // 
@@ -139,7 +134,7 @@
             // mfVert1Label
             // 
             this.mfVert1Label.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.mfVert1Label.Location = new System.Drawing.Point(392, 12);
+            this.mfVert1Label.Location = new System.Drawing.Point(390, 12);
             this.mfVert1Label.Name = "mfVert1Label";
             this.mfVert1Label.Size = new System.Drawing.Size(1, 478);
             this.mfVert1Label.TabIndex = 5;
@@ -157,35 +152,69 @@
             // 
             // mfType11ComboBox
             // 
+            this.mfType11ComboBox.BackColor = System.Drawing.SystemColors.Window;
             this.mfPlayerTableLayout.SetColumnSpan(this.mfType11ComboBox, 2);
             this.mfType11ComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.mfType11ComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.mfType11ComboBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mfType11ComboBox.FormattingEnabled = true;
+            this.mfType11ComboBox.Items.AddRange(new object[] {
+            "NONE",
+            "Normal",
+            "Fighting",
+            "Flying",
+            "Poison",
+            "Ground",
+            "Rock",
+            "Bug",
+            "Ghost",
+            "Steel",
+            "Fire",
+            "Water",
+            "Grass",
+            "Electric",
+            "Psychic",
+            "Ice",
+            "Dragon",
+            "Dark",
+            "Fairy"});
             this.mfType11ComboBox.Location = new System.Drawing.Point(3, 73);
             this.mfType11ComboBox.Name = "mfType11ComboBox";
             this.mfType11ComboBox.Size = new System.Drawing.Size(116, 29);
             this.mfType11ComboBox.TabIndex = 7;
+            this.mfType11ComboBox.SelectedIndexChanged += new System.EventHandler(this.TypeComboBox_SelectedIndexChanged);
             // 
             // mfType21ComboBox
             // 
             this.mfType21ComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.mfType21ComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.mfType21ComboBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mfType21ComboBox.FormattingEnabled = true;
+            this.mfType21ComboBox.Items.AddRange(new object[] {
+            "NONE",
+            "Normal",
+            "Fighting",
+            "Flying",
+            "Poison",
+            "Ground",
+            "Rock",
+            "Bug",
+            "Ghost",
+            "Steel",
+            "Fire",
+            "Water",
+            "Grass",
+            "Electric",
+            "Psychic",
+            "Ice",
+            "Dragon",
+            "Dark",
+            "Fairy"});
             this.mfType21ComboBox.Location = new System.Drawing.Point(125, 73);
             this.mfType21ComboBox.Name = "mfType21ComboBox";
             this.mfType21ComboBox.Size = new System.Drawing.Size(117, 29);
             this.mfType21ComboBox.TabIndex = 8;
-            // 
-            // mfHP1ProgressBar
-            // 
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfHP1ProgressBar, 2);
-            this.mfHP1ProgressBar.Location = new System.Drawing.Point(96, 298);
-            this.mfHP1ProgressBar.Maximum = 255;
-            this.mfHP1ProgressBar.Minimum = 1;
-            this.mfHP1ProgressBar.Name = "mfHP1ProgressBar";
-            this.mfHP1ProgressBar.Size = new System.Drawing.Size(146, 24);
-            this.mfHP1ProgressBar.TabIndex = 9;
-            this.mfHP1ProgressBar.Value = 1;
+            this.mfType21ComboBox.SelectedIndexChanged += new System.EventHandler(this.TypeComboBox_SelectedIndexChanged);
             // 
             // mfDef1Label
             // 
@@ -262,11 +291,6 @@
             this.mfPlayerTableLayout.Controls.Add(this.mfMove31Button, 0, 6);
             this.mfPlayerTableLayout.Controls.Add(this.mfMove21Label, 2, 3);
             this.mfPlayerTableLayout.Controls.Add(this.mfPokemon1ComboBox, 0, 1);
-            this.mfPlayerTableLayout.Controls.Add(this.mfAtk1ProgressBar, 1, 11);
-            this.mfPlayerTableLayout.Controls.Add(this.mfDef1ProgressBar, 1, 12);
-            this.mfPlayerTableLayout.Controls.Add(this.mfSpAtk1ProgressBar, 1, 13);
-            this.mfPlayerTableLayout.Controls.Add(this.mfSpDef1ProgressBar, 1, 14);
-            this.mfPlayerTableLayout.Controls.Add(this.mfSpd1ProgressBar, 1, 15);
             this.mfPlayerTableLayout.Controls.Add(this.mfPlayerPokemonLabel, 0, 0);
             this.mfPlayerTableLayout.Controls.Add(this.mfSpd1Label, 0, 15);
             this.mfPlayerTableLayout.Controls.Add(this.mfSpDef1Label, 0, 14);
@@ -274,7 +298,6 @@
             this.mfPlayerTableLayout.Controls.Add(this.mfDef1Label, 0, 12);
             this.mfPlayerTableLayout.Controls.Add(this.mfAtk1Label, 0, 11);
             this.mfPlayerTableLayout.Controls.Add(this.mfHP1Label, 0, 10);
-            this.mfPlayerTableLayout.Controls.Add(this.mfHP1ProgressBar, 1, 10);
             this.mfPlayerTableLayout.Controls.Add(this.mfType11ComboBox, 0, 2);
             this.mfPlayerTableLayout.Controls.Add(this.mfType21ComboBox, 2, 2);
             this.mfPlayerTableLayout.Controls.Add(this.mfMove11Label, 0, 3);
@@ -327,61 +350,6 @@
             this.mfMove21Label.Size = new System.Drawing.Size(46, 15);
             this.mfMove21Label.TabIndex = 22;
             this.mfMove21Label.Text = "Move 2";
-            // 
-            // mfAtk1ProgressBar
-            // 
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfAtk1ProgressBar, 2);
-            this.mfAtk1ProgressBar.Location = new System.Drawing.Point(96, 328);
-            this.mfAtk1ProgressBar.Maximum = 255;
-            this.mfAtk1ProgressBar.Minimum = 1;
-            this.mfAtk1ProgressBar.Name = "mfAtk1ProgressBar";
-            this.mfAtk1ProgressBar.Size = new System.Drawing.Size(146, 24);
-            this.mfAtk1ProgressBar.TabIndex = 16;
-            this.mfAtk1ProgressBar.Value = 1;
-            // 
-            // mfDef1ProgressBar
-            // 
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfDef1ProgressBar, 2);
-            this.mfDef1ProgressBar.Location = new System.Drawing.Point(96, 358);
-            this.mfDef1ProgressBar.Maximum = 255;
-            this.mfDef1ProgressBar.Minimum = 1;
-            this.mfDef1ProgressBar.Name = "mfDef1ProgressBar";
-            this.mfDef1ProgressBar.Size = new System.Drawing.Size(146, 24);
-            this.mfDef1ProgressBar.TabIndex = 17;
-            this.mfDef1ProgressBar.Value = 1;
-            // 
-            // mfSpAtk1ProgressBar
-            // 
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfSpAtk1ProgressBar, 2);
-            this.mfSpAtk1ProgressBar.Location = new System.Drawing.Point(96, 388);
-            this.mfSpAtk1ProgressBar.Maximum = 255;
-            this.mfSpAtk1ProgressBar.Minimum = 1;
-            this.mfSpAtk1ProgressBar.Name = "mfSpAtk1ProgressBar";
-            this.mfSpAtk1ProgressBar.Size = new System.Drawing.Size(146, 24);
-            this.mfSpAtk1ProgressBar.TabIndex = 18;
-            this.mfSpAtk1ProgressBar.Value = 1;
-            // 
-            // mfSpDef1ProgressBar
-            // 
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfSpDef1ProgressBar, 2);
-            this.mfSpDef1ProgressBar.Location = new System.Drawing.Point(96, 418);
-            this.mfSpDef1ProgressBar.Maximum = 255;
-            this.mfSpDef1ProgressBar.Minimum = 1;
-            this.mfSpDef1ProgressBar.Name = "mfSpDef1ProgressBar";
-            this.mfSpDef1ProgressBar.Size = new System.Drawing.Size(146, 24);
-            this.mfSpDef1ProgressBar.TabIndex = 19;
-            this.mfSpDef1ProgressBar.Value = 1;
-            // 
-            // mfSpd1ProgressBar
-            // 
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfSpd1ProgressBar, 2);
-            this.mfSpd1ProgressBar.Location = new System.Drawing.Point(96, 448);
-            this.mfSpd1ProgressBar.Maximum = 255;
-            this.mfSpd1ProgressBar.Minimum = 1;
-            this.mfSpd1ProgressBar.Name = "mfSpd1ProgressBar";
-            this.mfSpd1ProgressBar.Size = new System.Drawing.Size(146, 24);
-            this.mfSpd1ProgressBar.TabIndex = 20;
-            this.mfSpd1ProgressBar.Value = 1;
             // 
             // mfMove11Label
             // 
@@ -452,6 +420,7 @@
             this.mfCustomForm1CheckBox.TabIndex = 26;
             this.mfCustomForm1CheckBox.Text = "Use custom template?";
             this.mfCustomForm1CheckBox.UseVisualStyleBackColor = true;
+            this.mfCustomForm1CheckBox.CheckedChanged += new System.EventHandler(this.CustomTemplateCheckBox_CheckChanged);
             // 
             // mfForm1Label
             // 
@@ -467,12 +436,14 @@
             // mfForm1ComboBox
             // 
             this.mfPlayerTableLayout.SetColumnSpan(this.mfForm1ComboBox, 2);
+            this.mfForm1ComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.mfForm1ComboBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mfForm1ComboBox.FormattingEnabled = true;
             this.mfForm1ComboBox.Location = new System.Drawing.Point(96, 238);
             this.mfForm1ComboBox.Name = "mfForm1ComboBox";
             this.mfForm1ComboBox.Size = new System.Drawing.Size(146, 29);
             this.mfForm1ComboBox.TabIndex = 17;
+            this.mfForm1ComboBox.SelectedIndexChanged += new System.EventHandler(this.PokemonComboBox_SelectedIndexChanged);
             // 
             // mfOpponentTableLayout
             // 
@@ -483,11 +454,6 @@
             this.mfOpponentTableLayout.Controls.Add(this.mfMove32Button, 0, 6);
             this.mfOpponentTableLayout.Controls.Add(this.mfMove22Label, 2, 3);
             this.mfOpponentTableLayout.Controls.Add(this.mfPokemon2ComboBox, 0, 1);
-            this.mfOpponentTableLayout.Controls.Add(this.mfAtk2ProgressBar, 1, 11);
-            this.mfOpponentTableLayout.Controls.Add(this.mfDef2ProgressBar, 1, 12);
-            this.mfOpponentTableLayout.Controls.Add(this.mfSpAtk2ProgressBar, 1, 13);
-            this.mfOpponentTableLayout.Controls.Add(this.mfSpDef2ProgressBar, 1, 14);
-            this.mfOpponentTableLayout.Controls.Add(this.mfSpd2ProgressBar, 1, 15);
             this.mfOpponentTableLayout.Controls.Add(this.mfOpponentPokemonLabel, 0, 0);
             this.mfOpponentTableLayout.Controls.Add(this.mfSpd2Label, 0, 15);
             this.mfOpponentTableLayout.Controls.Add(this.mfSpDef2Label, 0, 14);
@@ -495,7 +461,6 @@
             this.mfOpponentTableLayout.Controls.Add(this.mfDef2Label, 0, 12);
             this.mfOpponentTableLayout.Controls.Add(this.mfAtk2Label, 0, 11);
             this.mfOpponentTableLayout.Controls.Add(this.mfHP2Label, 0, 10);
-            this.mfOpponentTableLayout.Controls.Add(this.mfHP2ProgressBar, 1, 10);
             this.mfOpponentTableLayout.Controls.Add(this.mfType12ComboBox, 0, 2);
             this.mfOpponentTableLayout.Controls.Add(this.mfType22ComboBox, 2, 2);
             this.mfOpponentTableLayout.Controls.Add(this.mfMove12Label, 0, 3);
@@ -559,61 +524,6 @@
             this.mfPokemon2ComboBox.Size = new System.Drawing.Size(239, 29);
             this.mfPokemon2ComboBox.TabIndex = 6;
             this.mfPokemon2ComboBox.SelectedIndexChanged += new System.EventHandler(this.PokemonComboBox_SelectedIndexChanged);
-            // 
-            // mfAtk2ProgressBar
-            // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfAtk2ProgressBar, 2);
-            this.mfAtk2ProgressBar.Location = new System.Drawing.Point(96, 328);
-            this.mfAtk2ProgressBar.Maximum = 255;
-            this.mfAtk2ProgressBar.Minimum = 1;
-            this.mfAtk2ProgressBar.Name = "mfAtk2ProgressBar";
-            this.mfAtk2ProgressBar.Size = new System.Drawing.Size(146, 24);
-            this.mfAtk2ProgressBar.TabIndex = 16;
-            this.mfAtk2ProgressBar.Value = 1;
-            // 
-            // mfDef2ProgressBar
-            // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfDef2ProgressBar, 2);
-            this.mfDef2ProgressBar.Location = new System.Drawing.Point(96, 358);
-            this.mfDef2ProgressBar.Maximum = 255;
-            this.mfDef2ProgressBar.Minimum = 1;
-            this.mfDef2ProgressBar.Name = "mfDef2ProgressBar";
-            this.mfDef2ProgressBar.Size = new System.Drawing.Size(146, 24);
-            this.mfDef2ProgressBar.TabIndex = 17;
-            this.mfDef2ProgressBar.Value = 1;
-            // 
-            // mfSpAtk2ProgressBar
-            // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfSpAtk2ProgressBar, 2);
-            this.mfSpAtk2ProgressBar.Location = new System.Drawing.Point(96, 388);
-            this.mfSpAtk2ProgressBar.Maximum = 255;
-            this.mfSpAtk2ProgressBar.Minimum = 1;
-            this.mfSpAtk2ProgressBar.Name = "mfSpAtk2ProgressBar";
-            this.mfSpAtk2ProgressBar.Size = new System.Drawing.Size(146, 24);
-            this.mfSpAtk2ProgressBar.TabIndex = 18;
-            this.mfSpAtk2ProgressBar.Value = 1;
-            // 
-            // mfSpDef2ProgressBar
-            // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfSpDef2ProgressBar, 2);
-            this.mfSpDef2ProgressBar.Location = new System.Drawing.Point(96, 418);
-            this.mfSpDef2ProgressBar.Maximum = 255;
-            this.mfSpDef2ProgressBar.Minimum = 1;
-            this.mfSpDef2ProgressBar.Name = "mfSpDef2ProgressBar";
-            this.mfSpDef2ProgressBar.Size = new System.Drawing.Size(146, 24);
-            this.mfSpDef2ProgressBar.TabIndex = 19;
-            this.mfSpDef2ProgressBar.Value = 1;
-            // 
-            // mfSpd2ProgressBar
-            // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfSpd2ProgressBar, 2);
-            this.mfSpd2ProgressBar.Location = new System.Drawing.Point(96, 448);
-            this.mfSpd2ProgressBar.Maximum = 255;
-            this.mfSpd2ProgressBar.Minimum = 1;
-            this.mfSpd2ProgressBar.Name = "mfSpd2ProgressBar";
-            this.mfSpd2ProgressBar.Size = new System.Drawing.Size(146, 24);
-            this.mfSpd2ProgressBar.TabIndex = 20;
-            this.mfSpd2ProgressBar.Value = 1;
             // 
             // mfOpponentPokemonLabel
             // 
@@ -693,37 +603,70 @@
             this.mfHP2Label.TabIndex = 13;
             this.mfHP2Label.Text = "HP: 255";
             // 
-            // mfHP2ProgressBar
-            // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfHP2ProgressBar, 2);
-            this.mfHP2ProgressBar.Location = new System.Drawing.Point(96, 298);
-            this.mfHP2ProgressBar.Maximum = 255;
-            this.mfHP2ProgressBar.Minimum = 1;
-            this.mfHP2ProgressBar.Name = "mfHP2ProgressBar";
-            this.mfHP2ProgressBar.Size = new System.Drawing.Size(146, 24);
-            this.mfHP2ProgressBar.TabIndex = 9;
-            this.mfHP2ProgressBar.Value = 1;
-            // 
             // mfType12ComboBox
             // 
             this.mfOpponentTableLayout.SetColumnSpan(this.mfType12ComboBox, 2);
             this.mfType12ComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.mfType12ComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.mfType12ComboBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mfType12ComboBox.FormattingEnabled = true;
+            this.mfType12ComboBox.Items.AddRange(new object[] {
+            "NONE",
+            "Normal",
+            "Fighting",
+            "Flying",
+            "Poison",
+            "Ground",
+            "Rock",
+            "Bug",
+            "Ghost",
+            "Steel",
+            "Fire",
+            "Water",
+            "Grass",
+            "Electric",
+            "Psychic",
+            "Ice",
+            "Dragon",
+            "Dark",
+            "Fairy"});
             this.mfType12ComboBox.Location = new System.Drawing.Point(3, 73);
             this.mfType12ComboBox.Name = "mfType12ComboBox";
             this.mfType12ComboBox.Size = new System.Drawing.Size(116, 29);
             this.mfType12ComboBox.TabIndex = 7;
+            this.mfType12ComboBox.SelectedIndexChanged += new System.EventHandler(this.TypeComboBox_SelectedIndexChanged);
             // 
             // mfType22ComboBox
             // 
             this.mfType22ComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.mfType22ComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.mfType22ComboBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mfType22ComboBox.FormattingEnabled = true;
+            this.mfType22ComboBox.Items.AddRange(new object[] {
+            "NONE",
+            "Normal",
+            "Fighting",
+            "Flying",
+            "Poison",
+            "Ground",
+            "Rock",
+            "Bug",
+            "Ghost",
+            "Steel",
+            "Fire",
+            "Water",
+            "Grass",
+            "Electric",
+            "Psychic",
+            "Ice",
+            "Dragon",
+            "Dark",
+            "Fairy"});
             this.mfType22ComboBox.Location = new System.Drawing.Point(125, 73);
             this.mfType22ComboBox.Name = "mfType22ComboBox";
             this.mfType22ComboBox.Size = new System.Drawing.Size(117, 29);
             this.mfType22ComboBox.TabIndex = 8;
+            this.mfType22ComboBox.SelectedIndexChanged += new System.EventHandler(this.TypeComboBox_SelectedIndexChanged);
             // 
             // mfMove12Label
             // 
@@ -794,6 +737,7 @@
             this.mfCustomForm2CheckBox.TabIndex = 26;
             this.mfCustomForm2CheckBox.Text = "Use custom template?";
             this.mfCustomForm2CheckBox.UseVisualStyleBackColor = true;
+            this.mfCustomForm2CheckBox.CheckedChanged += new System.EventHandler(this.CustomTemplateCheckBox_CheckChanged);
             // 
             // mfForm2Label
             // 
@@ -809,26 +753,100 @@
             // mfForm2ComboBox
             // 
             this.mfOpponentTableLayout.SetColumnSpan(this.mfForm2ComboBox, 2);
+            this.mfForm2ComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.mfForm2ComboBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mfForm2ComboBox.FormattingEnabled = true;
             this.mfForm2ComboBox.Location = new System.Drawing.Point(96, 238);
             this.mfForm2ComboBox.Name = "mfForm2ComboBox";
             this.mfForm2ComboBox.Size = new System.Drawing.Size(146, 29);
             this.mfForm2ComboBox.TabIndex = 17;
+            this.mfForm2ComboBox.SelectedIndexChanged += new System.EventHandler(this.PokemonComboBox_SelectedIndexChanged);
             // 
             // mfVert2Label
             // 
             this.mfVert2Label.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.mfVert2Label.Location = new System.Drawing.Point(652, 12);
+            this.mfVert2Label.Location = new System.Drawing.Point(651, 12);
             this.mfVert2Label.Name = "mfVert2Label";
             this.mfVert2Label.Size = new System.Drawing.Size(1, 478);
             this.mfVert2Label.TabIndex = 17;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(140, 464);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(122, 26);
+            this.button1.TabIndex = 19;
+            this.button1.Text = "Save files only";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // mfCustomStatLabel
+            // 
+            this.mfCustomStatLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.mfCustomStatLabel.AutoSize = true;
+            this.mfCustomStatLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfCustomStatLabel.Location = new System.Drawing.Point(60, 11);
+            this.mfCustomStatLabel.Name = "mfCustomStatLabel";
+            this.mfCustomStatLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.mfCustomStatLabel.Size = new System.Drawing.Size(137, 21);
+            this.mfCustomStatLabel.TabIndex = 20;
+            this.mfCustomStatLabel.Text = "Set {who} {stat} to ";
+            // 
+            // mfCustomStatNumUpDown
+            // 
+            this.mfCustomStatNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfCustomStatNumUpDown.Location = new System.Drawing.Point(289, 407);
+            this.mfCustomStatNumUpDown.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.mfCustomStatNumUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.mfCustomStatNumUpDown.Name = "mfCustomStatNumUpDown";
+            this.mfCustomStatNumUpDown.Size = new System.Drawing.Size(95, 29);
+            this.mfCustomStatNumUpDown.TabIndex = 21;
+            this.mfCustomStatNumUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // mfChangeCustomStatButton
+            // 
+            this.mfChangeCustomStatButton.Location = new System.Drawing.Point(309, 442);
+            this.mfChangeCustomStatButton.Name = "mfChangeCustomStatButton";
+            this.mfChangeCustomStatButton.Size = new System.Drawing.Size(75, 23);
+            this.mfChangeCustomStatButton.TabIndex = 22;
+            this.mfChangeCustomStatButton.Text = "Change";
+            this.mfChangeCustomStatButton.UseVisualStyleBackColor = true;
+            this.mfChangeCustomStatButton.Click += new System.EventHandler(this.ChangeCustomStatButton_Click);
+            // 
+            // mfProblemFixTableLayout
+            // 
+            this.mfProblemFixTableLayout.ColumnCount = 1;
+            this.mfProblemFixTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.mfProblemFixTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.mfProblemFixTableLayout.Controls.Add(this.mfCustomStatLabel, 0, 0);
+            this.mfProblemFixTableLayout.Location = new System.Drawing.Point(83, 401);
+            this.mfProblemFixTableLayout.Name = "mfProblemFixTableLayout";
+            this.mfProblemFixTableLayout.RowCount = 1;
+            this.mfProblemFixTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.mfProblemFixTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.mfProblemFixTableLayout.Size = new System.Drawing.Size(200, 44);
+            this.mfProblemFixTableLayout.TabIndex = 23;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(917, 499);
+            this.Controls.Add(this.mfProblemFixTableLayout);
+            this.Controls.Add(this.mfChangeCustomStatButton);
+            this.Controls.Add(this.mfCustomStatNumUpDown);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.mfOpponentTableLayout);
             this.Controls.Add(this.mfVert2Label);
             this.Controls.Add(this.mfPlayerTableLayout);
@@ -845,6 +863,9 @@
             this.mfPlayerTableLayout.PerformLayout();
             this.mfOpponentTableLayout.ResumeLayout(false);
             this.mfOpponentTableLayout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mfCustomStatNumUpDown)).EndInit();
+            this.mfProblemFixTableLayout.ResumeLayout(false);
+            this.mfProblemFixTableLayout.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -912,5 +933,10 @@
         private Label mfForm2Label;
         private ComboBox mfForm2ComboBox;
         private Label mfVert2Label;
+        private Button button1;
+        private Label mfCustomStatLabel;
+        private NumericUpDown mfCustomStatNumUpDown;
+        private Button mfChangeCustomStatButton;
+        private TableLayoutPanel mfProblemFixTableLayout;
     }
 }
