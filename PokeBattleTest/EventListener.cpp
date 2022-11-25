@@ -1,18 +1,26 @@
 #include <iostream>
+#include <fstream>
 #include <future>
 #include <queue>
 #include "EventListener.h"
 #include "date.h"
+#include "UUID.h"
 
 void Events::Log(std::string& msg, std::queue<std::string>& log) {
-    std::string time = date::format("%F %T", std::chrono::system_clock::now());
+    std::string time = date::format("%F %R", std::chrono::system_clock::now());
     std::string logtext = "@" + time + ": " + msg;
     std::cout << logtext << std::endl;
     log.push(logtext);
 }
 
-void WriteLogToFile(std::queue<std::string> log) {
-
+void Events::WriteLogToFile(std::queue<std::string> log) { 
+    std::string filename = "logs\\" + date::format("%F", std::chrono::system_clock::now()) + "-" + uuid::generate_uuid_v4() + ".txt";
+    std::ofstream out(filename);
+    while (!log.empty()) {
+        out << log.front() << std::endl;
+        log.pop();
+    }
+    out.close();
 }
 
 void Events::EventListener(sf::RenderWindow& window, std::queue<std::string>& log) {

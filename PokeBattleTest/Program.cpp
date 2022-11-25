@@ -6,7 +6,6 @@
 #include <queue>
 #include "EventListener.h"
 #include "PBTExceptions.h"
-std::string what(const std::exception_ptr& eptr = std::current_exception());
 
 int main()
 {
@@ -16,8 +15,8 @@ int main()
     int retval = 0;
     try {
         sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-        // When this returns, PokeBattleTest execution ends. If MonDesigner started this, it should return control back to MonDesigner.
-        Events::EventListener(window, log); 
+        Events::EventListener(window, log); // When this returns, PokeBattleTest execution starts to end. 
+        // If MonDesigner started this, it should return control back to MonDesigner.
         errorOccured = false;
     }
     catch (ex::PokemonConstructionException pce) {
@@ -41,7 +40,7 @@ int main()
         retval = 104;
     }
     catch (...) {
-        std::string error = "Encountered an unexpected problem.";
+        std::string error = "Encountered an unexpected problem with no details.";
         retval = 201;
     }
     if (errorOccured) { Events::Log(error, log); }

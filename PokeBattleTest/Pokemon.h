@@ -2,12 +2,12 @@
 #include <string>
 #include <array>
 namespace mon {
-	enum Type : short; // forward declarations
+	enum Type : short; // Forward declarations.
 	enum MoveCategory : short;
 
 	class Move {
 	private:
-		int moveID; // Critical component for committing moves and utilizing battlefield effects. 
+		int moveID;
 		std::string name;
 		Type type;
 		MoveCategory category;

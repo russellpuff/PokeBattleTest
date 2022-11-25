@@ -2,7 +2,7 @@
 #include "EventListener.h"
 #include "PBTExceptions.h"
 #include "TypeFixer.h"
-#include "SQLite3/sqlite3.h"
+#include "sqlite3.h"
 sqlite3_stmt* RunQuery(sqlite3* db, std::string q, std::string currentDB);
 
 mon::Move::Move(int _moveID) {

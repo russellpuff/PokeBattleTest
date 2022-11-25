@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "MonDesigner": {
+      "commandName": "Project",
+      "workingDirectory": "$(SolutionDir)output",
+      "remoteDebugEnabled": false
+    }
+  }
+}
