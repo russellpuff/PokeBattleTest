@@ -73,7 +73,7 @@ namespace MonDesigner
             // 
             // mfHP1ProgressBar
             // 
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfHP1ProgressBar, 2);
+            this.mfPlayerTableLayout.SetColumnSpan(this.mfHP1ProgressBar, 3);
             this.mfHP1ProgressBar.Location = new System.Drawing.Point(96, 298);
             this.mfHP1ProgressBar.Maximum = 255;
             this.mfHP1ProgressBar.Minimum = 1;
@@ -85,7 +85,7 @@ namespace MonDesigner
             // 
             // mfAtk1ProgressBar
             // 
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfAtk1ProgressBar, 2);
+            this.mfPlayerTableLayout.SetColumnSpan(this.mfAtk1ProgressBar, 3);
             this.mfAtk1ProgressBar.Location = new System.Drawing.Point(96, 328);
             this.mfAtk1ProgressBar.Maximum = 255;
             this.mfAtk1ProgressBar.Minimum = 1;
@@ -97,7 +97,7 @@ namespace MonDesigner
             // 
             // mfDef1ProgressBar
             // 
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfDef1ProgressBar, 2);
+            this.mfPlayerTableLayout.SetColumnSpan(this.mfDef1ProgressBar, 3);
             this.mfDef1ProgressBar.Location = new System.Drawing.Point(96, 358);
             this.mfDef1ProgressBar.Maximum = 255;
             this.mfDef1ProgressBar.Minimum = 1;
@@ -109,7 +109,7 @@ namespace MonDesigner
             // 
             // mfSpAtk1ProgressBar
             // 
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfSpAtk1ProgressBar, 2);
+            this.mfPlayerTableLayout.SetColumnSpan(this.mfSpAtk1ProgressBar, 3);
             this.mfSpAtk1ProgressBar.Location = new System.Drawing.Point(96, 388);
             this.mfSpAtk1ProgressBar.Maximum = 255;
             this.mfSpAtk1ProgressBar.Minimum = 1;
@@ -121,7 +121,7 @@ namespace MonDesigner
             // 
             // mfSpDef1ProgressBar
             // 
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfSpDef1ProgressBar, 2);
+            this.mfPlayerTableLayout.SetColumnSpan(this.mfSpDef1ProgressBar, 3);
             this.mfSpDef1ProgressBar.Location = new System.Drawing.Point(96, 418);
             this.mfSpDef1ProgressBar.Maximum = 255;
             this.mfSpDef1ProgressBar.Minimum = 1;
@@ -133,7 +133,7 @@ namespace MonDesigner
             // 
             // mfSpd1ProgressBar
             // 
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfSpd1ProgressBar, 2);
+            this.mfPlayerTableLayout.SetColumnSpan(this.mfSpd1ProgressBar, 3);
             this.mfSpd1ProgressBar.Location = new System.Drawing.Point(96, 448);
             this.mfSpd1ProgressBar.Maximum = 255;
             this.mfSpd1ProgressBar.Minimum = 1;
@@ -145,7 +145,7 @@ namespace MonDesigner
             // 
             // mfHP2ProgressBar
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfHP2ProgressBar, 2);
+            this.mfOpponentTableLayout.SetColumnSpan(this.mfHP2ProgressBar, 3);
             this.mfHP2ProgressBar.Location = new System.Drawing.Point(96, 298);
             this.mfHP2ProgressBar.Maximum = 255;
             this.mfHP2ProgressBar.Minimum = 1;
@@ -157,7 +157,7 @@ namespace MonDesigner
             // 
             // mfAtk2ProgressBar
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfAtk2ProgressBar, 2);
+            this.mfOpponentTableLayout.SetColumnSpan(this.mfAtk2ProgressBar, 3);
             this.mfAtk2ProgressBar.Location = new System.Drawing.Point(96, 328);
             this.mfAtk2ProgressBar.Maximum = 255;
             this.mfAtk2ProgressBar.Minimum = 1;
@@ -169,7 +169,7 @@ namespace MonDesigner
             // 
             // mfDef2ProgressBar
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfDef2ProgressBar, 2);
+            this.mfOpponentTableLayout.SetColumnSpan(this.mfDef2ProgressBar, 3);
             this.mfDef2ProgressBar.Location = new System.Drawing.Point(96, 358);
             this.mfDef2ProgressBar.Maximum = 255;
             this.mfDef2ProgressBar.Minimum = 1;
@@ -181,7 +181,7 @@ namespace MonDesigner
             // 
             // mfSpAtk2ProgressBar
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfSpAtk2ProgressBar, 2);
+            this.mfOpponentTableLayout.SetColumnSpan(this.mfSpAtk2ProgressBar, 3);
             this.mfSpAtk2ProgressBar.Location = new System.Drawing.Point(96, 388);
             this.mfSpAtk2ProgressBar.Maximum = 255;
             this.mfSpAtk2ProgressBar.Minimum = 1;
@@ -193,7 +193,7 @@ namespace MonDesigner
             // 
             // mfSpDef2ProgressBar
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfSpDef2ProgressBar, 2);
+            this.mfOpponentTableLayout.SetColumnSpan(this.mfSpDef2ProgressBar, 3);
             this.mfSpDef2ProgressBar.Location = new System.Drawing.Point(96, 418);
             this.mfSpDef2ProgressBar.Maximum = 255;
             this.mfSpDef2ProgressBar.Minimum = 1;
@@ -205,7 +205,7 @@ namespace MonDesigner
             // 
             // mfSpd2ProgressBar
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfSpd2ProgressBar, 2);
+            this.mfOpponentTableLayout.SetColumnSpan(this.mfSpd2ProgressBar, 3);
             this.mfSpd2ProgressBar.Location = new System.Drawing.Point(96, 448);
             this.mfSpd2ProgressBar.Maximum = 255;
             this.mfSpd2ProgressBar.Minimum = 1;

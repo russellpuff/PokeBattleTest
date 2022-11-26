@@ -111,7 +111,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)PokeBattleTest;$(SolutionDir)PokeBattleTest\SQLite3;$(SolutionDir)PokeBattleTest\SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)PokeBattleTest\Source;$(SolutionDir)PokeBattleTest\SQLite3;$(SolutionDir)PokeBattleTest\nlohmann;$(SolutionDir)PokeBattleTest\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>$(SolutionDir)PokeBattleTest\SQLite3;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
@@ -129,7 +129,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)PokeBattleTest;$(SolutionDir)PokeBattleTest\SQLite3;$(SolutionDir)PokeBattleTest\SFML\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)PokeBattleTest\Source;$(SolutionDir)PokeBattleTest\SQLite3;$(SolutionDir)PokeBattleTest\nlohmann;$(SolutionDir)PokeBattleTest\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>$(SolutionDir)PokeBattleTest\SQLite3;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
@@ -146,6 +146,10 @@
     <ClCompile Include="Pokemon.cpp" />
     <ClCompile Include="EventListener.cpp" />
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="Source\Battle.cpp" />
+    <ClCompile Include="Source\BattleTurn.cpp" />
+    <ClCompile Include="Source\EventListener.cpp" />
+    <ClCompile Include="Source\Pokemon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="sfml-graphics-d-2.dll">
@@ -192,8 +196,16 @@
     <ClInclude Include="Battle.h" />
     <ClInclude Include="date.h" />
     <ClInclude Include="EventListener.h" />
+    <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="PBTExceptions.h" />
     <ClInclude Include="Pokemon.h" />
+    <ClInclude Include="Source\Battle.h" />
+    <ClInclude Include="Source\date.h" />
+    <ClInclude Include="Source\EventListener.h" />
+    <ClInclude Include="Source\PBTExceptions.h" />
+    <ClInclude Include="Source\Pokemon.h" />
+    <ClInclude Include="Source\TypeFixer.h" />
+    <ClInclude Include="Source\UUID.h" />
     <ClInclude Include="TypeFixer.h" />
     <ClInclude Include="UUID.h" />
   </ItemGroup>
