@@ -70,7 +70,7 @@
     <ClInclude Include="Source\Pokemon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\TypeFixer.h">
+    <ClInclude Include="Source\TypeCategory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\UUID.h">

@@ -1,8 +1,6 @@
 ﻿  Program.cpp
-  Battle.cpp
   BattleTurn.cpp
   EventListener.cpp
   Pokemon.cpp
   Generating Code...
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
   PokeBattleTest.vcxproj -> C:\Users\Ben\source\repos\PokeBattleTest\output\PokeBattleTest.exe

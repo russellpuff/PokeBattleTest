@@ -1,7 +1,7 @@
 #include "Pokemon.h"
 #include "EventListener.h"
 #include "PBTExceptions.h"
-#include "TypeFixer.h"
+#include "TypeCategory.h"
 #include "sqlite3.h"
 #include "json.hpp"
 sqlite3_stmt* RunQuery(sqlite3* db, std::string q, std::string currentDB);
@@ -40,9 +40,9 @@ mon::Move::Move(int _moveID) {
 	moveID = _moveID;
 	name = reinterpret_cast<const char*>(sqlite3_column_text(st, 0));
 	std::string foo = reinterpret_cast<const char*>(sqlite3_column_text(st, 1));
-	type = tf::strToType.at(foo); // move.db has a foreign key constraint that restricts the type column to one of the existing types, this will never go wrong.
+	type = tc::strToType.at(foo); // move.db has a foreign key constraint that restricts the type column to one of the existing types, this will never go wrong.
 	foo = reinterpret_cast<const char*>(sqlite3_column_text(st, 2));
-	category = tf::strToCategory.at(foo); // Same as above.
+	category = tc::strToCategory.at(foo); // Same as above.
 	powerPoints = sqlite3_column_int(st, 3);
 	power = sqlite3_column_int(st, 4);
 	accuracy = sqlite3_column_int(st, 5);
@@ -74,8 +74,8 @@ mon::Pokemon::Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<mon::Move, 
 		name = reinterpret_cast<const char*>(sqlite3_column_text(st, 0));
 		sqlite3_finalize(st);
 
-		firstType = tf::strToType.at(t.Type1);
-		secondType = tf::strToType.at(t.Type2);
+		firstType = tc::strToType.at(t.Type1);
+		secondType = tc::strToType.at(t.Type2);
 		stats.hpBase = t.HP;
 		stats.atkBase = t.ATK;
 		stats.defBase = t.DEF;
@@ -119,7 +119,7 @@ mon::Pokemon::Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<mon::Move, 
 		}
 
 		name = reinterpret_cast<const char*>(sqlite3_column_text(st, 0));
-		firstType = tf::strToType.at(reinterpret_cast<const char*>(sqlite3_column_text(st, 1)));
+		firstType = tc::strToType.at(reinterpret_cast<const char*>(sqlite3_column_text(st, 1)));
 		stats.hpBase = sqlite3_column_int(st, 3);
 		stats.atkBase = sqlite3_column_int(st, 4);
 		stats.defBase = sqlite3_column_int(st, 5);
@@ -127,8 +127,8 @@ mon::Pokemon::Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<mon::Move, 
 		stats.spDefBase = sqlite3_column_int(st, 7);
 		stats.spdBase = sqlite3_column_int(st, 8);
 
-		if (sqlite3_column_type(st, 2) == SQLITE_NULL) { secondType = tf::NoType; }
-		else { secondType = tf::strToType.at(reinterpret_cast<const char*>(sqlite3_column_text(st, 2))); }
+		if (sqlite3_column_type(st, 2) == SQLITE_NULL) { secondType = tc::NoType; }
+		else { secondType = tc::strToType.at(reinterpret_cast<const char*>(sqlite3_column_text(st, 2))); }
 
 		sqlite3_finalize(st);
 	}

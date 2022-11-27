@@ -197,7 +197,7 @@
     <ClInclude Include="Source\JsonStructs.h" />
     <ClInclude Include="Source\PBTExceptions.h" />
     <ClInclude Include="Source\Pokemon.h" />
-    <ClInclude Include="Source\TypeFixer.h" />
+    <ClInclude Include="Source\TypeCategory.h" />
     <ClInclude Include="Source\UUID.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

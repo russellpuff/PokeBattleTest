@@ -2,14 +2,14 @@
 #include <string>
 #include <array>
 #include <JsonStructs.h>
-#include <TypeFixer.h>
+#include <TypeCategory.h>
 namespace mon {
 	class Move {
 	private:
 		int moveID;
 		std::string name;
-		tf::Type type;
-		tf::MoveCategory category;
+		tc::Type type;
+		tc::MoveCategory category;
 		int powerPoints;
 		int power;
 		int accuracy;
@@ -17,8 +17,8 @@ namespace mon {
 		bool procMutable; // If this is false, the move will never miss, regardless of accuracy and evasion modifiers. 
 	public:
 		std::string GetName() { return name; }
-		std::string GetType() { return tf::typeToString.at(type); }
-		std::string GetCategory() { return tf::categoryToString.at(category); }
+		std::string GetType() { return tc::typeToString.at(type); }
+		std::string GetCategory() { return tc::categoryToString.at(category); }
 		int GetPowerPoints() { return powerPoints; }
 		int GetPower() { return power; }
 		int GetAccuracy() { return accuracy; }
@@ -54,16 +54,16 @@ namespace mon {
 		std::string form; // Form determines whether or not a template overwrite occurs, comes up in constructing.
 		Stats stats;
 		std::array<Move, 4> moves; // 4 moves always, there will be a special "empty move" to represent having fewer than four. 
-		tf::Type firstType;
-		tf::Type secondType;
+		tc::Type firstType;
+		tc::Type secondType;
 		int level;
 		// Abilities and Items not included because too complex and not enough time.
 		// Everything defined in species.db but not here is irrelevant. 
 	public:
 		std::string GetName() { return name; }
 		std::string GetForm() { return form; }
-		std::string GetType1() { return tf::typeToString.at(firstType); }
-		std::string GetType2() { return tf::typeToString.at(secondType); }
+		std::string GetType1() { return tc::typeToString.at(firstType); }
+		std::string GetType2() { return tc::typeToString.at(secondType); }
 		Move GetMove1() { return moves[0]; }
 		Move GetMove2() { return moves[1]; }
 		Move GetMove3() { return moves[2]; }
