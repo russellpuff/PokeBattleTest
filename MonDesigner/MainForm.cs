@@ -507,44 +507,34 @@ namespace MonDesigner
 
             try
             {
-                List<Mon> mons = new()
-                { // Junky and dense, but this is just pulling from all the relevant sections. 
-                    new Mon("Player", mfPokemon1ComboBox.SelectedIndex + 1, (int)mfLevel1NumUpDown.Value, pForm, 
+                Mon pMon = new("Player", mfPokemon1ComboBox.SelectedIndex + 1, (int)mfLevel1NumUpDown.Value, pForm,
                     playerMoves[0], playerMoves[1], playerMoves[2], playerMoves[3],
                     (int)mfHP1EVNumUpDown.Value, (int)mfAtk1EVNumUpDown.Value, (int)mfDef1EVNumUpDown.Value,
-                    (int)mfSpAtk1EVNumUpDown.Value, (int)mfSpDef1EVNumUpDown.Value, (int)mfSpd1EVNumUpDown.Value),
-
-                    new Mon("Opponent", mfPokemon2ComboBox.SelectedIndex + 1, (int)mfLevel2NumUpDown.Value, oForm, 
+                    (int)mfSpAtk1EVNumUpDown.Value, (int)mfSpDef1EVNumUpDown.Value, (int)mfSpd1EVNumUpDown.Value);
+                Mon oMon = new("Opponent", mfPokemon2ComboBox.SelectedIndex + 1, (int)mfLevel2NumUpDown.Value, oForm,
                     opponentMoves[0], opponentMoves[1], opponentMoves[2], opponentMoves[3],
                     (int)mfHP2EVNumUpDown.Value, (int)mfAtk2EVNumUpDown.Value, (int)mfDef2EVNumUpDown.Value,
-                    (int)mfSpAtk2EVNumUpDown.Value, (int)mfSpDef2EVNumUpDown.Value, (int)mfSpd2EVNumUpDown.Value)
-                };
-                var monJson = JsonConvert.SerializeObject(mons);
-                string monFrmt = JValue.Parse(monJson).ToString(Newtonsoft.Json.Formatting.Indented);
-                string path = Application.StartupPath + "resource/pkmn.json";
-                if (File.Exists(path)) { File.Delete(path); }
-                File.WriteAllText(path, monFrmt);
+                    (int)mfSpAtk2EVNumUpDown.Value, (int)mfSpDef2EVNumUpDown.Value, (int)mfSpd2EVNumUpDown.Value);
 
-                List<CustomTemplate> ctem = new();
+                CustomTemplate pTem, oTem;
                 if (mfCustomForm1CheckBox.Checked)
                 {
-                    ctem.Add(new CustomTemplate("Player", mfType11ComboBox.Text, mfType21ComboBox.Text, 
-                        mfHP1ProgressBar.Value, mfAtk1ProgressBar.Value, mfDef1ProgressBar.Value, 
-                        mfSpAtk1ProgressBar.Value, mfSpDef1ProgressBar.Value, mfSpd1ProgressBar.Value));
-                } else { ctem.Add(new CustomTemplate("Player", "", "", 0, 0, 0, 0, 0, 0)); }
+                    pTem = new("Player", mfType11ComboBox.Text, mfType21ComboBox.Text,
+                        mfHP1ProgressBar.Value, mfAtk1ProgressBar.Value, mfDef1ProgressBar.Value,
+                        mfSpAtk1ProgressBar.Value, mfSpDef1ProgressBar.Value, mfSpd1ProgressBar.Value);
+                } else { pTem = new ("Player", "", "", 0, 0, 0, 0, 0, 0); }
                 if (mfCustomForm2CheckBox.Checked)
                 {
-                    ctem.Add(new CustomTemplate("Player", mfType12ComboBox.Text, mfType22ComboBox.Text,
+                    oTem = new("Player", mfType12ComboBox.Text, mfType22ComboBox.Text,
                         mfHP2ProgressBar.Value, mfAtk2ProgressBar.Value, mfDef2ProgressBar.Value,
-                        mfSpAtk2ProgressBar.Value, mfSpDef2ProgressBar.Value, mfSpd2ProgressBar.Value));
+                        mfSpAtk2ProgressBar.Value, mfSpDef2ProgressBar.Value, mfSpd2ProgressBar.Value);
                 }
-                else { ctem.Add(new CustomTemplate("Opponent", "", "", 0, 0, 0, 0, 0, 0)); }
+                else { oTem = new("Opponent", "", "", 0, 0, 0, 0, 0, 0); }
 
-                var temJson = JsonConvert.SerializeObject(ctem);
-                string temFrmt = JValue.Parse(temJson).ToString(Newtonsoft.Json.Formatting.Indented);
-                path = Application.StartupPath + "resource/pkmntemplate.json";
-                if (File.Exists(path)) { File.Delete(path); }
-                File.WriteAllText(path, temFrmt);
+                SerializeWriteToFile(pMon, "pMon");
+                SerializeWriteToFile(oMon, "oMon");
+                SerializeWriteToFile(pTem, "pTem");
+                SerializeWriteToFile(oTem, "oTem");
             }
             catch (Exception e)
             {
@@ -552,6 +542,22 @@ namespace MonDesigner
                 MessageBox.Show(msg, "Save error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return true;
+        }
+
+        private static void SerializeWriteToFile(object o, string which)
+        {
+            var monJson = JsonConvert.SerializeObject(o);
+            string format = JValue.Parse(monJson).ToString(Newtonsoft.Json.Formatting.Indented);
+            string path = Application.StartupPath + "resource/" + which switch
+            {
+                "pMon" => "p-pkmn",
+                "oMon" => "o-pkmn",
+                "pTem" => "p-template",
+                "oTem" => "o-template",
+                _ => "NULL"
+            } + ".json";
+            if (File.Exists(path)) { File.Delete(path); }
+            File.WriteAllText(path, format);
         }
     }
 }

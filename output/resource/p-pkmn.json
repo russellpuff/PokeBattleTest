@@ -1,0 +1,16 @@
+{
+  "Who": "Player",
+  "DexID": 3,
+  "Level": 50,
+  "Form": "venusaur-mega",
+  "Move1": 364,
+  "Move2": 245,
+  "Move3": 46,
+  "Move4": 375,
+  "HPEV": 0,
+  "AtkEV": 0,
+  "DefEV": 0,
+  "SpAtkEV": 252,
+  "SpDefEV": 252,
+  "SpdEV": 6
+}

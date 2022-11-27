@@ -29,7 +29,7 @@ int main()
         error = "Encounterd a problem constructing a move: " + e;
         retval = 102;
     }
-    catch (ex::DatabaseReadException dre) {
+    catch (std::bad_alloc dre) {
         e = dre.what();
         error = "Encountered a problem reading a .db file: " + e;
         retval = 103;
@@ -39,10 +39,12 @@ int main()
         error = "Encountered a problem assembling stats: " + e;
         retval = 104;
     }
+    /*
     catch (...) {
         std::string error = "Encountered an unexpected problem with no details.";
         retval = 201;
     }
+    */
     if (errorOccured) { Events::Log(error, log); }
     Events::WriteLogToFile(log);
     return retval;

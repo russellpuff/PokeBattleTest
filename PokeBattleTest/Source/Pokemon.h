@@ -1,23 +1,30 @@
 #pragma once
 #include <string>
 #include <array>
+#include <JsonStructs.h>
+#include <TypeFixer.h>
 namespace mon {
-	enum Type : short; // Forward declarations.
-	enum MoveCategory : short;
-
 	class Move {
 	private:
 		int moveID;
 		std::string name;
-		Type type;
-		MoveCategory category;
+		tf::Type type;
+		tf::MoveCategory category;
 		int powerPoints;
 		int power;
 		int accuracy;
 		int priority;
+		bool procMutable; // If this is false, the move will never miss, regardless of accuracy and evasion modifiers. 
 	public:
-		Move();
-		Move(int _moveID); // real constructor
+		std::string GetName() { return name; }
+		std::string GetType() { return tf::typeToString.at(type); }
+		std::string GetCategory() { return tf::categoryToString.at(category); }
+		int GetPowerPoints() { return powerPoints; }
+		int GetPower() { return power; }
+		int GetAccuracy() { return accuracy; }
+		int GetPriority() { return priority; }
+		bool GetIsProcMutable() { return procMutable; }
+		Move(int _moveID);
 	};
 
 	struct Stats {
@@ -36,43 +43,9 @@ namespace mon {
 		int spDefCurrent;
 		int spdCurrent;
 		Stats();
-		Stats(int _dexid); // real constructor
 	};
 
 	class Pokemon {
-		/*
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		You are writing the definition for this class's constructor, but you have to finish MonDesigner before this will work. 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		*/
 		// This class is entirely read-only.During a Battle, attributes will only be referenced.
 		// In a more elaborate future project, it will need to permanently store certain data like current/max HP.
 		// This application has no need for that, so Battle tracks it. 
@@ -81,40 +54,33 @@ namespace mon {
 		std::string form; // Form determines whether or not a template overwrite occurs, comes up in constructing.
 		Stats stats;
 		std::array<Move, 4> moves; // 4 moves always, there will be a special "empty move" to represent having fewer than four. 
-		Type firstType;
-		Type secondType;
+		tf::Type firstType;
+		tf::Type secondType;
+		int level;
 		// Abilities and Items not included because too complex and not enough time.
 		// Everything defined in species.db but not here is irrelevant. 
 	public:
 		std::string GetName() { return name; }
-		Pokemon(bool player);
-	};
-
-	enum Type : short {
-		NoType,
-		Normal,
-		Fighting,
-		Flying,
-		Poison,
-		Ground,
-		Rock,
-		Bug,
-		Ghost,
-		Steel,
-		Fire,
-		Water,
-		Grass,
-		Electric,
-		Psychic,
-		Ice,
-		Dragon,
-		Dark,
-		Fairy
-	};
-
-	enum MoveCategory : short {
-		Physical,
-		Special,
-		Status
+		std::string GetForm() { return form; }
+		std::string GetType1() { return tf::typeToString.at(firstType); }
+		std::string GetType2() { return tf::typeToString.at(secondType); }
+		Move GetMove1() { return moves[0]; }
+		Move GetMove2() { return moves[1]; }
+		Move GetMove3() { return moves[2]; }
+		Move GetMove4() { return moves[3]; }
+		int GetLevel() { return level; }
+		int GetBaseHP() { return stats.hpBase; }
+		int GetBaseAtk() { return stats.atkBase; }
+		int GetBaseDef() { return stats.defBase; }
+		int GetBaseSpAtk() { return stats.spAtkBase; }
+		int GetBaseSpDef() { return stats.spDefBase; }
+		int GetBaseSpd() { return stats.spdBase; }
+		int GetCurrentHP() { return stats.hpCurrent; }
+		int GetCurrentAtk() { return stats.atkCurrent; }
+		int GetCurrentDef() { return stats.defCurrent; }
+		int GetCurrentSpAtk() { return stats.spAtkCurrent; }
+		int GetCurrentSpDef() { return stats.spDefCurrent; }
+		int GetCurrentSpd() { return stats.spdCurrent; }
+		Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<mon::Move, 4>& m);
 	};
 }

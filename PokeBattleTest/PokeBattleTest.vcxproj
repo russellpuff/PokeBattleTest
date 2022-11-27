@@ -142,9 +142,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Battle.cpp" />
-    <ClCompile Include="Pokemon.cpp" />
-    <ClCompile Include="EventListener.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Source\Battle.cpp" />
     <ClCompile Include="Source\BattleTurn.cpp" />
@@ -193,21 +190,15 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Battle.h" />
-    <ClInclude Include="date.h" />
-    <ClInclude Include="EventListener.h" />
-    <ClInclude Include="nlohmann\json.hpp" />
-    <ClInclude Include="PBTExceptions.h" />
-    <ClInclude Include="Pokemon.h" />
+    <ClInclude Include="Source\json.hpp" />
     <ClInclude Include="Source\Battle.h" />
     <ClInclude Include="Source\date.h" />
     <ClInclude Include="Source\EventListener.h" />
+    <ClInclude Include="Source\JsonStructs.h" />
     <ClInclude Include="Source\PBTExceptions.h" />
     <ClInclude Include="Source\Pokemon.h" />
     <ClInclude Include="Source\TypeFixer.h" />
     <ClInclude Include="Source\UUID.h" />
-    <ClInclude Include="TypeFixer.h" />
-    <ClInclude Include="UUID.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
