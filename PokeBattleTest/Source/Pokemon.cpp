@@ -1,3 +1,4 @@
+#include <cmath>
 #include "Pokemon.h"
 #include "EventListener.h"
 #include "PBTExceptions.h"
@@ -5,7 +6,7 @@
 #include "sqlite3.h"
 #include "json.hpp"
 sqlite3_stmt* RunQuery(sqlite3* db, std::string q, std::string currentDB);
-int CalculateCurrentStats(int base, int ev, int level, bool isHP);
+int CalculateCurrentStats(int base, int ev, int level, bool isHP, float mod);
 
 mon::Move::Move(int _moveID) {
 	sqlite3* movedb;
@@ -132,13 +133,24 @@ mon::Pokemon::Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<mon::Move, 
 
 		sqlite3_finalize(st);
 	}
-	// EVs are never read from again so they're not saved. In a more elaborate project, they would be. 
-	stats.hpCurrent = CalculateCurrentStats(stats.hpBase, p.HPEV, level, true);
-	stats.atkCurrent = CalculateCurrentStats(stats.atkBase, p.AtkEV, level, false);
-	stats.defCurrent = CalculateCurrentStats(stats.defBase, p.DefEV, level, false);
-	stats.spAtkCurrent = CalculateCurrentStats(stats.spAtkBase, p.SpAtkEV, level, false);
-	stats.spDefCurrent = CalculateCurrentStats(stats.spDefBase, p.SpDefEV, level, false);
-	stats.spdCurrent = CalculateCurrentStats(stats.spdBase, p.SpdEV, level, false);
+
+	enum StatMod { // Determines whether to boost or lower the stat courtesy of nature.
+		Neutral,
+		Raised,
+		Lowered
+	};
+
+
+
+
+
+	// EVs are never read from again so they're not saved. In a more elaborate project, they would be. Nature isn't read from again either.
+	stats.hpCurrent = CalculateCurrentStats(stats.hpBase, p.HPEV, level, true, 1.0); // HP is never affected by nature.
+	stats.atkCurrent = CalculateCurrentStats(stats.atkBase, p.AtkEV, level, false, 1.0);
+	stats.defCurrent = CalculateCurrentStats(stats.defBase, p.DefEV, level, false, 1.0);
+	stats.spAtkCurrent = CalculateCurrentStats(stats.spAtkBase, p.SpAtkEV, level, false, 1.0);
+	stats.spDefCurrent = CalculateCurrentStats(stats.spDefBase, p.SpDefEV, level, false, 1.0);
+	stats.spdCurrent = CalculateCurrentStats(stats.spdBase, p.SpdEV, level, false, 1.0);
 
 	if (name == "Shedinja") { stats.hpCurrent = 1; } // Special exception. 
 }
@@ -162,9 +174,10 @@ sqlite3_stmt* RunQuery(sqlite3* db, std::string q, std::string currentDB) {
 	else { return s; }
 }
 
-int CalculateCurrentStats(int base, int ev, int level, bool isHP)
+int CalculateCurrentStats(int base, int ev, int level, bool isHP, float mod)
 {
 	int res = (((2 * base) + 31 + (ev / 4)) * level) / 100; // https://bulbapedia.bulbagarden.net/wiki/Stat#Generation_III_onward
 	res += isHP ? level + 10 : 5;
+	if (!isHP) { res = std::floor(res * mod); }
 	return res;
 }

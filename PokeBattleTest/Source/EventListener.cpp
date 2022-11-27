@@ -65,9 +65,9 @@ void Events::EventListener(sf::RenderWindow& window, std::queue<std::string>& lo
 
 std::tuple<mon::Pokemon, mon::Pokemon> Events::PrepareAndConstructPokemon(std::queue<std::string>& log) {
     std::string pMonFile = "resource\\p-pkmn.json";
-    std::string oMonFile = "resource\\o-pkmn.json";
+    std::string rMonFile = "resource\\r-pkmn.json";
     std::string pTemFile = "resource\\p-template.json";
-    std::string oTemFile = "resource\\o-template.json";
+    std::string rTemFile = "resource\\r-template.json";
 
     std::string line, d = "";
     std::ifstream pm(pMonFile);
@@ -77,11 +77,11 @@ std::tuple<mon::Pokemon, mon::Pokemon> Events::PrepareAndConstructPokemon(std::q
     pm.close();
 
     d = "";
-    std::ifstream om(oMonFile);
-    while (std::getline(om, line)) { d += line; }
+    std::ifstream rm(rMonFile);
+    while (std::getline(rm, line)) { d += line; }
     monData = nlohmann::json::parse(d);
-    const jt::JsonPkmn oMon = nlohmann::adl_serializer<jt::JsonPkmn>::from_json(monData);
-    om.close();
+    const jt::JsonPkmn rMon = nlohmann::adl_serializer<jt::JsonPkmn>::from_json(monData);
+    rm.close();
 
     d = "";
     std::ifstream pt(pTemFile);
@@ -91,17 +91,17 @@ std::tuple<mon::Pokemon, mon::Pokemon> Events::PrepareAndConstructPokemon(std::q
     pt.close();
 
     d = "";
-    std::ifstream ot(oTemFile);
-    while (std::getline(ot, line)) { d += line; }
+    std::ifstream rt(rTemFile);
+    while (std::getline(rt, line)) { d += line; }
     monData = nlohmann::json::parse(d);
-    const jt::JsonTemplate oTem = nlohmann::adl_serializer<jt::JsonTemplate>::from_json(monData);
-    ot.close();
+    const jt::JsonTemplate rTem = nlohmann::adl_serializer<jt::JsonTemplate>::from_json(monData);
+    rt.close();
 
     std::array<mon::Move, 4> pMoves = { pMon.Move1, pMon.Move2, pMon.Move3, pMon.Move4 };
-    std::array<mon::Move, 4> oMoves = { oMon.Move1, oMon.Move2, oMon.Move3, oMon.Move4 };
+    std::array<mon::Move, 4> oMoves = { rMon.Move1, rMon.Move2, rMon.Move3, rMon.Move4 };
 
     mon::Pokemon playerPokemon(pMon, pTem, pMoves);
-    mon::Pokemon opponentPokemon(oMon, oTem, oMoves);
+    mon::Pokemon rivalPokemon(rMon, rTem, oMoves);
     
     // Log results
     std::string pInfo = "Created " + playerPokemon.GetName() + " for player.\n";
@@ -118,20 +118,20 @@ std::tuple<mon::Pokemon, mon::Pokemon> Events::PrepareAndConstructPokemon(std::q
     pInfo += "\nSpDef current: " + std::to_string(playerPokemon.GetCurrentSpDef());
     pInfo += "\nSpd current: " + std::to_string(playerPokemon.GetCurrentSpd());
     Log(pInfo, log);
-    std::string oInfo = "Created " + opponentPokemon.GetName() + " for opponent.\n";
-    oInfo += "With form: " + opponentPokemon.GetForm() + ", Type1: " + opponentPokemon.GetType1() + ", Type2: " + opponentPokemon.GetType2();
-    oInfo += "\nWith move1: " + opponentPokemon.GetMove1().GetName() + ", Type: " + opponentPokemon.GetMove1().GetType();
-    oInfo += "\nWith move2: " + opponentPokemon.GetMove2().GetName() + ", Type: " + opponentPokemon.GetMove2().GetType();
-    oInfo += "\nWith move3: " + opponentPokemon.GetMove3().GetName() + ", Type: " + opponentPokemon.GetMove3().GetType();
-    oInfo += "\nWith move4: " + opponentPokemon.GetMove4().GetName() + ", Type: " + opponentPokemon.GetMove4().GetType();
-    oInfo += "\nLevel: " + std::to_string(opponentPokemon.GetLevel());
-    oInfo += "\nHP current: " + std::to_string(opponentPokemon.GetCurrentHP());
-    oInfo += "\nAtk current: " + std::to_string(opponentPokemon.GetCurrentAtk());
-    oInfo += "\nDef current: " + std::to_string(opponentPokemon.GetCurrentDef());
-    oInfo += "\nSpAtk current: " + std::to_string(opponentPokemon.GetCurrentSpAtk());
-    oInfo += "\nSpDef current: " + std::to_string(opponentPokemon.GetCurrentSpDef());
-    oInfo += "\nSpd current: " + std::to_string(opponentPokemon.GetCurrentSpd());
-    Log(oInfo, log);
+    std::string rInfo = "Created " + rivalPokemon.GetName() + " for opponent.\n";
+    rInfo += "With form: " + rivalPokemon.GetForm() + ", Type1: " + rivalPokemon.GetType1() + ", Type2: " + rivalPokemon.GetType2();
+    rInfo += "\nWith move1: " + rivalPokemon.GetMove1().GetName() + ", Type: " + rivalPokemon.GetMove1().GetType();
+    rInfo += "\nWith move2: " + rivalPokemon.GetMove2().GetName() + ", Type: " + rivalPokemon.GetMove2().GetType();
+    rInfo += "\nWith move3: " + rivalPokemon.GetMove3().GetName() + ", Type: " + rivalPokemon.GetMove3().GetType();
+    rInfo += "\nWith move4: " + rivalPokemon.GetMove4().GetName() + ", Type: " + rivalPokemon.GetMove4().GetType();
+    rInfo += "\nLevel: " + std::to_string(rivalPokemon.GetLevel());
+    rInfo += "\nHP current: " + std::to_string(rivalPokemon.GetCurrentHP());
+    rInfo += "\nAtk current: " + std::to_string(rivalPokemon.GetCurrentAtk());
+    rInfo += "\nDef current: " + std::to_string(rivalPokemon.GetCurrentDef());
+    rInfo += "\nSpAtk current: " + std::to_string(rivalPokemon.GetCurrentSpAtk());
+    rInfo += "\nSpDef current: " + std::to_string(rivalPokemon.GetCurrentSpDef());
+    rInfo += "\nSpd current: " + std::to_string(rivalPokemon.GetCurrentSpd());
+    Log(rInfo, log);
 
-    return std::make_pair(playerPokemon, opponentPokemon);
+    return std::make_pair(playerPokemon, rivalPokemon);
 }

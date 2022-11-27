@@ -63,12 +63,12 @@ namespace MonDesigner
             this.mfPlayerTableLayout.Controls.Add(this.mfSpAtk1ProgressBar, 1, 13);
             this.mfPlayerTableLayout.Controls.Add(this.mfSpDef1ProgressBar, 1, 14);
             this.mfPlayerTableLayout.Controls.Add(this.mfSpd1ProgressBar, 1, 15);
-            this.mfOpponentTableLayout.Controls.Add(this.mfHP2ProgressBar, 1, 10);
-            this.mfOpponentTableLayout.Controls.Add(this.mfAtk2ProgressBar, 1, 11);
-            this.mfOpponentTableLayout.Controls.Add(this.mfDef2ProgressBar, 1, 12);
-            this.mfOpponentTableLayout.Controls.Add(this.mfSpAtk2ProgressBar, 1, 13);
-            this.mfOpponentTableLayout.Controls.Add(this.mfSpDef2ProgressBar, 1, 14);
-            this.mfOpponentTableLayout.Controls.Add(this.mfSpd2ProgressBar, 1, 15);
+            this.mfRivalTableLayout.Controls.Add(this.mfHP2ProgressBar, 1, 10);
+            this.mfRivalTableLayout.Controls.Add(this.mfAtk2ProgressBar, 1, 11);
+            this.mfRivalTableLayout.Controls.Add(this.mfDef2ProgressBar, 1, 12);
+            this.mfRivalTableLayout.Controls.Add(this.mfSpAtk2ProgressBar, 1, 13);
+            this.mfRivalTableLayout.Controls.Add(this.mfSpDef2ProgressBar, 1, 14);
+            this.mfRivalTableLayout.Controls.Add(this.mfSpd2ProgressBar, 1, 15);
 #nullable disable
             // 
             // mfHP1ProgressBar
@@ -145,7 +145,7 @@ namespace MonDesigner
             // 
             // mfHP2ProgressBar
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfHP2ProgressBar, 3);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfHP2ProgressBar, 3);
             this.mfHP2ProgressBar.Location = new System.Drawing.Point(96, 298);
             this.mfHP2ProgressBar.Maximum = 255;
             this.mfHP2ProgressBar.Minimum = 1;
@@ -157,7 +157,7 @@ namespace MonDesigner
             // 
             // mfAtk2ProgressBar
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfAtk2ProgressBar, 3);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfAtk2ProgressBar, 3);
             this.mfAtk2ProgressBar.Location = new System.Drawing.Point(96, 328);
             this.mfAtk2ProgressBar.Maximum = 255;
             this.mfAtk2ProgressBar.Minimum = 1;
@@ -169,7 +169,7 @@ namespace MonDesigner
             // 
             // mfDef2ProgressBar
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfDef2ProgressBar, 3);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfDef2ProgressBar, 3);
             this.mfDef2ProgressBar.Location = new System.Drawing.Point(96, 358);
             this.mfDef2ProgressBar.Maximum = 255;
             this.mfDef2ProgressBar.Minimum = 1;
@@ -181,7 +181,7 @@ namespace MonDesigner
             // 
             // mfSpAtk2ProgressBar
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfSpAtk2ProgressBar, 3);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfSpAtk2ProgressBar, 3);
             this.mfSpAtk2ProgressBar.Location = new System.Drawing.Point(96, 388);
             this.mfSpAtk2ProgressBar.Maximum = 255;
             this.mfSpAtk2ProgressBar.Minimum = 1;
@@ -193,7 +193,7 @@ namespace MonDesigner
             // 
             // mfSpDef2ProgressBar
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfSpDef2ProgressBar, 3);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfSpDef2ProgressBar, 3);
             this.mfSpDef2ProgressBar.Location = new System.Drawing.Point(96, 418);
             this.mfSpDef2ProgressBar.Maximum = 255;
             this.mfSpDef2ProgressBar.Minimum = 1;
@@ -205,7 +205,7 @@ namespace MonDesigner
             // 
             // mfSpd2ProgressBar
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfSpd2ProgressBar, 3);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfSpd2ProgressBar, 3);
             this.mfSpd2ProgressBar.Location = new System.Drawing.Point(96, 448);
             this.mfSpd2ProgressBar.Maximum = 255;
             this.mfSpd2ProgressBar.Minimum = 1;

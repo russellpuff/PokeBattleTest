@@ -1,0 +1,11 @@
+{
+  "Who": "Player",
+  "Type1": "Psychic",
+  "Type2": "Steel",
+  "HP": 68,
+  "ATK": 165,
+  "DEF": 65,
+  "SPATK": 85,
+  "SPDEF": 135,
+  "SPD": 100
+}

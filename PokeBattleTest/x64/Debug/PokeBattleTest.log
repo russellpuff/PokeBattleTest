@@ -1,6 +1,23 @@
 ﻿  Program.cpp
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(50,11): error C2440: 'return': cannot convert from 'initializer list' to 'jt::JsonPkmn'
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(50,4): message : No constructor could take the source type, or constructor overload resolution was ambiguous
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(62,11): error C2440: 'return': cannot convert from 'initializer list' to 'jt::JsonTemplate'
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(62,4): message : No constructor could take the source type, or constructor overload resolution was ambiguous
+  Battle.cpp
   BattleTurn.cpp
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(50,11): error C2440: 'return': cannot convert from 'initializer list' to 'jt::JsonPkmn'
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(50,4): message : No constructor could take the source type, or constructor overload resolution was ambiguous
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(62,11): error C2440: 'return': cannot convert from 'initializer list' to 'jt::JsonTemplate'
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(62,4): message : No constructor could take the source type, or constructor overload resolution was ambiguous
   EventListener.cpp
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(50,11): error C2440: 'return': cannot convert from 'initializer list' to 'jt::JsonPkmn'
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(50,4): message : No constructor could take the source type, or constructor overload resolution was ambiguous
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(62,11): error C2440: 'return': cannot convert from 'initializer list' to 'jt::JsonTemplate'
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(62,4): message : No constructor could take the source type, or constructor overload resolution was ambiguous
   Pokemon.cpp
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(50,11): error C2440: 'return': cannot convert from 'initializer list' to 'jt::JsonPkmn'
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(50,4): message : No constructor could take the source type, or constructor overload resolution was ambiguous
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(62,11): error C2440: 'return': cannot convert from 'initializer list' to 'jt::JsonTemplate'
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\JsonStructs.h(62,4): message : No constructor could take the source type, or constructor overload resolution was ambiguous
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\Pokemon.cpp(181,31): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   Generating Code...
-  PokeBattleTest.vcxproj -> C:\Users\Ben\source\repos\PokeBattleTest\output\PokeBattleTest.exe

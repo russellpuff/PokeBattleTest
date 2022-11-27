@@ -29,10 +29,7 @@
         private void InitializeComponent()
         {
             this.mfRunBattleButton = new System.Windows.Forms.Button();
-            this.mfJokePictureBox = new System.Windows.Forms.PictureBox();
-            this.mfJokeLabel = new System.Windows.Forms.Label();
             this.mfPlayerPokemonLabel = new System.Windows.Forms.Label();
-            this.mfVert1Label = new System.Windows.Forms.Label();
             this.mfPokemon1ComboBox = new System.Windows.Forms.ComboBox();
             this.mfType11ComboBox = new System.Windows.Forms.ComboBox();
             this.mfType21ComboBox = new System.Windows.Forms.ComboBox();
@@ -56,11 +53,11 @@
             this.mfForm1ComboBox = new System.Windows.Forms.ComboBox();
             this.mfLevel1NumUpDown = new System.Windows.Forms.NumericUpDown();
             this.mfLevel1Label = new System.Windows.Forms.Label();
-            this.mfOpponentTableLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.mfRivalTableLayout = new System.Windows.Forms.TableLayoutPanel();
             this.mfMove32Button = new System.Windows.Forms.Button();
             this.mfMove22Label = new System.Windows.Forms.Label();
             this.mfPokemon2ComboBox = new System.Windows.Forms.ComboBox();
-            this.mfOpponentPokemonLabel = new System.Windows.Forms.Label();
+            this.mfRivalPokemonLabel = new System.Windows.Forms.Label();
             this.mfSpd2Label = new System.Windows.Forms.Label();
             this.mfSpDef2Label = new System.Windows.Forms.Label();
             this.mfSpAtk2Label = new System.Windows.Forms.Label();
@@ -82,11 +79,6 @@
             this.mfLevel2Label = new System.Windows.Forms.Label();
             this.mfVert2Label = new System.Windows.Forms.Label();
             this.mfSaveFilesOnlyButton = new System.Windows.Forms.Button();
-            this.mfCustomStatLabel = new System.Windows.Forms.Label();
-            this.mfCustomStatNumUpDown = new System.Windows.Forms.NumericUpDown();
-            this.mfChangeCustomStatButton = new System.Windows.Forms.Button();
-            this.mfProblemFixTableLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.mfEVTableLayout = new System.Windows.Forms.TableLayoutPanel();
             this.mfSpd2EVNumUpDown = new System.Windows.Forms.NumericUpDown();
             this.mfSpd1EVNumUpDown = new System.Windows.Forms.NumericUpDown();
             this.mfSpDef2EVNumUpDown = new System.Windows.Forms.NumericUpDown();
@@ -99,30 +91,33 @@
             this.mfAtk1EVNumUpDown = new System.Windows.Forms.NumericUpDown();
             this.mfHP2EVNumUpDown = new System.Windows.Forms.NumericUpDown();
             this.mfHP1EVNumUpDown = new System.Windows.Forms.NumericUpDown();
-            this.mfOpponentEVLabel = new System.Windows.Forms.Label();
-            this.mfPlayerEVLabel = new System.Windows.Forms.Label();
+            this.mfEV1Label = new System.Windows.Forms.Label();
             this.mfHP1EVLabel = new System.Windows.Forms.Label();
             this.mfAtk1EVLabel = new System.Windows.Forms.Label();
             this.mfDef1EVLabel = new System.Windows.Forms.Label();
             this.mfSpAtk1EVLabel = new System.Windows.Forms.Label();
             this.mfSpDef1EVLabel = new System.Windows.Forms.Label();
             this.mfSpd1EVLabel = new System.Windows.Forms.Label();
-            this.mfSpd2EVLabel = new System.Windows.Forms.Label();
-            this.mfSpDef2EVLabel = new System.Windows.Forms.Label();
-            this.mfSpAtk2EVLabel = new System.Windows.Forms.Label();
-            this.mfDef2EVLabel = new System.Windows.Forms.Label();
-            this.mfAtk2EVLabel = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.mfNature1Label = new System.Windows.Forms.Label();
+            this.mfNature1ComboBox = new System.Windows.Forms.ComboBox();
+            this.mfSetDefaultEV1Button = new System.Windows.Forms.Button();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.mfNature2Label = new System.Windows.Forms.Label();
             this.mfHP2EVLabel = new System.Windows.Forms.Label();
-            this.mfDefaultEVRadio = new System.Windows.Forms.RadioButton();
-            this.mfCustomEVLabel = new System.Windows.Forms.RadioButton();
-            ((System.ComponentModel.ISupportInitialize)(this.mfJokePictureBox)).BeginInit();
+            this.mfAtk2EVLabel = new System.Windows.Forms.Label();
+            this.mfDef2EVLabel = new System.Windows.Forms.Label();
+            this.mfSpAtk2EVLabel = new System.Windows.Forms.Label();
+            this.mfSpDef2EVLabel = new System.Windows.Forms.Label();
+            this.mfSpd2EVLabel = new System.Windows.Forms.Label();
+            this.mfNature2ComboBox = new System.Windows.Forms.ComboBox();
+            this.mfEV2Label = new System.Windows.Forms.Label();
+            this.mfSetDefaultEV2Button = new System.Windows.Forms.Button();
+            this.mfCreditsLabel = new System.Windows.Forms.Label();
             this.mfPlayerTableLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mfLevel1NumUpDown)).BeginInit();
-            this.mfOpponentTableLayout.SuspendLayout();
+            this.mfRivalTableLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mfLevel2NumUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mfCustomStatNumUpDown)).BeginInit();
-            this.mfProblemFixTableLayout.SuspendLayout();
-            this.mfEVTableLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mfSpd2EVNumUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mfSpd1EVNumUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mfSpDef2EVNumUpDown)).BeginInit();
@@ -135,11 +130,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.mfAtk1EVNumUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mfHP2EVNumUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mfHP1EVNumUpDown)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // mfRunBattleButton
             // 
-            this.mfRunBattleButton.Location = new System.Drawing.Point(12, 464);
+            this.mfRunBattleButton.Location = new System.Drawing.Point(11, 674);
             this.mfRunBattleButton.Name = "mfRunBattleButton";
             this.mfRunBattleButton.Size = new System.Drawing.Size(122, 26);
             this.mfRunBattleButton.TabIndex = 0;
@@ -147,45 +144,17 @@
             this.mfRunBattleButton.UseVisualStyleBackColor = true;
             this.mfRunBattleButton.Click += new System.EventHandler(this.RunBattleButton_Click);
             // 
-            // mfJokePictureBox
-            // 
-            this.mfJokePictureBox.Image = global::MonDesigner.Properties.Resources.joke;
-            this.mfJokePictureBox.Location = new System.Drawing.Point(12, 124);
-            this.mfJokePictureBox.Name = "mfJokePictureBox";
-            this.mfJokePictureBox.Size = new System.Drawing.Size(369, 277);
-            this.mfJokePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.mfJokePictureBox.TabIndex = 1;
-            this.mfJokePictureBox.TabStop = false;
-            // 
-            // mfJokeLabel
-            // 
-            this.mfJokeLabel.Font = new System.Drawing.Font("Segoe Print", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfJokeLabel.Location = new System.Drawing.Point(12, 9);
-            this.mfJokeLabel.Name = "mfJokeLabel";
-            this.mfJokeLabel.Size = new System.Drawing.Size(369, 112);
-            this.mfJokeLabel.TabIndex = 2;
-            this.mfJokeLabel.Text = "\"You seriously made a completely separate application in a different language jus" +
-    "t to make template designing a little easier?\"\r\nMe:";
-            // 
             // mfPlayerPokemonLabel
             // 
             this.mfPlayerPokemonLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mfPlayerPokemonLabel.AutoSize = true;
-            this.mfPlayerTableLayout.SetColumnSpan(this.mfPlayerPokemonLabel, 4);
+            this.mfPlayerTableLayout.SetColumnSpan(this.mfPlayerPokemonLabel, 3);
             this.mfPlayerPokemonLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfPlayerPokemonLabel.Location = new System.Drawing.Point(42, 2);
+            this.mfPlayerPokemonLabel.Location = new System.Drawing.Point(11, 2);
             this.mfPlayerPokemonLabel.Name = "mfPlayerPokemonLabel";
             this.mfPlayerPokemonLabel.Size = new System.Drawing.Size(161, 30);
             this.mfPlayerPokemonLabel.TabIndex = 3;
             this.mfPlayerPokemonLabel.Text = "Player Pokemon";
-            // 
-            // mfVert1Label
-            // 
-            this.mfVert1Label.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.mfVert1Label.Location = new System.Drawing.Point(390, 12);
-            this.mfVert1Label.Name = "mfVert1Label";
-            this.mfVert1Label.Size = new System.Drawing.Size(1, 478);
-            this.mfVert1Label.TabIndex = 5;
             // 
             // mfPokemon1ComboBox
             // 
@@ -364,7 +333,7 @@
             this.mfPlayerTableLayout.Controls.Add(this.mfForm1ComboBox, 1, 8);
             this.mfPlayerTableLayout.Controls.Add(this.mfLevel1NumUpDown, 3, 9);
             this.mfPlayerTableLayout.Controls.Add(this.mfLevel1Label, 2, 9);
-            this.mfPlayerTableLayout.Location = new System.Drawing.Point(399, 12);
+            this.mfPlayerTableLayout.Location = new System.Drawing.Point(12, 12);
             this.mfPlayerTableLayout.Name = "mfPlayerTableLayout";
             this.mfPlayerTableLayout.RowCount = 16;
             this.mfPlayerTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
@@ -534,61 +503,61 @@
             this.mfLevel1Label.TabIndex = 32;
             this.mfLevel1Label.Text = "Level";
             // 
-            // mfOpponentTableLayout
+            // mfRivalTableLayout
             // 
-            this.mfOpponentTableLayout.ColumnCount = 4;
-            this.mfOpponentTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38.03767F));
-            this.mfOpponentTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.86121F));
-            this.mfOpponentTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.10056F));
-            this.mfOpponentTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.00056F));
-            this.mfOpponentTableLayout.Controls.Add(this.mfMove32Button, 0, 6);
-            this.mfOpponentTableLayout.Controls.Add(this.mfMove22Label, 2, 3);
-            this.mfOpponentTableLayout.Controls.Add(this.mfPokemon2ComboBox, 0, 1);
-            this.mfOpponentTableLayout.Controls.Add(this.mfOpponentPokemonLabel, 0, 0);
-            this.mfOpponentTableLayout.Controls.Add(this.mfSpd2Label, 0, 15);
-            this.mfOpponentTableLayout.Controls.Add(this.mfSpDef2Label, 0, 14);
-            this.mfOpponentTableLayout.Controls.Add(this.mfSpAtk2Label, 0, 13);
-            this.mfOpponentTableLayout.Controls.Add(this.mfDef2Label, 0, 12);
-            this.mfOpponentTableLayout.Controls.Add(this.mfAtk2Label, 0, 11);
-            this.mfOpponentTableLayout.Controls.Add(this.mfHP2Label, 0, 10);
-            this.mfOpponentTableLayout.Controls.Add(this.mfType12ComboBox, 0, 2);
-            this.mfOpponentTableLayout.Controls.Add(this.mfType22ComboBox, 2, 2);
-            this.mfOpponentTableLayout.Controls.Add(this.mfMove12Label, 0, 3);
-            this.mfOpponentTableLayout.Controls.Add(this.mfMove32Label, 0, 5);
-            this.mfOpponentTableLayout.Controls.Add(this.mfMove42Label, 2, 5);
-            this.mfOpponentTableLayout.Controls.Add(this.mfMove12Button, 0, 4);
-            this.mfOpponentTableLayout.Controls.Add(this.mfMove22Button, 2, 4);
-            this.mfOpponentTableLayout.Controls.Add(this.mfMove42Button, 2, 6);
-            this.mfOpponentTableLayout.Controls.Add(this.mfCustomForm2CheckBox, 0, 9);
-            this.mfOpponentTableLayout.Controls.Add(this.mfForm2Label, 0, 8);
-            this.mfOpponentTableLayout.Controls.Add(this.mfForm2ComboBox, 1, 8);
-            this.mfOpponentTableLayout.Controls.Add(this.mfLevel2NumUpDown, 3, 9);
-            this.mfOpponentTableLayout.Controls.Add(this.mfLevel2Label, 2, 9);
-            this.mfOpponentTableLayout.Location = new System.Drawing.Point(659, 12);
-            this.mfOpponentTableLayout.Name = "mfOpponentTableLayout";
-            this.mfOpponentTableLayout.RowCount = 16;
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.mfOpponentTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.mfOpponentTableLayout.Size = new System.Drawing.Size(245, 475);
-            this.mfOpponentTableLayout.TabIndex = 18;
+            this.mfRivalTableLayout.ColumnCount = 4;
+            this.mfRivalTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38.03767F));
+            this.mfRivalTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.86121F));
+            this.mfRivalTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.10056F));
+            this.mfRivalTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.00056F));
+            this.mfRivalTableLayout.Controls.Add(this.mfMove32Button, 0, 6);
+            this.mfRivalTableLayout.Controls.Add(this.mfMove22Label, 2, 3);
+            this.mfRivalTableLayout.Controls.Add(this.mfPokemon2ComboBox, 0, 1);
+            this.mfRivalTableLayout.Controls.Add(this.mfRivalPokemonLabel, 0, 0);
+            this.mfRivalTableLayout.Controls.Add(this.mfSpd2Label, 0, 15);
+            this.mfRivalTableLayout.Controls.Add(this.mfSpDef2Label, 0, 14);
+            this.mfRivalTableLayout.Controls.Add(this.mfSpAtk2Label, 0, 13);
+            this.mfRivalTableLayout.Controls.Add(this.mfDef2Label, 0, 12);
+            this.mfRivalTableLayout.Controls.Add(this.mfAtk2Label, 0, 11);
+            this.mfRivalTableLayout.Controls.Add(this.mfHP2Label, 0, 10);
+            this.mfRivalTableLayout.Controls.Add(this.mfType12ComboBox, 0, 2);
+            this.mfRivalTableLayout.Controls.Add(this.mfType22ComboBox, 2, 2);
+            this.mfRivalTableLayout.Controls.Add(this.mfMove12Label, 0, 3);
+            this.mfRivalTableLayout.Controls.Add(this.mfMove32Label, 0, 5);
+            this.mfRivalTableLayout.Controls.Add(this.mfMove42Label, 2, 5);
+            this.mfRivalTableLayout.Controls.Add(this.mfMove12Button, 0, 4);
+            this.mfRivalTableLayout.Controls.Add(this.mfMove22Button, 2, 4);
+            this.mfRivalTableLayout.Controls.Add(this.mfMove42Button, 2, 6);
+            this.mfRivalTableLayout.Controls.Add(this.mfCustomForm2CheckBox, 0, 9);
+            this.mfRivalTableLayout.Controls.Add(this.mfForm2Label, 0, 8);
+            this.mfRivalTableLayout.Controls.Add(this.mfForm2ComboBox, 1, 8);
+            this.mfRivalTableLayout.Controls.Add(this.mfLevel2NumUpDown, 3, 9);
+            this.mfRivalTableLayout.Controls.Add(this.mfLevel2Label, 2, 9);
+            this.mfRivalTableLayout.Location = new System.Drawing.Point(272, 12);
+            this.mfRivalTableLayout.Name = "mfRivalTableLayout";
+            this.mfRivalTableLayout.RowCount = 16;
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.mfRivalTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.mfRivalTableLayout.Size = new System.Drawing.Size(245, 475);
+            this.mfRivalTableLayout.TabIndex = 18;
             // 
             // mfMove32Button
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfMove32Button, 2);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfMove32Button, 2);
             this.mfMove32Button.Location = new System.Drawing.Point(3, 183);
             this.mfMove32Button.Name = "mfMove32Button";
             this.mfMove32Button.Size = new System.Drawing.Size(116, 29);
@@ -609,7 +578,7 @@
             // 
             // mfPokemon2ComboBox
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfPokemon2ComboBox, 4);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfPokemon2ComboBox, 4);
             this.mfPokemon2ComboBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mfPokemon2ComboBox.FormattingEnabled = true;
             this.mfPokemon2ComboBox.Location = new System.Drawing.Point(3, 38);
@@ -618,17 +587,17 @@
             this.mfPokemon2ComboBox.TabIndex = 6;
             this.mfPokemon2ComboBox.SelectedIndexChanged += new System.EventHandler(this.PokemonComboBox_SelectedIndexChanged);
             // 
-            // mfOpponentPokemonLabel
+            // mfRivalPokemonLabel
             // 
-            this.mfOpponentPokemonLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.mfOpponentPokemonLabel.AutoSize = true;
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfOpponentPokemonLabel, 4);
-            this.mfOpponentPokemonLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfOpponentPokemonLabel.Location = new System.Drawing.Point(23, 2);
-            this.mfOpponentPokemonLabel.Name = "mfOpponentPokemonLabel";
-            this.mfOpponentPokemonLabel.Size = new System.Drawing.Size(199, 30);
-            this.mfOpponentPokemonLabel.TabIndex = 3;
-            this.mfOpponentPokemonLabel.Text = "Opponent Pokemon";
+            this.mfRivalPokemonLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.mfRivalPokemonLabel.AutoSize = true;
+            this.mfRivalTableLayout.SetColumnSpan(this.mfRivalPokemonLabel, 3);
+            this.mfRivalPokemonLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfRivalPokemonLabel.Location = new System.Drawing.Point(17, 2);
+            this.mfRivalPokemonLabel.Name = "mfRivalPokemonLabel";
+            this.mfRivalPokemonLabel.Size = new System.Drawing.Size(149, 30);
+            this.mfRivalPokemonLabel.TabIndex = 3;
+            this.mfRivalPokemonLabel.Text = "Rival Pokemon";
             // 
             // mfSpd2Label
             // 
@@ -698,7 +667,7 @@
             // 
             // mfType12ComboBox
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfType12ComboBox, 2);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfType12ComboBox, 2);
             this.mfType12ComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
             this.mfType12ComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.mfType12ComboBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -732,7 +701,7 @@
             // 
             // mfType22ComboBox
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfType22ComboBox, 2);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfType22ComboBox, 2);
             this.mfType22ComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
             this.mfType22ComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.mfType22ComboBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -797,7 +766,7 @@
             // 
             // mfMove12Button
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfMove12Button, 2);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfMove12Button, 2);
             this.mfMove12Button.Location = new System.Drawing.Point(3, 128);
             this.mfMove12Button.Name = "mfMove12Button";
             this.mfMove12Button.Size = new System.Drawing.Size(116, 29);
@@ -808,7 +777,7 @@
             // 
             // mfMove22Button
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfMove22Button, 2);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfMove22Button, 2);
             this.mfMove22Button.Location = new System.Drawing.Point(125, 128);
             this.mfMove22Button.Name = "mfMove22Button";
             this.mfMove22Button.Size = new System.Drawing.Size(116, 29);
@@ -819,7 +788,7 @@
             // 
             // mfMove42Button
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfMove42Button, 2);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfMove42Button, 2);
             this.mfMove42Button.Location = new System.Drawing.Point(125, 183);
             this.mfMove42Button.Name = "mfMove42Button";
             this.mfMove42Button.Size = new System.Drawing.Size(116, 29);
@@ -832,7 +801,7 @@
             // 
             this.mfCustomForm2CheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.mfCustomForm2CheckBox.AutoSize = true;
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfCustomForm2CheckBox, 2);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfCustomForm2CheckBox, 2);
             this.mfCustomForm2CheckBox.Location = new System.Drawing.Point(3, 273);
             this.mfCustomForm2CheckBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.mfCustomForm2CheckBox.Name = "mfCustomForm2CheckBox";
@@ -855,7 +824,7 @@
             // 
             // mfForm2ComboBox
             // 
-            this.mfOpponentTableLayout.SetColumnSpan(this.mfForm2ComboBox, 3);
+            this.mfRivalTableLayout.SetColumnSpan(this.mfForm2ComboBox, 3);
             this.mfForm2ComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.mfForm2ComboBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.mfForm2ComboBox.FormattingEnabled = true;
@@ -895,14 +864,14 @@
             // mfVert2Label
             // 
             this.mfVert2Label.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.mfVert2Label.Location = new System.Drawing.Point(651, 12);
+            this.mfVert2Label.Location = new System.Drawing.Point(264, 12);
             this.mfVert2Label.Name = "mfVert2Label";
-            this.mfVert2Label.Size = new System.Drawing.Size(1, 478);
+            this.mfVert2Label.Size = new System.Drawing.Size(1, 656);
             this.mfVert2Label.TabIndex = 17;
             // 
             // mfSaveFilesOnlyButton
             // 
-            this.mfSaveFilesOnlyButton.Location = new System.Drawing.Point(140, 464);
+            this.mfSaveFilesOnlyButton.Location = new System.Drawing.Point(137, 674);
             this.mfSaveFilesOnlyButton.Name = "mfSaveFilesOnlyButton";
             this.mfSaveFilesOnlyButton.Size = new System.Drawing.Size(122, 26);
             this.mfSaveFilesOnlyButton.TabIndex = 19;
@@ -910,315 +879,193 @@
             this.mfSaveFilesOnlyButton.UseVisualStyleBackColor = true;
             this.mfSaveFilesOnlyButton.Click += new System.EventHandler(this.SaveFilesOnlyButton_Click);
             // 
-            // mfCustomStatLabel
-            // 
-            this.mfCustomStatLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.mfCustomStatLabel.AutoSize = true;
-            this.mfCustomStatLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfCustomStatLabel.Location = new System.Drawing.Point(3, 11);
-            this.mfCustomStatLabel.Name = "mfCustomStatLabel";
-            this.mfCustomStatLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.mfCustomStatLabel.Size = new System.Drawing.Size(137, 21);
-            this.mfCustomStatLabel.TabIndex = 20;
-            this.mfCustomStatLabel.Text = "Set {who} {stat} to ";
-            this.mfCustomStatLabel.Visible = false;
-            // 
-            // mfCustomStatNumUpDown
-            // 
-            this.mfCustomStatNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfCustomStatNumUpDown.Location = new System.Drawing.Point(289, 407);
-            this.mfCustomStatNumUpDown.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.mfCustomStatNumUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.mfCustomStatNumUpDown.Name = "mfCustomStatNumUpDown";
-            this.mfCustomStatNumUpDown.Size = new System.Drawing.Size(95, 29);
-            this.mfCustomStatNumUpDown.TabIndex = 21;
-            this.mfCustomStatNumUpDown.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.mfCustomStatNumUpDown.Visible = false;
-            // 
-            // mfChangeCustomStatButton
-            // 
-            this.mfChangeCustomStatButton.Location = new System.Drawing.Point(309, 442);
-            this.mfChangeCustomStatButton.Name = "mfChangeCustomStatButton";
-            this.mfChangeCustomStatButton.Size = new System.Drawing.Size(75, 23);
-            this.mfChangeCustomStatButton.TabIndex = 22;
-            this.mfChangeCustomStatButton.Text = "Change";
-            this.mfChangeCustomStatButton.UseVisualStyleBackColor = true;
-            this.mfChangeCustomStatButton.Visible = false;
-            this.mfChangeCustomStatButton.Click += new System.EventHandler(this.ChangeCustomStatButton_Click);
-            // 
-            // mfProblemFixTableLayout
-            // 
-            this.mfProblemFixTableLayout.ColumnCount = 1;
-            this.mfProblemFixTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.mfProblemFixTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.mfProblemFixTableLayout.Controls.Add(this.mfCustomStatLabel, 0, 0);
-            this.mfProblemFixTableLayout.Location = new System.Drawing.Point(140, 401);
-            this.mfProblemFixTableLayout.Name = "mfProblemFixTableLayout";
-            this.mfProblemFixTableLayout.RowCount = 1;
-            this.mfProblemFixTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.mfProblemFixTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.mfProblemFixTableLayout.Size = new System.Drawing.Size(143, 44);
-            this.mfProblemFixTableLayout.TabIndex = 23;
-            // 
-            // mfEVTableLayout
-            // 
-            this.mfEVTableLayout.ColumnCount = 4;
-            this.mfEVTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
-            this.mfEVTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
-            this.mfEVTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
-            this.mfEVTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
-            this.mfEVTableLayout.Controls.Add(this.mfSpd2EVNumUpDown, 3, 6);
-            this.mfEVTableLayout.Controls.Add(this.mfSpd1EVNumUpDown, 1, 6);
-            this.mfEVTableLayout.Controls.Add(this.mfSpDef2EVNumUpDown, 3, 5);
-            this.mfEVTableLayout.Controls.Add(this.mfSpDef1EVNumUpDown, 1, 5);
-            this.mfEVTableLayout.Controls.Add(this.mfSpAtk2EVNumUpDown, 3, 4);
-            this.mfEVTableLayout.Controls.Add(this.mfSpAtk1EVNumUpDown, 1, 4);
-            this.mfEVTableLayout.Controls.Add(this.mfDef2EVNumUpDown, 3, 3);
-            this.mfEVTableLayout.Controls.Add(this.mfDef1EVNumUpDown, 1, 3);
-            this.mfEVTableLayout.Controls.Add(this.mfAtk2EVNumUpDown, 3, 2);
-            this.mfEVTableLayout.Controls.Add(this.mfAtk1EVNumUpDown, 1, 2);
-            this.mfEVTableLayout.Controls.Add(this.mfHP2EVNumUpDown, 3, 1);
-            this.mfEVTableLayout.Controls.Add(this.mfHP1EVNumUpDown, 1, 1);
-            this.mfEVTableLayout.Controls.Add(this.mfOpponentEVLabel, 2, 0);
-            this.mfEVTableLayout.Controls.Add(this.mfPlayerEVLabel, 0, 0);
-            this.mfEVTableLayout.Controls.Add(this.mfHP1EVLabel, 0, 1);
-            this.mfEVTableLayout.Controls.Add(this.mfAtk1EVLabel, 0, 2);
-            this.mfEVTableLayout.Controls.Add(this.mfDef1EVLabel, 0, 3);
-            this.mfEVTableLayout.Controls.Add(this.mfSpAtk1EVLabel, 0, 4);
-            this.mfEVTableLayout.Controls.Add(this.mfSpDef1EVLabel, 0, 5);
-            this.mfEVTableLayout.Controls.Add(this.mfSpd1EVLabel, 0, 6);
-            this.mfEVTableLayout.Controls.Add(this.mfSpd2EVLabel, 2, 6);
-            this.mfEVTableLayout.Controls.Add(this.mfSpDef2EVLabel, 2, 5);
-            this.mfEVTableLayout.Controls.Add(this.mfSpAtk2EVLabel, 2, 4);
-            this.mfEVTableLayout.Controls.Add(this.mfDef2EVLabel, 2, 3);
-            this.mfEVTableLayout.Controls.Add(this.mfAtk2EVLabel, 2, 2);
-            this.mfEVTableLayout.Controls.Add(this.mfHP2EVLabel, 2, 1);
-            this.mfEVTableLayout.Location = new System.Drawing.Point(62, 140);
-            this.mfEVTableLayout.Name = "mfEVTableLayout";
-            this.mfEVTableLayout.RowCount = 7;
-            this.mfEVTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfEVTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfEVTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfEVTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfEVTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfEVTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfEVTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.mfEVTableLayout.Size = new System.Drawing.Size(264, 245);
-            this.mfEVTableLayout.TabIndex = 24;
-            this.mfEVTableLayout.Visible = false;
-            // 
             // mfSpd2EVNumUpDown
             // 
             this.mfSpd2EVNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfSpd2EVNumUpDown.Location = new System.Drawing.Point(211, 213);
+            this.mfSpd2EVNumUpDown.Location = new System.Drawing.Point(186, 93);
             this.mfSpd2EVNumUpDown.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.mfSpd2EVNumUpDown.Name = "mfSpd2EVNumUpDown";
-            this.mfSpd2EVNumUpDown.Size = new System.Drawing.Size(50, 29);
+            this.mfSpd2EVNumUpDown.Size = new System.Drawing.Size(56, 29);
             this.mfSpd2EVNumUpDown.TabIndex = 43;
             this.mfSpd2EVNumUpDown.ValueChanged += new System.EventHandler(this.EVNumUpDown_ValueChanged);
             // 
             // mfSpd1EVNumUpDown
             // 
             this.mfSpd1EVNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfSpd1EVNumUpDown.Location = new System.Drawing.Point(79, 213);
+            this.mfSpd1EVNumUpDown.Location = new System.Drawing.Point(186, 93);
             this.mfSpd1EVNumUpDown.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.mfSpd1EVNumUpDown.Name = "mfSpd1EVNumUpDown";
-            this.mfSpd1EVNumUpDown.Size = new System.Drawing.Size(50, 29);
+            this.mfSpd1EVNumUpDown.Size = new System.Drawing.Size(56, 29);
             this.mfSpd1EVNumUpDown.TabIndex = 42;
             this.mfSpd1EVNumUpDown.ValueChanged += new System.EventHandler(this.EVNumUpDown_ValueChanged);
             // 
             // mfSpDef2EVNumUpDown
             // 
             this.mfSpDef2EVNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfSpDef2EVNumUpDown.Location = new System.Drawing.Point(211, 178);
+            this.mfSpDef2EVNumUpDown.Location = new System.Drawing.Point(186, 63);
             this.mfSpDef2EVNumUpDown.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.mfSpDef2EVNumUpDown.Name = "mfSpDef2EVNumUpDown";
-            this.mfSpDef2EVNumUpDown.Size = new System.Drawing.Size(50, 29);
+            this.mfSpDef2EVNumUpDown.Size = new System.Drawing.Size(56, 29);
             this.mfSpDef2EVNumUpDown.TabIndex = 41;
             this.mfSpDef2EVNumUpDown.ValueChanged += new System.EventHandler(this.EVNumUpDown_ValueChanged);
             // 
             // mfSpDef1EVNumUpDown
             // 
             this.mfSpDef1EVNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfSpDef1EVNumUpDown.Location = new System.Drawing.Point(79, 178);
+            this.mfSpDef1EVNumUpDown.Location = new System.Drawing.Point(186, 63);
             this.mfSpDef1EVNumUpDown.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.mfSpDef1EVNumUpDown.Name = "mfSpDef1EVNumUpDown";
-            this.mfSpDef1EVNumUpDown.Size = new System.Drawing.Size(50, 29);
+            this.mfSpDef1EVNumUpDown.Size = new System.Drawing.Size(56, 29);
             this.mfSpDef1EVNumUpDown.TabIndex = 40;
             this.mfSpDef1EVNumUpDown.ValueChanged += new System.EventHandler(this.EVNumUpDown_ValueChanged);
             // 
             // mfSpAtk2EVNumUpDown
             // 
             this.mfSpAtk2EVNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfSpAtk2EVNumUpDown.Location = new System.Drawing.Point(211, 143);
+            this.mfSpAtk2EVNumUpDown.Location = new System.Drawing.Point(186, 33);
             this.mfSpAtk2EVNumUpDown.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.mfSpAtk2EVNumUpDown.Name = "mfSpAtk2EVNumUpDown";
-            this.mfSpAtk2EVNumUpDown.Size = new System.Drawing.Size(50, 29);
+            this.mfSpAtk2EVNumUpDown.Size = new System.Drawing.Size(56, 29);
             this.mfSpAtk2EVNumUpDown.TabIndex = 39;
             this.mfSpAtk2EVNumUpDown.ValueChanged += new System.EventHandler(this.EVNumUpDown_ValueChanged);
             // 
             // mfSpAtk1EVNumUpDown
             // 
             this.mfSpAtk1EVNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfSpAtk1EVNumUpDown.Location = new System.Drawing.Point(79, 143);
+            this.mfSpAtk1EVNumUpDown.Location = new System.Drawing.Point(186, 33);
             this.mfSpAtk1EVNumUpDown.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.mfSpAtk1EVNumUpDown.Name = "mfSpAtk1EVNumUpDown";
-            this.mfSpAtk1EVNumUpDown.Size = new System.Drawing.Size(50, 29);
+            this.mfSpAtk1EVNumUpDown.Size = new System.Drawing.Size(56, 29);
             this.mfSpAtk1EVNumUpDown.TabIndex = 38;
             this.mfSpAtk1EVNumUpDown.ValueChanged += new System.EventHandler(this.EVNumUpDown_ValueChanged);
             // 
             // mfDef2EVNumUpDown
             // 
             this.mfDef2EVNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfDef2EVNumUpDown.Location = new System.Drawing.Point(211, 108);
+            this.mfDef2EVNumUpDown.Location = new System.Drawing.Point(64, 93);
             this.mfDef2EVNumUpDown.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.mfDef2EVNumUpDown.Name = "mfDef2EVNumUpDown";
-            this.mfDef2EVNumUpDown.Size = new System.Drawing.Size(50, 29);
+            this.mfDef2EVNumUpDown.Size = new System.Drawing.Size(55, 29);
             this.mfDef2EVNumUpDown.TabIndex = 37;
             this.mfDef2EVNumUpDown.ValueChanged += new System.EventHandler(this.EVNumUpDown_ValueChanged);
             // 
             // mfDef1EVNumUpDown
             // 
             this.mfDef1EVNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfDef1EVNumUpDown.Location = new System.Drawing.Point(79, 108);
+            this.mfDef1EVNumUpDown.Location = new System.Drawing.Point(64, 93);
             this.mfDef1EVNumUpDown.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.mfDef1EVNumUpDown.Name = "mfDef1EVNumUpDown";
-            this.mfDef1EVNumUpDown.Size = new System.Drawing.Size(50, 29);
+            this.mfDef1EVNumUpDown.Size = new System.Drawing.Size(55, 29);
             this.mfDef1EVNumUpDown.TabIndex = 36;
             this.mfDef1EVNumUpDown.ValueChanged += new System.EventHandler(this.EVNumUpDown_ValueChanged);
             // 
             // mfAtk2EVNumUpDown
             // 
             this.mfAtk2EVNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfAtk2EVNumUpDown.Location = new System.Drawing.Point(211, 73);
+            this.mfAtk2EVNumUpDown.Location = new System.Drawing.Point(64, 63);
             this.mfAtk2EVNumUpDown.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.mfAtk2EVNumUpDown.Name = "mfAtk2EVNumUpDown";
-            this.mfAtk2EVNumUpDown.Size = new System.Drawing.Size(50, 29);
+            this.mfAtk2EVNumUpDown.Size = new System.Drawing.Size(55, 29);
             this.mfAtk2EVNumUpDown.TabIndex = 35;
             this.mfAtk2EVNumUpDown.ValueChanged += new System.EventHandler(this.EVNumUpDown_ValueChanged);
             // 
             // mfAtk1EVNumUpDown
             // 
             this.mfAtk1EVNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfAtk1EVNumUpDown.Location = new System.Drawing.Point(79, 73);
+            this.mfAtk1EVNumUpDown.Location = new System.Drawing.Point(64, 63);
             this.mfAtk1EVNumUpDown.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.mfAtk1EVNumUpDown.Name = "mfAtk1EVNumUpDown";
-            this.mfAtk1EVNumUpDown.Size = new System.Drawing.Size(50, 29);
+            this.mfAtk1EVNumUpDown.Size = new System.Drawing.Size(55, 29);
             this.mfAtk1EVNumUpDown.TabIndex = 34;
             this.mfAtk1EVNumUpDown.ValueChanged += new System.EventHandler(this.EVNumUpDown_ValueChanged);
             // 
             // mfHP2EVNumUpDown
             // 
             this.mfHP2EVNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfHP2EVNumUpDown.Location = new System.Drawing.Point(211, 38);
+            this.mfHP2EVNumUpDown.Location = new System.Drawing.Point(64, 33);
             this.mfHP2EVNumUpDown.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.mfHP2EVNumUpDown.Name = "mfHP2EVNumUpDown";
-            this.mfHP2EVNumUpDown.Size = new System.Drawing.Size(50, 29);
+            this.mfHP2EVNumUpDown.Size = new System.Drawing.Size(55, 29);
             this.mfHP2EVNumUpDown.TabIndex = 33;
             this.mfHP2EVNumUpDown.ValueChanged += new System.EventHandler(this.EVNumUpDown_ValueChanged);
             // 
             // mfHP1EVNumUpDown
             // 
             this.mfHP1EVNumUpDown.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfHP1EVNumUpDown.Location = new System.Drawing.Point(79, 38);
+            this.mfHP1EVNumUpDown.Location = new System.Drawing.Point(64, 33);
             this.mfHP1EVNumUpDown.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.mfHP1EVNumUpDown.Name = "mfHP1EVNumUpDown";
-            this.mfHP1EVNumUpDown.Size = new System.Drawing.Size(50, 29);
+            this.mfHP1EVNumUpDown.Size = new System.Drawing.Size(55, 29);
             this.mfHP1EVNumUpDown.TabIndex = 32;
             this.mfHP1EVNumUpDown.ValueChanged += new System.EventHandler(this.EVNumUpDown_ValueChanged);
             // 
-            // mfOpponentEVLabel
+            // mfEV1Label
             // 
-            this.mfOpponentEVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.mfOpponentEVLabel.AutoSize = true;
-            this.mfEVTableLayout.SetColumnSpan(this.mfOpponentEVLabel, 2);
-            this.mfOpponentEVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfOpponentEVLabel.Location = new System.Drawing.Point(144, 2);
-            this.mfOpponentEVLabel.Name = "mfOpponentEVLabel";
-            this.mfOpponentEVLabel.Size = new System.Drawing.Size(107, 30);
-            this.mfOpponentEVLabel.TabIndex = 5;
-            this.mfOpponentEVLabel.Text = "Opponent";
-            // 
-            // mfPlayerEVLabel
-            // 
-            this.mfPlayerEVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.mfPlayerEVLabel.AutoSize = true;
-            this.mfEVTableLayout.SetColumnSpan(this.mfPlayerEVLabel, 2);
-            this.mfPlayerEVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfPlayerEVLabel.Location = new System.Drawing.Point(31, 2);
-            this.mfPlayerEVLabel.Name = "mfPlayerEVLabel";
-            this.mfPlayerEVLabel.Size = new System.Drawing.Size(69, 30);
-            this.mfPlayerEVLabel.TabIndex = 4;
-            this.mfPlayerEVLabel.Text = "Player";
+            this.mfEV1Label.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.mfEV1Label.AutoSize = true;
+            this.mfEV1Label.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfEV1Label.Location = new System.Drawing.Point(8, 0);
+            this.mfEV1Label.Name = "mfEV1Label";
+            this.mfEV1Label.Size = new System.Drawing.Size(45, 30);
+            this.mfEV1Label.TabIndex = 4;
+            this.mfEV1Label.Text = "EVs";
             // 
             // mfHP1EVLabel
             // 
             this.mfHP1EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mfHP1EVLabel.AutoSize = true;
-            this.mfHP1EVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfHP1EVLabel.Location = new System.Drawing.Point(18, 37);
+            this.mfHP1EVLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfHP1EVLabel.Location = new System.Drawing.Point(12, 32);
             this.mfHP1EVLabel.Name = "mfHP1EVLabel";
-            this.mfHP1EVLabel.Size = new System.Drawing.Size(40, 30);
+            this.mfHP1EVLabel.Size = new System.Drawing.Size(36, 25);
             this.mfHP1EVLabel.TabIndex = 6;
             this.mfHP1EVLabel.Text = "HP";
             // 
@@ -1226,10 +1073,10 @@
             // 
             this.mfAtk1EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mfAtk1EVLabel.AutoSize = true;
-            this.mfAtk1EVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfAtk1EVLabel.Location = new System.Drawing.Point(16, 72);
+            this.mfAtk1EVLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfAtk1EVLabel.Location = new System.Drawing.Point(11, 62);
             this.mfAtk1EVLabel.Name = "mfAtk1EVLabel";
-            this.mfAtk1EVLabel.Size = new System.Drawing.Size(44, 30);
+            this.mfAtk1EVLabel.Size = new System.Drawing.Size(39, 25);
             this.mfAtk1EVLabel.TabIndex = 7;
             this.mfAtk1EVLabel.Text = "Atk";
             // 
@@ -1237,10 +1084,10 @@
             // 
             this.mfDef1EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mfDef1EVLabel.AutoSize = true;
-            this.mfDef1EVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfDef1EVLabel.Location = new System.Drawing.Point(15, 107);
+            this.mfDef1EVLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfDef1EVLabel.Location = new System.Drawing.Point(10, 92);
             this.mfDef1EVLabel.Name = "mfDef1EVLabel";
-            this.mfDef1EVLabel.Size = new System.Drawing.Size(46, 30);
+            this.mfDef1EVLabel.Size = new System.Drawing.Size(41, 25);
             this.mfDef1EVLabel.TabIndex = 8;
             this.mfDef1EVLabel.Text = "Def";
             // 
@@ -1248,10 +1095,10 @@
             // 
             this.mfSpAtk1EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mfSpAtk1EVLabel.AutoSize = true;
-            this.mfSpAtk1EVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfSpAtk1EVLabel.Location = new System.Drawing.Point(4, 142);
+            this.mfSpAtk1EVLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfSpAtk1EVLabel.Location = new System.Drawing.Point(127, 34);
             this.mfSpAtk1EVLabel.Name = "mfSpAtk1EVLabel";
-            this.mfSpAtk1EVLabel.Size = new System.Drawing.Size(67, 30);
+            this.mfSpAtk1EVLabel.Size = new System.Drawing.Size(51, 21);
             this.mfSpAtk1EVLabel.TabIndex = 9;
             this.mfSpAtk1EVLabel.Text = "SpAtk";
             // 
@@ -1259,10 +1106,10 @@
             // 
             this.mfSpDef1EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mfSpDef1EVLabel.AutoSize = true;
-            this.mfSpDef1EVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfSpDef1EVLabel.Location = new System.Drawing.Point(3, 177);
+            this.mfSpDef1EVLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfSpDef1EVLabel.Location = new System.Drawing.Point(126, 64);
             this.mfSpDef1EVLabel.Name = "mfSpDef1EVLabel";
-            this.mfSpDef1EVLabel.Size = new System.Drawing.Size(69, 30);
+            this.mfSpDef1EVLabel.Size = new System.Drawing.Size(52, 21);
             this.mfSpDef1EVLabel.TabIndex = 10;
             this.mfSpDef1EVLabel.Text = "SpDef";
             // 
@@ -1270,137 +1117,263 @@
             // 
             this.mfSpd1EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mfSpd1EVLabel.AutoSize = true;
-            this.mfSpd1EVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfSpd1EVLabel.Location = new System.Drawing.Point(14, 212);
+            this.mfSpd1EVLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfSpd1EVLabel.Location = new System.Drawing.Point(130, 92);
             this.mfSpd1EVLabel.Name = "mfSpd1EVLabel";
-            this.mfSpd1EVLabel.Size = new System.Drawing.Size(48, 30);
+            this.mfSpd1EVLabel.Size = new System.Drawing.Size(44, 25);
             this.mfSpd1EVLabel.TabIndex = 11;
             this.mfSpd1EVLabel.Text = "Spd";
             // 
-            // mfSpd2EVLabel
+            // tableLayoutPanel1
             // 
-            this.mfSpd2EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.mfSpd2EVLabel.AutoSize = true;
-            this.mfSpd2EVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfSpd2EVLabel.Location = new System.Drawing.Point(146, 212);
-            this.mfSpd2EVLabel.Name = "mfSpd2EVLabel";
-            this.mfSpd2EVLabel.Size = new System.Drawing.Size(48, 30);
-            this.mfSpd2EVLabel.TabIndex = 17;
-            this.mfSpd2EVLabel.Text = "Spd";
+            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.Controls.Add(this.mfNature1Label, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.mfHP1EVLabel, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.mfAtk1EVLabel, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.mfDef1EVLabel, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.mfSpAtk1EVLabel, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.mfSpAtk1EVNumUpDown, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.mfSpDef1EVLabel, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.mfSpd1EVLabel, 2, 3);
+            this.tableLayoutPanel1.Controls.Add(this.mfDef1EVNumUpDown, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.mfHP1EVNumUpDown, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.mfAtk1EVNumUpDown, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.mfSpDef1EVNumUpDown, 3, 2);
+            this.tableLayoutPanel1.Controls.Add(this.mfSpd1EVNumUpDown, 3, 3);
+            this.tableLayoutPanel1.Controls.Add(this.mfNature1ComboBox, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.mfEV1Label, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.mfSetDefaultEV1Button, 2, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 488);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 6;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(245, 180);
+            this.tableLayoutPanel1.TabIndex = 27;
             // 
-            // mfSpDef2EVLabel
+            // mfNature1Label
             // 
-            this.mfSpDef2EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.mfSpDef2EVLabel.AutoSize = true;
-            this.mfSpDef2EVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfSpDef2EVLabel.Location = new System.Drawing.Point(135, 177);
-            this.mfSpDef2EVLabel.Name = "mfSpDef2EVLabel";
-            this.mfSpDef2EVLabel.Size = new System.Drawing.Size(69, 30);
-            this.mfSpDef2EVLabel.TabIndex = 16;
-            this.mfSpDef2EVLabel.Text = "SpDef";
+            this.mfNature1Label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.mfNature1Label.AutoSize = true;
+            this.mfNature1Label.Location = new System.Drawing.Point(3, 130);
+            this.mfNature1Label.Name = "mfNature1Label";
+            this.mfNature1Label.Size = new System.Drawing.Size(43, 15);
+            this.mfNature1Label.TabIndex = 28;
+            this.mfNature1Label.Text = "Nature";
             // 
-            // mfSpAtk2EVLabel
+            // mfNature1ComboBox
             // 
-            this.mfSpAtk2EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.mfSpAtk2EVLabel.AutoSize = true;
-            this.mfSpAtk2EVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfSpAtk2EVLabel.Location = new System.Drawing.Point(136, 142);
-            this.mfSpAtk2EVLabel.Name = "mfSpAtk2EVLabel";
-            this.mfSpAtk2EVLabel.Size = new System.Drawing.Size(67, 30);
-            this.mfSpAtk2EVLabel.TabIndex = 15;
-            this.mfSpAtk2EVLabel.Text = "SpAtk";
+            this.tableLayoutPanel1.SetColumnSpan(this.mfNature1ComboBox, 4);
+            this.mfNature1ComboBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfNature1ComboBox.FormattingEnabled = true;
+            this.mfNature1ComboBox.Location = new System.Drawing.Point(3, 148);
+            this.mfNature1ComboBox.Name = "mfNature1ComboBox";
+            this.mfNature1ComboBox.Size = new System.Drawing.Size(239, 29);
+            this.mfNature1ComboBox.TabIndex = 43;
             // 
-            // mfDef2EVLabel
+            // mfSetDefaultEV1Button
             // 
-            this.mfDef2EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.mfDef2EVLabel.AutoSize = true;
-            this.mfDef2EVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfDef2EVLabel.Location = new System.Drawing.Point(147, 107);
-            this.mfDef2EVLabel.Name = "mfDef2EVLabel";
-            this.mfDef2EVLabel.Size = new System.Drawing.Size(46, 30);
-            this.mfDef2EVLabel.TabIndex = 14;
-            this.mfDef2EVLabel.Text = "Def";
+            this.mfSetDefaultEV1Button.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.tableLayoutPanel1.SetColumnSpan(this.mfSetDefaultEV1Button, 2);
+            this.mfSetDefaultEV1Button.Location = new System.Drawing.Point(167, 3);
+            this.mfSetDefaultEV1Button.Name = "mfSetDefaultEV1Button";
+            this.mfSetDefaultEV1Button.Size = new System.Drawing.Size(75, 23);
+            this.mfSetDefaultEV1Button.TabIndex = 44;
+            this.mfSetDefaultEV1Button.Text = "Set Default";
+            this.mfSetDefaultEV1Button.UseVisualStyleBackColor = true;
+            this.mfSetDefaultEV1Button.Click += new System.EventHandler(this.EVSetDefaultButton_Click);
             // 
-            // mfAtk2EVLabel
+            // tableLayoutPanel2
             // 
-            this.mfAtk2EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.mfAtk2EVLabel.AutoSize = true;
-            this.mfAtk2EVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfAtk2EVLabel.Location = new System.Drawing.Point(148, 72);
-            this.mfAtk2EVLabel.Name = "mfAtk2EVLabel";
-            this.mfAtk2EVLabel.Size = new System.Drawing.Size(44, 30);
-            this.mfAtk2EVLabel.TabIndex = 13;
-            this.mfAtk2EVLabel.Text = "Atk";
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.Controls.Add(this.mfSpd2EVNumUpDown, 3, 3);
+            this.tableLayoutPanel2.Controls.Add(this.mfNature2Label, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.mfSpDef2EVNumUpDown, 3, 2);
+            this.tableLayoutPanel2.Controls.Add(this.mfHP2EVLabel, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.mfSpAtk2EVNumUpDown, 3, 1);
+            this.tableLayoutPanel2.Controls.Add(this.mfAtk2EVLabel, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.mfDef2EVNumUpDown, 1, 3);
+            this.tableLayoutPanel2.Controls.Add(this.mfDef2EVLabel, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.mfAtk2EVNumUpDown, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.mfSpAtk2EVLabel, 2, 1);
+            this.tableLayoutPanel2.Controls.Add(this.mfHP2EVNumUpDown, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.mfSpDef2EVLabel, 2, 2);
+            this.tableLayoutPanel2.Controls.Add(this.mfSpd2EVLabel, 2, 3);
+            this.tableLayoutPanel2.Controls.Add(this.mfNature2ComboBox, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.mfEV2Label, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.mfSetDefaultEV2Button, 2, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(272, 488);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 6;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(245, 180);
+            this.tableLayoutPanel2.TabIndex = 28;
+            // 
+            // mfNature2Label
+            // 
+            this.mfNature2Label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.mfNature2Label.AutoSize = true;
+            this.mfNature2Label.Location = new System.Drawing.Point(3, 130);
+            this.mfNature2Label.Name = "mfNature2Label";
+            this.mfNature2Label.Size = new System.Drawing.Size(43, 15);
+            this.mfNature2Label.TabIndex = 28;
+            this.mfNature2Label.Text = "Nature";
             // 
             // mfHP2EVLabel
             // 
             this.mfHP2EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mfHP2EVLabel.AutoSize = true;
-            this.mfHP2EVLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mfHP2EVLabel.Location = new System.Drawing.Point(150, 37);
+            this.mfHP2EVLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfHP2EVLabel.Location = new System.Drawing.Point(12, 32);
             this.mfHP2EVLabel.Name = "mfHP2EVLabel";
-            this.mfHP2EVLabel.Size = new System.Drawing.Size(40, 30);
-            this.mfHP2EVLabel.TabIndex = 12;
+            this.mfHP2EVLabel.Size = new System.Drawing.Size(36, 25);
+            this.mfHP2EVLabel.TabIndex = 6;
             this.mfHP2EVLabel.Text = "HP";
             // 
-            // mfDefaultEVRadio
+            // mfAtk2EVLabel
             // 
-            this.mfDefaultEVRadio.AutoSize = true;
-            this.mfDefaultEVRadio.Location = new System.Drawing.Point(12, 412);
-            this.mfDefaultEVRadio.Name = "mfDefaultEVRadio";
-            this.mfDefaultEVRadio.Size = new System.Drawing.Size(84, 19);
-            this.mfDefaultEVRadio.TabIndex = 25;
-            this.mfDefaultEVRadio.TabStop = true;
-            this.mfDefaultEVRadio.Text = "Default EVs";
-            this.mfDefaultEVRadio.UseVisualStyleBackColor = true;
-            this.mfDefaultEVRadio.CheckedChanged += new System.EventHandler(this.EVRadio_CheckChanged);
+            this.mfAtk2EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.mfAtk2EVLabel.AutoSize = true;
+            this.mfAtk2EVLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfAtk2EVLabel.Location = new System.Drawing.Point(11, 62);
+            this.mfAtk2EVLabel.Name = "mfAtk2EVLabel";
+            this.mfAtk2EVLabel.Size = new System.Drawing.Size(39, 25);
+            this.mfAtk2EVLabel.TabIndex = 7;
+            this.mfAtk2EVLabel.Text = "Atk";
             // 
-            // mfCustomEVLabel
+            // mfDef2EVLabel
             // 
-            this.mfCustomEVLabel.AutoSize = true;
-            this.mfCustomEVLabel.Location = new System.Drawing.Point(12, 434);
-            this.mfCustomEVLabel.Name = "mfCustomEVLabel";
-            this.mfCustomEVLabel.Size = new System.Drawing.Size(88, 19);
-            this.mfCustomEVLabel.TabIndex = 26;
-            this.mfCustomEVLabel.TabStop = true;
-            this.mfCustomEVLabel.Text = "Custom EVs";
-            this.mfCustomEVLabel.UseVisualStyleBackColor = true;
+            this.mfDef2EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.mfDef2EVLabel.AutoSize = true;
+            this.mfDef2EVLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfDef2EVLabel.Location = new System.Drawing.Point(10, 92);
+            this.mfDef2EVLabel.Name = "mfDef2EVLabel";
+            this.mfDef2EVLabel.Size = new System.Drawing.Size(41, 25);
+            this.mfDef2EVLabel.TabIndex = 8;
+            this.mfDef2EVLabel.Text = "Def";
+            // 
+            // mfSpAtk2EVLabel
+            // 
+            this.mfSpAtk2EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.mfSpAtk2EVLabel.AutoSize = true;
+            this.mfSpAtk2EVLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfSpAtk2EVLabel.Location = new System.Drawing.Point(127, 34);
+            this.mfSpAtk2EVLabel.Name = "mfSpAtk2EVLabel";
+            this.mfSpAtk2EVLabel.Size = new System.Drawing.Size(51, 21);
+            this.mfSpAtk2EVLabel.TabIndex = 9;
+            this.mfSpAtk2EVLabel.Text = "SpAtk";
+            // 
+            // mfSpDef2EVLabel
+            // 
+            this.mfSpDef2EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.mfSpDef2EVLabel.AutoSize = true;
+            this.mfSpDef2EVLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfSpDef2EVLabel.Location = new System.Drawing.Point(126, 64);
+            this.mfSpDef2EVLabel.Name = "mfSpDef2EVLabel";
+            this.mfSpDef2EVLabel.Size = new System.Drawing.Size(52, 21);
+            this.mfSpDef2EVLabel.TabIndex = 10;
+            this.mfSpDef2EVLabel.Text = "SpDef";
+            // 
+            // mfSpd2EVLabel
+            // 
+            this.mfSpd2EVLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.mfSpd2EVLabel.AutoSize = true;
+            this.mfSpd2EVLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfSpd2EVLabel.Location = new System.Drawing.Point(130, 92);
+            this.mfSpd2EVLabel.Name = "mfSpd2EVLabel";
+            this.mfSpd2EVLabel.Size = new System.Drawing.Size(44, 25);
+            this.mfSpd2EVLabel.TabIndex = 11;
+            this.mfSpd2EVLabel.Text = "Spd";
+            // 
+            // mfNature2ComboBox
+            // 
+            this.tableLayoutPanel2.SetColumnSpan(this.mfNature2ComboBox, 4);
+            this.mfNature2ComboBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfNature2ComboBox.FormattingEnabled = true;
+            this.mfNature2ComboBox.Location = new System.Drawing.Point(3, 148);
+            this.mfNature2ComboBox.Name = "mfNature2ComboBox";
+            this.mfNature2ComboBox.Size = new System.Drawing.Size(239, 29);
+            this.mfNature2ComboBox.TabIndex = 43;
+            // 
+            // mfEV2Label
+            // 
+            this.mfEV2Label.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.mfEV2Label.AutoSize = true;
+            this.mfEV2Label.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfEV2Label.Location = new System.Drawing.Point(8, 0);
+            this.mfEV2Label.Name = "mfEV2Label";
+            this.mfEV2Label.Size = new System.Drawing.Size(45, 30);
+            this.mfEV2Label.TabIndex = 4;
+            this.mfEV2Label.Text = "EVs";
+            // 
+            // mfSetDefaultEV2Button
+            // 
+            this.mfSetDefaultEV2Button.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.tableLayoutPanel2.SetColumnSpan(this.mfSetDefaultEV2Button, 2);
+            this.mfSetDefaultEV2Button.Location = new System.Drawing.Point(167, 3);
+            this.mfSetDefaultEV2Button.Name = "mfSetDefaultEV2Button";
+            this.mfSetDefaultEV2Button.Size = new System.Drawing.Size(75, 23);
+            this.mfSetDefaultEV2Button.TabIndex = 44;
+            this.mfSetDefaultEV2Button.Text = "Set Default";
+            this.mfSetDefaultEV2Button.UseVisualStyleBackColor = true;
+            this.mfSetDefaultEV2Button.Click += new System.EventHandler(this.EVSetDefaultButton_Click);
+            // 
+            // mfCreditsLabel
+            // 
+            this.mfCreditsLabel.AutoSize = true;
+            this.mfCreditsLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfCreditsLabel.Location = new System.Drawing.Point(317, 687);
+            this.mfCreditsLabel.Name = "mfCreditsLabel";
+            this.mfCreditsLabel.Size = new System.Drawing.Size(195, 13);
+            this.mfCreditsLabel.TabIndex = 29;
+            this.mfCreditsLabel.Text = "Ⓚ 2022 russellpuff - All rites reversed";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(917, 499);
-            this.Controls.Add(this.mfCustomEVLabel);
-            this.Controls.Add(this.mfDefaultEVRadio);
-            this.Controls.Add(this.mfEVTableLayout);
-            this.Controls.Add(this.mfProblemFixTableLayout);
-            this.Controls.Add(this.mfChangeCustomStatButton);
-            this.Controls.Add(this.mfCustomStatNumUpDown);
+            this.ClientSize = new System.Drawing.Size(530, 708);
+            this.Controls.Add(this.mfCreditsLabel);
+            this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.mfSaveFilesOnlyButton);
-            this.Controls.Add(this.mfOpponentTableLayout);
+            this.Controls.Add(this.mfRivalTableLayout);
             this.Controls.Add(this.mfVert2Label);
             this.Controls.Add(this.mfPlayerTableLayout);
-            this.Controls.Add(this.mfVert1Label);
-            this.Controls.Add(this.mfJokeLabel);
             this.Controls.Add(this.mfRunBattleButton);
-            this.Controls.Add(this.mfJokePictureBox);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mon Designer";
-            ((System.ComponentModel.ISupportInitialize)(this.mfJokePictureBox)).EndInit();
             this.mfPlayerTableLayout.ResumeLayout(false);
             this.mfPlayerTableLayout.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mfLevel1NumUpDown)).EndInit();
-            this.mfOpponentTableLayout.ResumeLayout(false);
-            this.mfOpponentTableLayout.PerformLayout();
+            this.mfRivalTableLayout.ResumeLayout(false);
+            this.mfRivalTableLayout.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mfLevel2NumUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mfCustomStatNumUpDown)).EndInit();
-            this.mfProblemFixTableLayout.ResumeLayout(false);
-            this.mfProblemFixTableLayout.PerformLayout();
-            this.mfEVTableLayout.ResumeLayout(false);
-            this.mfEVTableLayout.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mfSpd2EVNumUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mfSpd1EVNumUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mfSpDef2EVNumUpDown)).EndInit();
@@ -1413,6 +1386,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.mfAtk1EVNumUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mfHP2EVNumUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mfHP1EVNumUpDown)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1421,10 +1398,7 @@
         #endregion
 
         private Button mfRunBattleButton;
-        private PictureBox mfJokePictureBox;
-        private Label mfJokeLabel;
         private Label mfPlayerPokemonLabel;
-        private Label mfVert1Label;
         private ComboBox mfPokemon1ComboBox;
         private ComboBox mfType11ComboBox;
         private ComboBox mfType21ComboBox;
@@ -1452,7 +1426,7 @@
         private Button mfMove11Button;
         private Button mfMove21Button;
         private Button mfMove41Button;
-        private TableLayoutPanel mfOpponentTableLayout;
+        private TableLayoutPanel mfRivalTableLayout;
         private Button mfMove32Button;
         private Label mfMove22Label;
         private ComboBox mfPokemon2ComboBox;
@@ -1461,7 +1435,7 @@
         private ColorProgressBar mfSpAtk2ProgressBar;
         private ColorProgressBar mfSpDef2ProgressBar;
         private ColorProgressBar mfSpd2ProgressBar;
-        private Label mfOpponentPokemonLabel;
+        private Label mfRivalPokemonLabel;
         private Label mfSpd2Label;
         private Label mfSpDef2Label;
         private Label mfSpAtk2Label;
@@ -1482,17 +1456,10 @@
         private ComboBox mfForm2ComboBox;
         private Label mfVert2Label;
         private Button mfSaveFilesOnlyButton;
-        private Label mfCustomStatLabel;
-        private NumericUpDown mfCustomStatNumUpDown;
-        private Button mfChangeCustomStatButton;
-        private TableLayoutPanel mfProblemFixTableLayout;
         private NumericUpDown mfLevel1NumUpDown;
         private Label mfLevel1Label;
         private NumericUpDown mfLevel2NumUpDown;
         private Label mfLevel2Label;
-        private TableLayoutPanel mfEVTableLayout;
-        private RadioButton mfDefaultEVRadio;
-        private RadioButton mfCustomEVLabel;
         private NumericUpDown mfSpd2EVNumUpDown;
         private NumericUpDown mfSpd1EVNumUpDown;
         private NumericUpDown mfSpDef2EVNumUpDown;
@@ -1505,19 +1472,28 @@
         private NumericUpDown mfAtk1EVNumUpDown;
         private NumericUpDown mfHP2EVNumUpDown;
         private NumericUpDown mfHP1EVNumUpDown;
-        private Label mfOpponentEVLabel;
-        private Label mfPlayerEVLabel;
+        private Label mfEV1Label;
         private Label mfHP1EVLabel;
         private Label mfAtk1EVLabel;
         private Label mfDef1EVLabel;
         private Label mfSpAtk1EVLabel;
         private Label mfSpDef1EVLabel;
         private Label mfSpd1EVLabel;
-        private Label mfSpd2EVLabel;
-        private Label mfSpDef2EVLabel;
-        private Label mfSpAtk2EVLabel;
-        private Label mfDef2EVLabel;
-        private Label mfAtk2EVLabel;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label mfNature1Label;
+        private ComboBox mfNature1ComboBox;
+        private Button mfSetDefaultEV1Button;
+        private TableLayoutPanel tableLayoutPanel2;
+        private Label mfNature2Label;
         private Label mfHP2EVLabel;
+        private Label mfAtk2EVLabel;
+        private Label mfDef2EVLabel;
+        private Label mfSpAtk2EVLabel;
+        private Label mfSpDef2EVLabel;
+        private Label mfSpd2EVLabel;
+        private ComboBox mfNature2ComboBox;
+        private Label mfEV2Label;
+        private Button mfSetDefaultEV2Button;
+        private Label mfCreditsLabel;
     }
 }
