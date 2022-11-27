@@ -130,27 +130,30 @@ mon::Pokemon::Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<mon::Move, 
 
 		if (sqlite3_column_type(st, 2) == SQLITE_NULL) { secondType = tc::NoType; }
 		else { secondType = tc::strToType.at(reinterpret_cast<const char*>(sqlite3_column_text(st, 2))); }
-
 		sqlite3_finalize(st);
 	}
 
-	enum StatMod { // Determines whether to boost or lower the stat courtesy of nature.
-		Neutral,
-		Raised,
-		Lowered
-	};
+	query = "SELECT INCREASED_STAT, DECREASED_STAT FROM NATURE WHERE NATURE_ID = " + std::to_string(p.Nature);
+	sqlite3_stmt* st = RunQuery(speciesdb, query, "species.db");
+	sqlite3_step(st);
+	std::string inc = reinterpret_cast<const char*>(sqlite3_column_text(st, 0));
+	std::string dec = reinterpret_cast<const char*>(sqlite3_column_text(st, 1));
+	sqlite3_finalize(st);
 
-
-
-
+	int mods[5] = { 10, 10, 10, 10, 10 };
+	std::string stat[5] = { "Attack", "Defense", "Sp. Attack", "Sp. Defense", "Speed" };
+	for (int i = 0; i < 5; ++i) {
+		if (stat[i] == inc) { mods[i] = 11; continue; }
+		if (stat[i] == dec) { mods[i] = 9; continue; }
+	}
 
 	// EVs are never read from again so they're not saved. In a more elaborate project, they would be. Nature isn't read from again either.
 	stats.hpCurrent = CalculateCurrentStats(stats.hpBase, p.HPEV, level, true, 1.0); // HP is never affected by nature.
-	stats.atkCurrent = CalculateCurrentStats(stats.atkBase, p.AtkEV, level, false, 1.0);
-	stats.defCurrent = CalculateCurrentStats(stats.defBase, p.DefEV, level, false, 1.0);
-	stats.spAtkCurrent = CalculateCurrentStats(stats.spAtkBase, p.SpAtkEV, level, false, 1.0);
-	stats.spDefCurrent = CalculateCurrentStats(stats.spDefBase, p.SpDefEV, level, false, 1.0);
-	stats.spdCurrent = CalculateCurrentStats(stats.spdBase, p.SpdEV, level, false, 1.0);
+	stats.atkCurrent = CalculateCurrentStats(stats.atkBase, p.AtkEV, level, false, mods[0]);
+	stats.defCurrent = CalculateCurrentStats(stats.defBase, p.DefEV, level, false, mods[1]);
+	stats.spAtkCurrent = CalculateCurrentStats(stats.spAtkBase, p.SpAtkEV, level, false, mods[2]);
+	stats.spDefCurrent = CalculateCurrentStats(stats.spDefBase, p.SpDefEV, level, false, mods[3]);
+	stats.spdCurrent = CalculateCurrentStats(stats.spdBase, p.SpdEV, level, false, mods[4]);
 
 	if (name == "Shedinja") { stats.hpCurrent = 1; } // Special exception. 
 }
@@ -178,6 +181,6 @@ int CalculateCurrentStats(int base, int ev, int level, bool isHP, float mod)
 {
 	int res = (((2 * base) + 31 + (ev / 4)) * level) / 100; // https://bulbapedia.bulbagarden.net/wiki/Stat#Generation_III_onward
 	res += isHP ? level + 10 : 5;
-	if (!isHP) { res = std::floor(res * mod); }
+	if (!isHP) { res = std::floor((res * mod) / 10); }
 	return res;
 }

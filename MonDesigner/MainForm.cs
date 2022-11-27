@@ -566,7 +566,7 @@ namespace MonDesigner
             };
 
             int pNature = SerializeGetNatureID(mfNature1ComboBox.Text.Split(' ')[0]);
-            int oNature = SerializeGetNatureID(mfNature2ComboBox.Text.Split(' ')[0]);
+            int rNature = SerializeGetNatureID(mfNature2ComboBox.Text.Split(' ')[0]);
 
             try
             {
@@ -585,7 +585,7 @@ namespace MonDesigner
                 Mon rMon = new("Rival", 
                     mfPokemon2ComboBox.SelectedIndex + 1, 
                     (int)mfLevel2NumUpDown.Value, 
-                    oForm, pNature, 
+                    oForm, rNature, 
                     rivalMoves[0], rivalMoves[1], rivalMoves[2], rivalMoves[3],
                     (int)mfHP2EVNumUpDown.Value, 
                     (int)mfAtk2EVNumUpDown.Value, 

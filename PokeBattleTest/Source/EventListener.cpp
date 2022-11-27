@@ -118,7 +118,7 @@ std::tuple<mon::Pokemon, mon::Pokemon> Events::PrepareAndConstructPokemon(std::q
     pInfo += "\nSpDef current: " + std::to_string(playerPokemon.GetCurrentSpDef());
     pInfo += "\nSpd current: " + std::to_string(playerPokemon.GetCurrentSpd());
     Log(pInfo, log);
-    std::string rInfo = "Created " + rivalPokemon.GetName() + " for opponent.\n";
+    std::string rInfo = "Created " + rivalPokemon.GetName() + " for rival.\n";
     rInfo += "With form: " + rivalPokemon.GetForm() + ", Type1: " + rivalPokemon.GetType1() + ", Type2: " + rivalPokemon.GetType2();
     rInfo += "\nWith move1: " + rivalPokemon.GetMove1().GetName() + ", Type: " + rivalPokemon.GetMove1().GetType();
     rInfo += "\nWith move2: " + rivalPokemon.GetMove2().GetName() + ", Type: " + rivalPokemon.GetMove2().GetType();

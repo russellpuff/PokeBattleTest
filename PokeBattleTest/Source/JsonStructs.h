@@ -17,7 +17,7 @@ namespace jt {
 		int SpAtkEV;
 		int SpDefEV;
 		int SpdEV;
-		JsonPkmn(std::string _w, int _d, int _l, std::string _f, int _n, int _m1, int _m2, int _m3, int _m4,
+		JsonPkmn(int _d, int _l, std::string _f, int _n, int _m1, int _m2, int _m3, int _m4,
 			int _hev, int _aev, int _dev, int _saev, int _sdev, int _sev) :
 			DexID(_d), Level(_l), Form(_f), Nature(_n), 
 			Move1(_m1), Move2(_m2), Move3(_m3), Move4(_m4),
@@ -34,7 +34,7 @@ namespace jt {
 		int SPATK;
 		int SPDEF;
 		int SPD;
-		JsonTemplate(std::string _w, std::string _t1, std::string _t2, int _h, int _a, int _d, int _sa, int _sd, int _s) :
+		JsonTemplate(std::string _t1, std::string _t2, int _h, int _a, int _d, int _sa, int _sd, int _s) :
 			Type1(_t1), Type2(_t2), 
 			HP(_h), ATK(_a), DEF(_d), 
 			SPATK(_sa), SPDEF(_sd), SPD(_s) {}
