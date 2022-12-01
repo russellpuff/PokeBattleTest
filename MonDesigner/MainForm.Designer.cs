@@ -53,6 +53,7 @@
             this.mfForm1ComboBox = new System.Windows.Forms.ComboBox();
             this.mfLevel1NumUpDown = new System.Windows.Forms.NumericUpDown();
             this.mfLevel1Label = new System.Windows.Forms.Label();
+            this.mfLoadJson1Button = new System.Windows.Forms.Button();
             this.mfRivalTableLayout = new System.Windows.Forms.TableLayoutPanel();
             this.mfMove32Button = new System.Windows.Forms.Button();
             this.mfMove22Label = new System.Windows.Forms.Label();
@@ -77,6 +78,7 @@
             this.mfForm2ComboBox = new System.Windows.Forms.ComboBox();
             this.mfLevel2NumUpDown = new System.Windows.Forms.NumericUpDown();
             this.mfLevel2Label = new System.Windows.Forms.Label();
+            this.mfLoadJson2Button = new System.Windows.Forms.Button();
             this.mfVert2Label = new System.Windows.Forms.Label();
             this.mfSaveFilesOnlyButton = new System.Windows.Forms.Button();
             this.mfSpd2EVNumUpDown = new System.Windows.Forms.NumericUpDown();
@@ -333,6 +335,7 @@
             this.mfPlayerTableLayout.Controls.Add(this.mfForm1ComboBox, 1, 8);
             this.mfPlayerTableLayout.Controls.Add(this.mfLevel1NumUpDown, 3, 9);
             this.mfPlayerTableLayout.Controls.Add(this.mfLevel1Label, 2, 9);
+            this.mfPlayerTableLayout.Controls.Add(this.mfLoadJson1Button, 3, 0);
             this.mfPlayerTableLayout.Location = new System.Drawing.Point(12, 12);
             this.mfPlayerTableLayout.Name = "mfPlayerTableLayout";
             this.mfPlayerTableLayout.RowCount = 16;
@@ -503,6 +506,17 @@
             this.mfLevel1Label.TabIndex = 32;
             this.mfLevel1Label.Text = "Level";
             // 
+            // mfLoadJson1Button
+            // 
+            this.mfLoadJson1Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.mfLoadJson1Button.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfLoadJson1Button.Location = new System.Drawing.Point(186, 9);
+            this.mfLoadJson1Button.Name = "mfLoadJson1Button";
+            this.mfLoadJson1Button.Size = new System.Drawing.Size(56, 23);
+            this.mfLoadJson1Button.TabIndex = 33;
+            this.mfLoadJson1Button.Text = "Load json";
+            this.mfLoadJson1Button.UseVisualStyleBackColor = true;
+            // 
             // mfRivalTableLayout
             // 
             this.mfRivalTableLayout.ColumnCount = 4;
@@ -533,6 +547,7 @@
             this.mfRivalTableLayout.Controls.Add(this.mfForm2ComboBox, 1, 8);
             this.mfRivalTableLayout.Controls.Add(this.mfLevel2NumUpDown, 3, 9);
             this.mfRivalTableLayout.Controls.Add(this.mfLevel2Label, 2, 9);
+            this.mfRivalTableLayout.Controls.Add(this.mfLoadJson2Button, 3, 0);
             this.mfRivalTableLayout.Location = new System.Drawing.Point(272, 12);
             this.mfRivalTableLayout.Name = "mfRivalTableLayout";
             this.mfRivalTableLayout.RowCount = 16;
@@ -860,6 +875,17 @@
             this.mfLevel2Label.Size = new System.Drawing.Size(34, 15);
             this.mfLevel2Label.TabIndex = 33;
             this.mfLevel2Label.Text = "Level";
+            // 
+            // mfLoadJson2Button
+            // 
+            this.mfLoadJson2Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.mfLoadJson2Button.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mfLoadJson2Button.Location = new System.Drawing.Point(186, 9);
+            this.mfLoadJson2Button.Name = "mfLoadJson2Button";
+            this.mfLoadJson2Button.Size = new System.Drawing.Size(56, 23);
+            this.mfLoadJson2Button.TabIndex = 34;
+            this.mfLoadJson2Button.Text = "Load json";
+            this.mfLoadJson2Button.UseVisualStyleBackColor = true;
             // 
             // mfVert2Label
             // 
@@ -1495,5 +1521,7 @@
         private Label mfEV2Label;
         private Button mfSetDefaultEV2Button;
         private Label mfCreditsLabel;
+        private Button mfLoadJson1Button;
+        private Button mfLoadJson2Button;
     }
 }

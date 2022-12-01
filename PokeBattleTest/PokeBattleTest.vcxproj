@@ -144,9 +144,10 @@
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Source\Battle.cpp" />
-    <ClCompile Include="Source\BattleTurn.cpp" />
+    <ClCompile Include="Source\BattleEffect.cpp" />
     <ClCompile Include="Source\EventListener.cpp" />
     <ClCompile Include="Source\Pokemon.cpp" />
+    <ClCompile Include="Source\SceneConstructor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="sfml-graphics-d-2.dll">
@@ -190,6 +191,7 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\BattleEffect.h" />
     <ClInclude Include="Source\json.hpp" />
     <ClInclude Include="Source\Battle.h" />
     <ClInclude Include="Source\date.h" />
@@ -197,6 +199,7 @@
     <ClInclude Include="Source\JsonStructs.h" />
     <ClInclude Include="Source\PBTExceptions.h" />
     <ClInclude Include="Source\Pokemon.h" />
+    <ClInclude Include="Source\SceneConstructor.h" />
     <ClInclude Include="Source\TypeCategory.h" />
     <ClInclude Include="Source\UUID.h" />
   </ItemGroup>

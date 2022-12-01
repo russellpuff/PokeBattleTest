@@ -1,0 +1,27 @@
+@2022-11-30 02:07: Created Charizard for player.
+With form: charizard-mega-y, Type1: Fire, Type2: Flying
+With move1: Flamethrower, Type: Fire
+With move2: Air Slash, Type: Flying
+With move3: Dragon Dance, Type: Dragon
+With move4: Will-O-Wisp, Type: Fire
+Level: 50
+HP current: 164
+Atk current: 121
+Def current: 109
+SpAtk current: 209
+SpDef current: 146
+Spd current: 131
+@2022-11-30 02:07: Created Gardevoir for rival.
+With form: custom, Type1: Psychic, Type2: Steel
+With move1: Psycho Cut, Type: Psychic
+With move2: Iron Head, Type: Steel
+With move3: Swords Dance, Type: Normal
+With move4: Unpleasant Tone, Type: Normal
+Level: 50
+HP current: 154
+Atk current: 196
+Def current: 96
+SpAtk current: 104
+SpDef current: 166
+Spd current: 144
+@2022-11-30 02:07: The window was closed.

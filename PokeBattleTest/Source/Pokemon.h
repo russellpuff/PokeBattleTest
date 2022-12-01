@@ -17,8 +17,8 @@ namespace mon {
 		bool procMutable; // If this is false, the move will never miss, regardless of accuracy and evasion modifiers. 
 	public:
 		std::string GetName() { return name; }
-		std::string GetType() { return tc::typeToString.at(type); }
-		std::string GetCategory() { return tc::categoryToString.at(category); }
+		tc::Type GetType() { return type; }
+		tc::MoveCategory GetCategory() { return category; }
 		int GetPowerPoints() { return powerPoints; }
 		int GetPower() { return power; }
 		int GetAccuracy() { return accuracy; }
@@ -62,8 +62,8 @@ namespace mon {
 	public:
 		std::string GetName() { return name; }
 		std::string GetForm() { return form; }
-		std::string GetType1() { return tc::typeToString.at(firstType); }
-		std::string GetType2() { return tc::typeToString.at(secondType); }
+		tc::Type GetType1() { return firstType; }
+		tc::Type GetType2() { return secondType; }
 		Move GetMove1() { return moves[0]; }
 		Move GetMove2() { return moves[1]; }
 		Move GetMove3() { return moves[2]; }

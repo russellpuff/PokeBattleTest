@@ -55,6 +55,7 @@ namespace nlohmann { // Stuff for json deserialization.
 			j.at("HPEV"), j.at("AtkEV"), j.at("DefEV"), j.at("SpAtkEV"), j.at("SpDefEV"), j.at("SpdEV") };
 		}
 	};
+
 	template <>
 	struct adl_serializer<jt::JsonTemplate>
 	{
