@@ -3,7 +3,6 @@
 // This project was made as CSCI201 
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include <queue>
 #include "EventListener.h"
 #include "PBTExceptions.h"
 
@@ -11,11 +10,10 @@ int main()
 {
     bool errorOccured = true; // defaults to true, sets to false if application exits safely, less copied code that way.
     std::string error, e;
-    std::queue<std::string> log;
     int retval = 0;
     try {
         sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-        Events::EventListener(window, log); // When this returns, PokeBattleTest execution starts to end. 
+        Events::EventListener(window); // When this returns, PokeBattleTest execution starts to end. 
         // If MonDesigner started this, it should return control back to MonDesigner.
         errorOccured = false;
     }
@@ -45,7 +43,7 @@ int main()
         retval = 201;
     }
     */
-    if (errorOccured) { Events::Log(error, log); }
-    Events::WriteLogToFile(log);
+    if (errorOccured) { Events::Log(error); }
+    Events::WriteLogToFile();
     return retval;
 }

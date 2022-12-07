@@ -5,7 +5,7 @@
 
 bfx::BattleEffect::BattleEffect(bool _target, int _duration, TurnPhase _turnphase, int _proc)
 {
-	target = _target;
+	targetIsPlayer = _target;
 	duration = _duration;
 	turnPhase = _turnphase;
 	// To be SOUPER random.
@@ -18,7 +18,7 @@ bfx::BattleEffect::BattleEffect(bool _target, int _duration, TurnPhase _turnphas
 
 bfx::BattleEffect& bfx::BattleEffect::operator--()
 {
-	int next = this->duration - 1;
+	--this->duration;
 	return *this;
 }
 
@@ -27,4 +27,20 @@ bfx::ModStat::ModStat(bool _target, int _duration, int _proc, int _stages) :
 {
 	if (_stages > 6 || stages < -6) { throw BattleEffectFailed("ModStat cannot go above 6 stages or below -6."); }
 	stages = _stages;
+}
+
+void bfx::ModCriticalRatio::Execute(bat::Turn& turn)
+{
+	if (this->targetIsPlayer == turn.attackerIsPlayer) {
+		switch (this->stages) {
+		case 1: turn.critChance = 8; break;
+		case 2: turn.critChance = 2; break;
+		default: turn.critChance = 1; break;
+		}
+	}
+}
+
+void bfx::MultiHit::Execute(bat::Turn& turn)
+{
+	if (this->targetIsPlayer == turn.attackerIsPlayer) { turn.moveHits = hits; }
 }

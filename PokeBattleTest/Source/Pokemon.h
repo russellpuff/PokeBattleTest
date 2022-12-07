@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 #include <array>
-#include <JsonStructs.h>
-#include <TypeCategory.h>
+#include "JsonStructs.h"
+#include "TypeCategory.h"
 namespace mon {
 	class Move {
 	private:

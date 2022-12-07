@@ -146,6 +146,7 @@
     <ClCompile Include="Source\Battle.cpp" />
     <ClCompile Include="Source\BattleEffect.cpp" />
     <ClCompile Include="Source\EventListener.cpp" />
+    <ClCompile Include="Source\Move.cpp" />
     <ClCompile Include="Source\Pokemon.cpp" />
     <ClCompile Include="Source\SceneConstructor.cpp" />
   </ItemGroup>
@@ -197,6 +198,7 @@
     <ClInclude Include="Source\date.h" />
     <ClInclude Include="Source\EventListener.h" />
     <ClInclude Include="Source\JsonStructs.h" />
+    <ClInclude Include="Source\Move.h" />
     <ClInclude Include="Source\PBTExceptions.h" />
     <ClInclude Include="Source\Pokemon.h" />
     <ClInclude Include="Source\SceneConstructor.h" />

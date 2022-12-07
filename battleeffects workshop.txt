@@ -46,7 +46,7 @@ weather, the list of things each one does is pretty long
 -----
 ElectricTerrain
 PsychicTerrain
-MistyTerrain
+MistyTerrainstru
 GrassyTerrain
 HarshSunlight
 Rain
@@ -89,7 +89,9 @@ MysticalPower = raises user's special attack or special defense depending on whi
 AlternateDamageStat = user's move uses a different stat to calculate damage, args determins what gets used
 GuardSplit = user and target have their defensive stats averaged with each other
 GuardSwap = user and target swap defense and special defense raw stats
-NoHeal = target cannot regain HP in any way
+NoHeal = target cannot regain HP in any way++
+
+
 
 
 

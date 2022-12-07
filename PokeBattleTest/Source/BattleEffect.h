@@ -26,19 +26,19 @@ namespace bfx {
 		};
 		virtual void Execute(bat::Turn& turn) = 0;
 		TurnPhase GetTurnPhase() { return turnPhase; }
-		bool GetTarget() { return target; }
+		bool GetTarget() { return targetIsPlayer; }
 		int GetDuration() { return duration; }
 		BattleEffect& operator--(); // Decrements duration. 
 	protected:
 		TurnPhase turnPhase;
-		bool target; // When true, the target is the PLAYER, when false the target is the RIVAL
+		bool targetIsPlayer; // When true, the target is the PLAYER, when false the target is the RIVAL
 		int duration; // In turns, if this value is -1, it lasts until something causes it to be cancelled.
 		BattleEffect(bool _target, int _duration, TurnPhase _turnphase, int _proc); // Proc is a chance out of 100 for the effect to take place, if it fails, the effect deletes itself.
 	};
 	//
 	// Stat mods
 	//
-	class ModStat : BattleEffect {
+	class ModStat : public BattleEffect {
 	protected:
 		int stages; // Range between -6 and 6.
 		ModStat(bool _target, int _duration, int _proc, int _stages);
@@ -180,4 +180,11 @@ namespace bfx {
 	// Weather & Terrain
 	//
 
+	// Other
+	struct MultiHit : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		MultiHit(bool _target, int _hits) : BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, 100), hits(_hits) {}
+	private:
+		int hits;
+	};
 }

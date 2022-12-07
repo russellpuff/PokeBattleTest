@@ -1,8 +1,10 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
 #include "Pokemon.h"
 #include "BattleEffect.h"
+#include "Move.h"
 
 namespace bat {
 	class Battle;
@@ -31,17 +33,32 @@ namespace bat {
 		bool interruptTurn = false; // If this is true, such as from a paralysis battle effect, the pokemon skips their action phase.
 		tc::Type type1Override = tc::Type::NoType;
 		tc::Type type2Override = tc::Type::NoType;
-		void WriteToScreen(std::string message);
 		int critChance = 24; // Algorithm will generate a number between 1 and this to determine crit. Default 1/24, mod can be 1/8, 1/2, or 1/1 (always crit) 
+		int numAttacks = 1; // Some BattleEffects hit twice, others 2-5 times.
 	public:
 		void Act(Battle& battle);
-		friend class bfx::BattleEffect;
 		Turn(mon::Move& _move, bool _attacker) : move(_move), attackerIsPlayer(_attacker) {}
+		// friends
+		friend class bfx::BattleEffect;
+		friend class bfx::ModStat;
+		friend struct bfx::ModAttack;
+		friend struct bfx::ModDefense;
+		friend struct bfx::ModSpecialAttack;
+		friend struct bfx::ModSpecialDefense;
+		friend struct bfx::ModSpeed;
+		friend struct bfx::ModCriticalRatio;
+		friend struct bfx::ModAccuracy;
+		friend struct bfx::ModEvasion;
+
+		friend struct bfx::MultiHit;
 	};
 
 	class Battle {
+		typedef std::function<void(Battle& battle)> m_func;
 	private:
 		std::vector<bfx::BattleEffect*> battleEffects;
+		std::map<int, m_func> pre_moveFuncs;
+		std::map<int, m_func> post_moveFuncs;
 		mon::Pokemon player;
 		mon::Pokemon rival;
 		mon::Move p_move;
@@ -50,13 +67,21 @@ namespace bat {
 		int rivalCurrentHP;
 		float p_speedMult = 1.0F;
 		float r_speedMult = 1.0F;
-		bool p_grounded = true; // If a pokemon is not grounded, it's immune to flying moves and terrain. 
+		bool p_grounded = true; // If a pokemon is not grounded, it's immune to ground moves and terrain. 
 		bool r_grounded = true;
+		int p_dmgThisTurn = 0;
+		int r_dmgThisTurn = 0;
+		bool attackerIsPlayer = false;
 	public:
 		void Round(mon::Move& playerMove, mon::Move& rivalMove);
+		void WriteToScreen(std::string& message);
 		friend void Turn::Act(Battle& battle);
-		Battle(mon::Pokemon& _player, mon::Pokemon& _rival) :
-			player(_player), rival(_rival), p_move(0), r_move(0), 
-			playerCurrentHP(_player.GetCurrentHP()), rivalCurrentHP(_rival.GetCurrentHP()) {}
+		Battle(mon::Pokemon& _player, mon::Pokemon& _rival);
+		// MoveCode friends
+		friend void mv::IncreasedCriticalOneStage(bat::Battle& battle);
+		friend void mv::Hit2to5Times(bat::Battle& battle);
+		friend void mv::HitTwice(bat::Battle& battle);
+		friend void mv::InstantHealSelf(bat::Battle& battle, int percent);
+		friend void mv::HealOnDamage(bat::Battle& battle, int percent);
 	};
 }

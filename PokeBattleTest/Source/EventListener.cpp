@@ -8,30 +8,31 @@
 #include "date.h"
 #include "UUID.h"
 #include "json.hpp"
+std::queue<std::string> Events::log;
 
-void Events::Log(std::string& msg, std::queue<std::string>& log) {
+void Events::Log(std::string& msg) {
     std::string time = date::format("%F %R", std::chrono::system_clock::now());
     std::string logtext = "@" + time + ": " + msg;
     std::cout << logtext << std::endl;
-    log.push(logtext);
+    Events::log.push(logtext);
 }
 
-void Events::WriteLogToFile(std::queue<std::string>& log) { 
+void Events::WriteLogToFile() { 
     std::string filename = "logs\\" + date::format("%F", std::chrono::system_clock::now()) + "-" + uuid::generate_uuid_v4() + ".txt";
     std::ofstream out(filename);
-    while (!log.empty()) {
-        out << log.front() << std::endl;
-        log.pop();
+    while (!Events::log.empty()) {
+        out << Events::log.front() << std::endl;
+        Events::log.pop();
     }
     out.close();
 }
 
-void Events::EventListener(sf::RenderWindow& window, std::queue<std::string>& log) {
+void Events::EventListener(sf::RenderWindow& window) {
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
     int x = 0, y = 0; // mouse cursor position
 
-    std::tuple<mon::Pokemon, mon::Pokemon> pokemon = sc::PrepareAndConstructPokemon(log);
+    std::tuple<mon::Pokemon, mon::Pokemon> pokemon = sc::PrepareAndConstructPokemon();
     while (window.isOpen())
     {
         std::string msg;
@@ -42,19 +43,20 @@ void Events::EventListener(sf::RenderWindow& window, std::queue<std::string>& lo
             case sf::Event::MouseMoved: // Track where the user's mouse is to detect "button" clicks.
                 x = event.mouseMove.x;
                 y = event.mouseMove.y;
-                //msg = "Detected mouse at " + std::to_string(x) + ", " + std::to_string(y);
-                //Log(msg, log);
                 break;
+
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Button::Left) {
                     // do stuff based on where the button click was detected
                 }
                 break;
+
             case sf::Event::Closed:
                 msg = "The window was closed.";
-                Log(msg, log);
+                Log(msg);
                 window.close();
                 break;
+
             }
         }
 
