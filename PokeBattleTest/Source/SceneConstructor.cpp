@@ -59,12 +59,12 @@ void LogConstructionResults(mon::Pokemon player, mon::Pokemon rival) {
     pInfo += "\nWith move3: " + player.GetMove3().GetName() + ", Type: " + tc::typeToString.at(player.GetMove3().GetType());
     pInfo += "\nWith move4: " + player.GetMove4().GetName() + ", Type: " + tc::typeToString.at(player.GetMove4().GetType());
     pInfo += "\nLevel: " + std::to_string(player.GetLevel());
-    pInfo += "\nHP current: " + std::to_string(player.GetCurrentHP());
-    pInfo += "\nAtk current: " + std::to_string(player.GetCurrentAtk());
-    pInfo += "\nDef current: " + std::to_string(player.GetCurrentDef());
-    pInfo += "\nSpAtk current: " + std::to_string(player.GetCurrentSpAtk());
-    pInfo += "\nSpDef current: " + std::to_string(player.GetCurrentSpDef());
-    pInfo += "\nSpd current: " + std::to_string(player.GetCurrentSpd());
+    pInfo += "\nHP current: " + std::to_string(player.GetFinalHP());
+    pInfo += "\nAtk current: " + std::to_string(player.GetFinalAtk());
+    pInfo += "\nDef current: " + std::to_string(player.GetFinalDef());
+    pInfo += "\nSpAtk current: " + std::to_string(player.GetFinalSpAtk());
+    pInfo += "\nSpDef current: " + std::to_string(player.GetFinalSpDef());
+    pInfo += "\nSpd current: " + std::to_string(player.GetFinalSpd());
     Events::Log(pInfo);
     std::string rInfo = "Created " + rival.GetName() + " for rival.";
     rInfo += "\nWith form: " + rival.GetForm() + ", Type1: " + tc::typeToString.at(rival.GetType1()) + ", Type2: " + tc::typeToString.at(rival.GetType2());
@@ -73,11 +73,11 @@ void LogConstructionResults(mon::Pokemon player, mon::Pokemon rival) {
     rInfo += "\nWith move3: " + rival.GetMove3().GetName() + ", Type: " + tc::typeToString.at(rival.GetMove3().GetType());
     rInfo += "\nWith move4: " + rival.GetMove4().GetName() + ", Type: " + tc::typeToString.at(rival.GetMove4().GetType());
     rInfo += "\nLevel: " + std::to_string(rival.GetLevel());
-    rInfo += "\nHP current: " + std::to_string(rival.GetCurrentHP());
-    rInfo += "\nAtk current: " + std::to_string(rival.GetCurrentAtk());
-    rInfo += "\nDef current: " + std::to_string(rival.GetCurrentDef());
-    rInfo += "\nSpAtk current: " + std::to_string(rival.GetCurrentSpAtk());
-    rInfo += "\nSpDef current: " + std::to_string(rival.GetCurrentSpDef());
-    rInfo += "\nSpd current: " + std::to_string(rival.GetCurrentSpd());
+    rInfo += "\nHP current: " + std::to_string(rival.GetFinalHP());
+    rInfo += "\nAtk current: " + std::to_string(rival.GetFinalAtk());
+    rInfo += "\nDef current: " + std::to_string(rival.GetFinalDef());
+    rInfo += "\nSpAtk current: " + std::to_string(rival.GetFinalSpAtk());
+    rInfo += "\nSpDef current: " + std::to_string(rival.GetFinalSpDef());
+    rInfo += "\nSpd current: " + std::to_string(rival.GetFinalSpd());
     Events::Log(rInfo);
 }

@@ -5,6 +5,7 @@
 
 namespace Events {
 	extern std::queue<std::string> log;
+	void WriteToScreen(std::string& message);
 	void Log(std::string& msg);
 	void WriteLogToFile();
 	void EventListener(sf::RenderWindow& window);

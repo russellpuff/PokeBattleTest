@@ -148,19 +148,19 @@ mon::Pokemon::Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<mon::Move, 
 	}
 
 	// EVs are never read from again so they're not saved. In a more elaborate project, they would be. Nature isn't read from again either.
-	stats.hpCurrent = CalculateCurrentStats(stats.hpBase, p.HPEV, level, true, 1.0); // HP is never affected by nature.
-	stats.atkCurrent = CalculateCurrentStats(stats.atkBase, p.AtkEV, level, false, mods[0]);
-	stats.defCurrent = CalculateCurrentStats(stats.defBase, p.DefEV, level, false, mods[1]);
-	stats.spAtkCurrent = CalculateCurrentStats(stats.spAtkBase, p.SpAtkEV, level, false, mods[2]);
-	stats.spDefCurrent = CalculateCurrentStats(stats.spDefBase, p.SpDefEV, level, false, mods[3]);
-	stats.spdCurrent = CalculateCurrentStats(stats.spdBase, p.SpdEV, level, false, mods[4]);
+	stats.hpFinal = stats.hpCurrent = CalculateCurrentStats(stats.hpBase, p.HPEV, level, true, 1.0); // HP is never affected by nature.
+	stats.atkFinal = CalculateCurrentStats(stats.atkBase, p.AtkEV, level, false, mods[0]);
+	stats.defFinal = CalculateCurrentStats(stats.defBase, p.DefEV, level, false, mods[1]);
+	stats.spAtkFinal = CalculateCurrentStats(stats.spAtkBase, p.SpAtkEV, level, false, mods[2]);
+	stats.spDefFinal = CalculateCurrentStats(stats.spDefBase, p.SpDefEV, level, false, mods[3]);
+	stats.spdFinal = CalculateCurrentStats(stats.spdBase, p.SpdEV, level, false, mods[4]);
 
-	if (name == "Shedinja") { stats.hpCurrent = 1; } // Special exception. 
+	if (name == "Shedinja") { stats.hpFinal = 1; } // Special exception. 
 }
 
 mon::Stats::Stats() { // Fake constructor because C++ is a load of bullshit. 
-	hpBase = atkBase = defBase = spAtkBase = spDefBase = spdBase = hpCurrent = 
-		atkCurrent = defCurrent = spAtkCurrent = spDefCurrent = spdCurrent = 1;
+	hpBase = atkBase = defBase = spAtkBase = spDefBase = spdBase = hpFinal = hpCurrent =
+		atkFinal = defFinal = spAtkFinal = spDefFinal = spdFinal = 1;
 }
 
 sqlite3_stmt* RunQuery(sqlite3* db, std::string q, std::string currentDB) {

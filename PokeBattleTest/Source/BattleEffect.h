@@ -1,20 +1,8 @@
 #pragma once
 #include <string>
-#include "Pokemon.h"
-#include "TypeCategory.h"
 namespace bat { class Turn; } // Forward declaration to avoid an include loop. 
 
 namespace bfx {
-	// This is a special exception to represent either a battle effect going wrong OR it simply not being constructed (on purpose) due to proc.
-	// It's designed to be caught during Turn(), the battle won't be interrupted if it's thrown, the effect will simply not take effect. 
-	class BattleEffectFailed : public std::exception {
-	private:
-		const char* message;
-	public:
-		const char* what() { return message; }
-		BattleEffectFailed(const char* _msg) : message(_msg) {}
-	};
-
 	class BattleEffect { // The parent, the beeg boye.
 	public:
 		enum TurnPhase : short { // What phase of Turn() does this effect take place. 
@@ -28,153 +16,149 @@ namespace bfx {
 		TurnPhase GetTurnPhase() { return turnPhase; }
 		bool GetTarget() { return targetIsPlayer; }
 		int GetDuration() { return duration; }
-		BattleEffect& operator--(); // Decrements duration. 
+		void DecrementDuration() { if (duration > 0) { --duration; } }
 	protected:
 		TurnPhase turnPhase;
 		bool targetIsPlayer; // When true, the target is the PLAYER, when false the target is the RIVAL
 		int duration; // In turns, if this value is -1, it lasts until something causes it to be cancelled.
-		BattleEffect(bool _target, int _duration, TurnPhase _turnphase, int _proc); // Proc is a chance out of 100 for the effect to take place, if it fails, the effect deletes itself.
+		BattleEffect(bool _target, int _duration, TurnPhase _turnphase) :
+			targetIsPlayer(_target), duration(_duration), turnPhase(_turnphase) {}
 	};
 	//
-	// Stat mods
+	// Stat mods. All of these increase or decrease a stat based on stages, resolved in their respective Execute functions.
 	//
 	class ModStat : public BattleEffect {
 	protected:
 		int stages; // Range between -6 and 6.
-		ModStat(bool _target, int _duration, int _proc, int _stages);
+		ModStat(bool _target, int _duration, int _stages) :
+			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted), stages(_stages) {}
 	public:
 		int GetStages() { return stages; }
 	};
 
 	struct ModAttack : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModAttack(bool _target, int _duration, int _proc, int _stages) :
-			ModStat(_target, _duration, _proc, _stages) {}
+		ModAttack(bool _target, int _duration, int _stages) :
+			ModStat(_target, _duration, _stages) {}
 	};
 
 	struct ModDefense : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModDefense(bool _target, int _duration, int _proc, int _stages) :
-			ModStat(_target, _duration, _proc, _stages) {}
+		ModDefense(bool _target, int _duration, int _stages) :
+			ModStat(_target, _duration, _stages) {}
 	};
 
 	struct ModSpecialAttack : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModSpecialAttack(bool _target, int _duration, int _proc, int _stages) :
-			ModStat(_target, _duration, _proc, _stages) {}
+		ModSpecialAttack(bool _target, int _duration, int _stages) :
+			ModStat(_target, _duration, _stages) {}
 	};
 
 	struct ModSpecialDefense : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModSpecialDefense(bool _target, int _duration, int _proc, int _stages) :
-			ModStat(_target, _duration, _proc, _stages) {}
+		ModSpecialDefense(bool _target, int _duration, int _stages) :
+			ModStat(_target, _duration, _stages) {}
 	};
 
 	struct ModSpeed : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModSpeed(bool _target, int _duration, int _proc, int _stages) :
-			ModStat(_target, _duration, _proc, _stages) {}
+		ModSpeed(bool _target, int _duration, int _stages) :
+			ModStat(_target, _duration, _stages) {}
 	};
 
 	struct ModCriticalRatio : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModCriticalRatio(bool _target, int _duration, int _proc, int _stages) :
-			ModStat(_target, _duration, _proc, _stages) {}
+		ModCriticalRatio(bool _target, int _duration, int _stages) :
+			ModStat(_target, _duration, _stages) {}
 	};
 
 	struct ModAccuracy : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModAccuracy(bool _target, int _duration, int _proc, int _stages) :
-			ModStat(_target, _duration, _proc, _stages) {}
+		ModAccuracy(bool _target, int _duration, int _stages) :
+			ModStat(_target, _duration, _stages) {}
 	};
 
 	struct ModEvasion : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModEvasion(bool _target, int _duration, int _proc, int _stages) :
-			ModStat(_target, _duration, _proc, _stages) {}
+		ModEvasion(bool _target, int _duration, int _stages) :
+			ModStat(_target, _duration, _stages) {}
 	};
 	//
 	// Status effects
 	//
 	struct BurnAttackReduction : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		BurnAttackReduction(bool _target, int _duration, int _proc) :
-			BattleEffect(_target, duration, TurnPhase::BeforeMoveExecuted, _proc) {}
+		BurnAttackReduction(bool _target) :
+			BattleEffect(_target, -1, TurnPhase::BeforeMoveExecuted) {}
 	};
 
-	// This is some dumb shit. A tomb of my own making. If BurnAttackReduction fails to construct, the catch will skip over constructing this.
 	struct BurnDamage : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		BurnDamage(bool _target, int _duration) :
-			BattleEffect(_target, _duration, TurnPhase::AfterMoveExecuted, 100) {}
+		BurnDamage(bool _target) :
+			BattleEffect(_target, -1, TurnPhase::AfterMoveExecuted) {}
 	};
 
-	struct DrowsyInterrupt : BattleEffect {
+	struct Drowsy : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		DrowsyInterrupt(bool _target, int _duration, int _proc) :
-			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted, _proc) {}
+		Drowsy(bool _target) :
+			BattleEffect(_target, -1, TurnPhase::BeforeMoveExecuted) {}
 	};
 
 	struct DrowsyDamageBoost : BattleEffect { // This is a positive BattleEffect that buffs the other pokemon while Drowsy is active.
 		void Execute(bat::Turn& turn) override;
-		DrowsyDamageBoost(bool _target, int _duration) :
-			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted, 100) {}
+		DrowsyDamageBoost(bool _target) :
+			BattleEffect(_target, -1, TurnPhase::BeforeMoveExecuted) {}
 	};
 
 	struct Paralysis : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		Paralysis(bool _target, int _duration, int _proc) :
-			BattleEffect(_target, _duration, TurnPhase::DuringOrderCheck, _proc) {}
-	};
-
-	struct ParalysisInterrupt : BattleEffect {
-		void Execute(bat::Turn& turn) override;
-		ParalysisInterrupt(bool _target, int _duration) :
-			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted, 100) {}
+		Paralysis(bool _target) :
+			BattleEffect(_target, -1, TurnPhase::BeforeMoveExecuted) {}
 	};
 
 	struct FrostbiteDamage : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		FrostbiteDamage(bool _target, int _duration, int _proc) :
-			BattleEffect(_target, _duration, TurnPhase::AfterMoveExecuted, _proc) {}
+		FrostbiteDamage(bool _target) :
+			BattleEffect(_target, -1, TurnPhase::AfterMoveExecuted) {}
 	};
 
 	struct FrostbiteSpecialAttackReduction : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		FrostbiteSpecialAttackReduction(bool _target, int _duration) :
-			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted, 100) {}
+		FrostbiteSpecialAttackReduction(bool _target) :
+			BattleEffect(_target, -1, TurnPhase::BeforeMoveExecuted) {}
 	};
 
 	struct Poisoned : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		Poisoned(bool _target, int _duration, int _proc) :
-			BattleEffect(_target, _duration, TurnPhase::AfterMoveExecuted, _proc) {}
+		Poisoned(bool _target) : 
+			BattleEffect(_target, -1, TurnPhase::AfterMoveExecuted) {}
 	};
 
 	struct BadlyPoisoned : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		BadlyPoisoned(bool _target, int _duration, int _proc) :
-			BattleEffect(_target, _duration, TurnPhase::AfterMoveExecuted, _proc) {}
+		BadlyPoisoned(bool _target) : 
+			BattleEffect(_target, -1, TurnPhase::AfterMoveExecuted) {}
 	private:
 		int cumulativeTurns = 1;
 	};
 
 	struct Confusion : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		Confusion(bool _target, int _duration, int _proc) :
-			BattleEffect(_target, _duration, TurnPhase::BeforeUpkeep, _proc) {} // Not sure where to place this. Creates ConfusionInterrupt and ConfusionAttackSelf
-	};
-
-	struct ConfusionInterrupt : BattleEffect {
-		void Execute(bat::Turn& turn) override;
-		ConfusionInterrupt(bool _target, int _duration) :
-			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted, 100) {}
+		Confusion(bool _target, int _duration) :
+			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted) {}
 	};
 
 	struct ConfusionAttackSelf : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		ConfusionAttackSelf(bool _target, int _duration) :
-			BattleEffect(_target, _duration, TurnPhase::AfterMoveExecuted, 100) {}
+		ConfusionAttackSelf(bool _target, int _duration) : 
+			BattleEffect(_target, _duration, TurnPhase::AfterMoveExecuted) {}
+	};
+
+	// One-turn status effect that, if Executed, interrupts the victim's turn. Only Executes if the victim moves after its procced in the same turn.
+	struct Flinch : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		Flinch(bool _target) :
+			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted) {}
 	};
 	//
 	// Weather & Terrain
@@ -183,7 +167,7 @@ namespace bfx {
 	// Other
 	struct MultiHit : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		MultiHit(bool _target, int _hits) : BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, 100), hits(_hits) {}
+		MultiHit(bool _target, int _hits) : BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted), hits(_hits) {}
 	private:
 		int hits;
 	};

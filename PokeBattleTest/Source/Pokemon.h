@@ -16,6 +16,7 @@ namespace mon {
 		int priority;
 		bool procMutable; // If this is false, the move will never miss, regardless of accuracy and evasion modifiers. 
 	public:
+		int GetID() { return moveID; }
 		std::string GetName() { return name; }
 		tc::Type GetType() { return type; }
 		tc::MoveCategory GetCategory() { return category; }
@@ -37,11 +38,12 @@ namespace mon {
 		// Current stats typically use a formula to determine what they are based on level and IVs.
 		// The constructor for Pokemon will do this automatically when reading files. 
 		int hpCurrent;
-		int atkCurrent;
-		int defCurrent;
-		int spAtkCurrent;
-		int spDefCurrent;
-		int spdCurrent;
+		int hpFinal;
+		int atkFinal;
+		int defFinal;
+		int spAtkFinal;
+		int spDefFinal;
+		int spdFinal;
 		Stats();
 	};
 
@@ -76,11 +78,13 @@ namespace mon {
 		int GetBaseSpDef() { return stats.spDefBase; }
 		int GetBaseSpd() { return stats.spdBase; }
 		int GetCurrentHP() { return stats.hpCurrent; }
-		int GetCurrentAtk() { return stats.atkCurrent; }
-		int GetCurrentDef() { return stats.defCurrent; }
-		int GetCurrentSpAtk() { return stats.spAtkCurrent; }
-		int GetCurrentSpDef() { return stats.spDefCurrent; }
-		int GetCurrentSpd() { return stats.spdCurrent; }
+		int GetFinalHP() { return stats.hpFinal; }
+		int GetFinalAtk() { return stats.atkFinal; }
+		int GetFinalDef() { return stats.defFinal; }
+		int GetFinalSpAtk() { return stats.spAtkFinal; }
+		int GetFinalSpDef() { return stats.spDefFinal; }
+		int GetFinalSpd() { return stats.spdFinal; }
+		void ModCurrentHP(int val) { stats.hpCurrent + val; }
 		Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<mon::Move, 4>& m);
 	};
 }

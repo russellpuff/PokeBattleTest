@@ -33,7 +33,7 @@
     <ClCompile Include="Source\BattleEffect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Move.cpp">
+    <ClCompile Include="Source\MoveLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -91,7 +91,7 @@
     <ClInclude Include="Source\BattleEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Move.h">
+    <ClInclude Include="Source\MoveLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

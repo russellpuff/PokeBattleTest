@@ -10,6 +10,11 @@
 #include "json.hpp"
 std::queue<std::string> Events::log;
 
+void Events::WriteToScreen(std::string& message)
+{
+    Log(message);
+}
+
 void Events::Log(std::string& msg) {
     std::string time = date::format("%F %R", std::chrono::system_clock::now());
     std::string logtext = "@" + time + ": " + msg;
