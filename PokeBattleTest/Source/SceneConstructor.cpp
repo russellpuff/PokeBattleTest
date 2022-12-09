@@ -5,6 +5,13 @@
 #include "EventListener.h"
 #include "SceneConstructor.h"
 void LogConstructionResults(mon::Pokemon player, mon::Pokemon rival);
+enum sc::MoveRestriction {
+    NoRestriction,
+    MustUseThisMove,
+    CantUseThisMove
+};
+std::array<sc::MoveRestriction, 4> p_restrictMoves = { sc::NoRestriction, sc::NoRestriction, sc::NoRestriction, sc::NoRestriction };
+std::array<sc::MoveRestriction, 4> r_restrictMoves = { sc::NoRestriction, sc::NoRestriction, sc::NoRestriction, sc::NoRestriction };
 
 std::tuple<mon::Pokemon, mon::Pokemon> sc::PrepareAndConstructPokemon() {
     std::string pMonFile = "resource\\p-pkmn.json";

@@ -5,6 +5,7 @@
 #include "Pokemon.h"
 #include "BattleEffect.h"
 #include "MoveLogic.h"
+#include <queue>
 
 namespace bat {
 	class Battle;
@@ -28,12 +29,15 @@ namespace bat {
 		float d_spAtkMod = 1.0F;
 		float d_spDefMod = 1.0F;
 		float d_spdMod = 1.0F;
+		float a_absoluteDmgMod = 1.0F;
 		// Accuracy and evasion stages, resolved as a part of the Action phase.
 		int a_accuracyStages = 0;
 		int d_evasionStages = 0;
 		// Other mods
 		bool interruptTurn = false; // If this is true, such as from a paralysis battle effect, the pokemon skips their action phase.
 		bool interruptBecauseConfused = false; // A temporary? Workaround to a problem with ConfusionAttackSelf not being able to selectively execute. 
+		bool a_bypassInvulnerable = false;
+		bool d_SemiInvulnerable = false;
 		tc::Type type1Override = tc::Type::NoType;
 		tc::Type type2Override = tc::Type::NoType;
 		int critChance = 24; // Algorithm will generate a number between 1 and this to determine crit. Default 1/24, mod can be 1/8, 1/2, or 1/1 (always crit) 
@@ -42,13 +46,14 @@ namespace bat {
 		bool Act(Battle& battle); // If this returns false, a pokemon was knocked out and the Round() method instantly ends.
 		Turn(mon::Pokemon& _attacker, mon::Pokemon& _defender, mon::Move& _move, bool _atkr) 
 			: attacker(_attacker), defender(_defender), move(_move), attackerIsPlayer(_atkr) {}
-		// friends
+		// BattleEffect friends
 		friend void bfx::ModAttack::Execute(Turn& turn);
 		friend void bfx::ModDefense::Execute(Turn& turn);
 		friend void bfx::ModSpecialAttack::Execute(Turn& turn);
 		friend void bfx::ModSpecialDefense::Execute(Turn& turn);
 		friend void bfx::ModSpeed::Execute(Turn& turn);
 		friend void bfx::ModCriticalRatio::Execute(Turn& turn);
+		friend void bfx::TemporaryCritIncrease::Execute(bat::Turn& turn);
 		friend void bfx::ModAccuracy::Execute(Turn& turn);
 		friend void bfx::ModEvasion::Execute(Turn& turn);
 		friend void bfx::BurnAttackReduction::Execute(Turn& turn);
@@ -65,12 +70,19 @@ namespace bat {
 		friend void bfx::Flinch::Execute(Turn& turn);
 
 		friend struct bfx::MultiHit;
+		friend void bfx::MoveAutoHit::Execute(bat::Turn& turn);
+		friend void bfx::FlatDamageMod::Execute(bat::Turn& turn);
+		friend void bfx::BypassSemiInvulnerable::Execute(bat::Turn& turn);
+		friend void bfx::InterruptMove::Execute(bat::Turn& turn);
 	};
 
 	class Battle {
 		typedef std::function<void(Battle& battle)> m_func;
+		enum MoveRestriction;
 	private:
 		std::vector<std::unique_ptr<bfx::BattleEffect>> battleEffects;
+		std::deque<int> p_movesUsed;
+		std::deque<int> r_movesUsed;
 		std::map<int, m_func> pre_moveFuncs;
 		std::map<int, m_func> post_moveFuncs;
 		mon::Pokemon player;
@@ -84,6 +96,7 @@ namespace bat {
 		int p_dmgThisTurn = 0;
 		int r_dmgThisTurn = 0;
 		bool attackerIsPlayer = false;
+		bool playerGoesFirst = false;
 		bool victorDeclared = false;
 	public:
 		bool GetVictorDeclared() { return victorDeclared; }
@@ -91,28 +104,18 @@ namespace bat {
 		friend bool Turn::Act(Battle& battle);
 		Battle(mon::Pokemon& _player, mon::Pokemon& _rival);
 		// MoveCode friends
-		friend void mv::ChanceStatusEffect(bat::Battle& battle, StatusEffect status, tc::Type typeImmune, int proc);
 		friend void mv::IncreasedCriticalOneStage(bat::Battle& battle);
 		friend void mv::Hit2to5Times(bat::Battle& battle);
 		friend void mv::HitTwice(bat::Battle& battle);
 		friend void mv::InstantHealSelf(bat::Battle& battle, int percent);
 		friend void mv::HealOnDamage(bat::Battle& battle, int percent);
 		friend void mv::ChanceFlinch(bat::Battle& battle, int proc);
-		friend void mv::ChanceBurn(bat::Battle& battle, int proc);
-		friend void mv::ChanceParalyze(bat::Battle& battle, int proc);
-		friend void mv::ChanceDrowsy(bat::Battle& battle, int proc);
-		friend void mv::ChanceFrostbite(bat::Battle& battle, int proc);
-		friend void mv::ChancePoison(bat::Battle& battle, int proc);
-		friend void mv::ChanceBadlyPoison(bat::Battle& battle, int proc);
-		friend void mv::ChanceConfusion(bat::Battle& battle, int proc);
-		friend void mv::ModAttack(bat::Battle& battle, int proc, int stages, bool targetAttacker);
-		friend void mv::ModDefense(bat::Battle& battle, int proc, int stages, bool targetAttacker);
-		friend void mv::ModSpecialAttack(bat::Battle& battle, int proc, int stages, bool targetAttacker);
-		friend void mv::ModSpecialDefense(bat::Battle& battle, int proc, int stages, bool targetAttacker);
-		friend void mv::ModSpeed(bat::Battle& battle, int proc, int stages, bool targetAttacker);
-		friend void mv::ModAccuracy(bat::Battle& battle, int proc, int stages, bool targetAttacker);
-		friend void mv::ModEvasion(bat::Battle& battle, int proc, int stages, bool targetAttacker);
-		friend void mv::ModCritical(bat::Battle& battle, int proc, int stages, bool targetAttacker);
-		friend void mv::ModMultipleStats(bat::Battle& battle, int atk, int def, int spatk, int spdef, int spd, int acc, int eva, bool targetAttacker);
+		friend void mv::ChanceStatusEffect(bat::Battle& battle, StatusEffect status, tc::Type typeImmune, int proc);
+		friend void mv::ModMultipleStats(bat::Battle& battle, int proc, int atk, int def, int spatk, int spdef, int spd, int acc, int eva, int crit, bool targetAttacker);
+		friend void mv::CheckTargetMinimized(bat::Battle& battle);
+		friend void mv::CanHitDuringFlyFreefall(bat::Battle& battle, bool moveIsSwift);
+		friend void mv::CanHitDuringDig(bat::Battle& battle, bool moveIsSwift);
+		friend void mv::CanHitDuringDive(bat::Battle& battle, bool moveIsSwift);
+		friend void mv::CanHitDuringPhantomForce(bat::Battle& battle);
 	};
 }

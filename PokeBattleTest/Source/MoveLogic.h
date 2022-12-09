@@ -67,7 +67,6 @@ namespace mv {
 	// Dark Pulse - 20%
 	// Mythic Rush - 20%
 	// Twister - 20%
-	// Disarming Voice - 10%
 	// Heart Stamp - 30%
 	// Zen Headbutt - 20%
 	// Air Slash - 20%
@@ -145,7 +144,7 @@ namespace mv {
 	// Metal Claw - 10%, +1 stage, attacker
 	// Meteor Mash - 20%, +1 stage, attacker
 	// Aurora Beam - 20%, -1 stage, defender
-	// Grow - 100%, -2 stages, defender
+	// Growl - 100%, -2 stages, defender
 	void ModAttack(bat::Battle& battle, int proc, int stages, bool targetAttacker); // post
 
 	// Crunch - 20%, -1 stage, defender
@@ -209,9 +208,9 @@ namespace mv {
 	void ModSpeed(bat::Battle& battle, int proc, int stages, bool targetAttacker); // post
 
 	// Night Daze - 40%, -1 stage, defender
-	// MudBomb - 30%, -1 stage, defender
-	// Reflecting Shot, -1 stage, defender
-	// Flash, -1 stage, defender
+	// Mud Bomb - 30%, -1 stage, defender
+	// Reflecting Shot - 30%, -1 stage, defender
+	// Flash - 100%, -1 stage, defender
 	void ModAccuracy(bat::Battle& battle, int proc, int stages, bool targetAttacker);
 
 	// Double Team - 100%, +1 stage, attacker
@@ -223,7 +222,7 @@ namespace mv {
 	void ModCritical(bat::Battle& battle, int proc, int stages, bool targetAttacker);
 
 	// Struggle Bug : 0/0/-1/-1/0/0/0/0, defender
-	// Struggle Bug : 0/1/0/1/0/0/0/0, attacker
+	// Defend Order : 0/1/0/1/0/0/0/0, attacker
 	// Quiver Dance : 0/0/1/1/1/0/0/0, attacker
 	// Snarl : -1/0/-1/0/0/0/0/0, defender
 	// Hone Claws : 1/0/0/0/0/1/0/0, attacker
@@ -252,19 +251,26 @@ namespace mv {
 
 	// Steam Roller
 	// Mythic Rush
+	// Feint Attack
+	// Shock Wave
+	// Aura Sphere
+	// Aerial Ace
+	// Umbral Punch
+	// Magnet Bomb
+	// Magical Leaf
 	void CheckTargetMinimized(bat::Battle& battle); // pre
 
 	// Twister
 	// Sky Uppercut
 	// Gust
 	// Hurricane
-	void CanHitDuringFlyFreefall(bat::Battle& battle); // pre
+	void CanHitDuringFlyFreefall(bat::Battle& battle, bool moveIsSwift); // pre
 
 	// Earthquake
-	void CanHitDuringDig(bat::Battle& battle); // pre
+	void CanHitDuringDig(bat::Battle& battle, bool moveIsSwift); // pre
 
 	// Surf
-	void CanHitDuringDive(bat::Battle& battle); // pre
+	void CanHitDuringDive(bat::Battle& battle, bool moveIsSwift); // pre
 	void CanHitDuringPhantomForce(bat::Battle& battle); // pre
 
 	// Solar Blade
@@ -470,4 +476,5 @@ namespace mv {
 	void Corrode(bat::Battle& battle); // 10% chance to lower the target's Defense and Special Defense by 1 stage each. 
 	void AncientPower(bat::Battle& battle); // 10% chance to raise the user's Attack, Defense, Special Attack, Special Defense, and Speed by 1 stage each. 
 	void OminousWind(bat::Battle& battle); // 10% chance to raise the user's Attack, Defense, Special Attack, Special Defense, and Speed by 1 stage each. 
+	void DisarmingVoice(bat::Battle& battle); // 10% chance to flinch the target, is surehit so it checks target minimized.
 }

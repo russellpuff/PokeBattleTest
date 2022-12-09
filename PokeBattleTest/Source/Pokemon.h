@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <array>
 #include "JsonStructs.h"
 #include "TypeCategory.h"
 namespace mon {
@@ -84,7 +83,7 @@ namespace mon {
 		int GetFinalSpAtk() { return stats.spAtkFinal; }
 		int GetFinalSpDef() { return stats.spDefFinal; }
 		int GetFinalSpd() { return stats.spdFinal; }
-		void ModCurrentHP(int val) { stats.hpCurrent + val; }
+		void ModCurrentHP(int val) { stats.hpCurrent += val; }
 		Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<mon::Move, 4>& m);
 	};
 }

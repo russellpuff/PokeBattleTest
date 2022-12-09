@@ -30,58 +30,64 @@ namespace bfx {
 	class ModStat : public BattleEffect {
 	protected:
 		int stages; // Range between -6 and 6.
-		ModStat(bool _target, int _duration, int _stages) :
-			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted), stages(_stages) {}
+		ModStat(bool _target, int _stages);
 	public:
 		int GetStages() { return stages; }
+		int ModStages(int mod);
 	};
 
 	struct ModAttack : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModAttack(bool _target, int _duration, int _stages) :
-			ModStat(_target, _duration, _stages) {}
+		ModAttack(bool _target, int _stages) :
+			ModStat(_target, _stages) {}
 	};
 
 	struct ModDefense : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModDefense(bool _target, int _duration, int _stages) :
-			ModStat(_target, _duration, _stages) {}
+		ModDefense(bool _target, int _stages) :
+			ModStat(_target, _stages) {}
 	};
 
 	struct ModSpecialAttack : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModSpecialAttack(bool _target, int _duration, int _stages) :
-			ModStat(_target, _duration, _stages) {}
+		ModSpecialAttack(bool _target, int _stages) :
+			ModStat(_target, _stages) {}
 	};
 
 	struct ModSpecialDefense : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModSpecialDefense(bool _target, int _duration, int _stages) :
-			ModStat(_target, _duration, _stages) {}
+		ModSpecialDefense(bool _target, int _stages) :
+			ModStat(_target, _stages) {}
 	};
 
 	struct ModSpeed : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModSpeed(bool _target, int _duration, int _stages) :
-			ModStat(_target, _duration, _stages) {}
-	};
-
-	struct ModCriticalRatio : ModStat {
-		void Execute(bat::Turn& turn) override;
-		ModCriticalRatio(bool _target, int _duration, int _stages) :
-			ModStat(_target, _duration, _stages) {}
+		ModSpeed(bool _target,int _stages) :
+			ModStat(_target, _stages) {}
 	};
 
 	struct ModAccuracy : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModAccuracy(bool _target, int _duration, int _stages) :
-			ModStat(_target, _duration, _stages) {}
+		ModAccuracy(bool _target, int _stages) :
+			ModStat(_target, _stages) {}
 	};
 
 	struct ModEvasion : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModEvasion(bool _target, int _duration, int _stages) :
-			ModStat(_target, _duration, _stages) {}
+		ModEvasion(bool _target, int _stages) :
+			ModStat(_target, _stages) {}
+	};
+
+	struct ModCriticalRatio : ModStat {
+		void Execute(bat::Turn& turn) override;
+		ModCriticalRatio(bool _target, int _stages) :
+			ModStat(_target, _stages) {}
+	};
+
+	struct TemporaryCritIncrease : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		TemporaryCritIncrease(bool _target) :
+			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted) {}
 	};
 	//
 	// Status effects
@@ -167,8 +173,35 @@ namespace bfx {
 	// Other
 	struct MultiHit : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		MultiHit(bool _target, int _hits) : BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted), hits(_hits) {}
+		MultiHit(bool _target, int _hits) : 
+			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted), hits(_hits) {}
 	private:
 		int hits;
+	};
+
+	struct MoveAutoHit : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		MoveAutoHit(bool _target) :
+			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted) {}
+	};
+
+	struct FlatDamageMod : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		FlatDamageMod(bool _target, int _duration, float _mod) :
+			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted), mod(_mod) {}
+	private:
+		float mod;
+	};
+
+	struct BypassSemiInvulnerable : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		BypassSemiInvulnerable(bool _target) :
+			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted) {}
+	};
+
+	struct InterruptMove : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		InterruptMove(bool _target, int _duration) :
+			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted) {}
 	};
 }

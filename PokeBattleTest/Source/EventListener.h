@@ -9,5 +9,4 @@ namespace Events {
 	void Log(std::string& msg);
 	void WriteLogToFile();
 	void EventListener(sf::RenderWindow& window);
-	std::tuple<mon::Pokemon, mon::Pokemon> PrepareAndConstructPokemon();
 }
