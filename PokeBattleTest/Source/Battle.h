@@ -38,8 +38,11 @@ namespace bat {
 		bool interruptBecauseConfused = false; // A temporary? Workaround to a problem with ConfusionAttackSelf not being able to selectively execute. 
 		bool a_bypassInvulnerable = false;
 		bool d_SemiInvulnerable = false;
-		tc::Type type1Override = tc::Type::NoType;
-		tc::Type type2Override = tc::Type::NoType;
+		tc::Type a_type1Override = tc::Type::NoType;
+		tc::Type a_type2Override = tc::Type::NoType;
+		tc::Type d_type1Override = tc::Type::NoType;
+		tc::Type d_type2Override = tc::Type::NoType;
+		tc::Type a_moveTypeOverride = tc::Type::NoType;
 		int critChance = 24; // Algorithm will generate a number between 1 and this to determine crit. Default 1/24, mod can be 1/8, 1/2, or 1/1 (always crit) 
 		int numAttacks = 1; // Some BattleEffects hit twice, others 2-5 times.
 	public:
@@ -69,11 +72,20 @@ namespace bat {
 		friend void bfx::ConfusionAttackSelf::Execute(Turn& turn);
 		friend void bfx::Flinch::Execute(Turn& turn);
 
-		friend struct bfx::MultiHit;
+		friend void bfx::ElectricTerrain::Execute(bat::Turn& turn);
+		friend void bfx::MistyTerrain::Execute(bat::Turn& turn);
+		friend void bfx::PsychicTerrain::Execute(bat::Turn& turn);
+		friend void bfx::GrassyTerrain::Execute(bat::Turn& turn);
+
+		friend void bfx::MultiHit::Execute(bat::Turn& turn);
 		friend void bfx::MoveAutoHit::Execute(bat::Turn& turn);
 		friend void bfx::FlatDamageMod::Execute(bat::Turn& turn);
 		friend void bfx::BypassSemiInvulnerable::Execute(bat::Turn& turn);
 		friend void bfx::InterruptMove::Execute(bat::Turn& turn);
+		friend void bfx::DamageTrap::Execute(bat::Turn& turn);
+		friend void bfx::ReflectDefenseBoost::Execute(bat::Turn& turn);
+		friend void bfx::LightScreenSpecialDefenseBoost::Execute(bat::Turn& turn);
+		friend void bfx::AuroraVeilDefSpdefBoost::Execute(bat::Turn& turn);
 	};
 
 	class Battle {
@@ -91,8 +103,6 @@ namespace bat {
 		mon::Move r_move;
 		float p_speedMult = 1.0F;
 		float r_speedMult = 1.0F;
-		bool p_grounded = true; // If a pokemon is not grounded, it's immune to ground moves and terrain. 
-		bool r_grounded = true;
 		int p_dmgThisTurn = 0;
 		int r_dmgThisTurn = 0;
 		bool attackerIsPlayer = false;
@@ -103,7 +113,7 @@ namespace bat {
 		void Round(mon::Move& playerMove, mon::Move& rivalMove);
 		friend bool Turn::Act(Battle& battle);
 		Battle(mon::Pokemon& _player, mon::Pokemon& _rival);
-		// MoveCode friends
+		// MoveLogic friends
 		friend void mv::IncreasedCriticalOneStage(bat::Battle& battle);
 		friend void mv::Hit2to5Times(bat::Battle& battle);
 		friend void mv::HitTwice(bat::Battle& battle);
@@ -114,8 +124,15 @@ namespace bat {
 		friend void mv::ModMultipleStats(bat::Battle& battle, int proc, int atk, int def, int spatk, int spdef, int spd, int acc, int eva, int crit, bool targetAttacker);
 		friend void mv::CheckTargetMinimized(bat::Battle& battle);
 		friend void mv::CanHitDuringFlyFreefall(bat::Battle& battle, bool moveIsSwift);
-		friend void mv::CanHitDuringDig(bat::Battle& battle, bool moveIsSwift);
-		friend void mv::CanHitDuringDive(bat::Battle& battle, bool moveIsSwift);
-		friend void mv::CanHitDuringPhantomForce(bat::Battle& battle);
+		friend void mv::CanHitDuringSemiInvulnerable(bat::Battle& battle, int moveID, bool moveIsSwift);
+		friend void mv::DoublePowerIfStatusEffect(bat::Battle& battle);
+		friend void mv::PassiveDamageTrap(bat::Battle& battle, std::string cause);
+		friend void mv::Reflect(bat::Battle& battle);
+		friend void mv::LightScreen(bat::Battle& battle);
+		friend void mv::AuroraVeil(bat::Battle& battle);
+		friend void mv::ElectricField(bat::Battle& battle);
+		friend void mv::MistField(bat::Battle& battle);
+		friend void mv::PsychoField(bat::Battle& battle);
+		friend void mv::GrassField(bat::Battle& battle);
 	};
 }

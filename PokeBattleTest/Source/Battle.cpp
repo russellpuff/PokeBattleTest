@@ -17,13 +17,14 @@ void bat::Battle::Round(mon::Move& playerMove, mon::Move& rivalMove) // Battle::
 		// Calculate speed
 		for (const std::unique_ptr<bfx::BattleEffect>& b : battleEffects) {
 			// Check for paralysis.
-			if (dynamic_cast<bfx::Paralysis*>(b.get()) != nullptr && b.get()->GetTarget() == true) { p_speedMult *= 0.5F; }
-			if (dynamic_cast<bfx::Paralysis*>(b.get()) != nullptr && b.get()->GetTarget() == false) { r_speedMult *= 0.5F; }
+			if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::ParalysisStatus) {
+				if (b.get()->GetTarget()) { p_speedMult *= 0.5F; } else { r_speedMult *= 0.5F; }
+			}
 			// Check for speed mods.
-			if (dynamic_cast<bfx::ModSpeed*>(b.get()) != nullptr && b.get()->GetTarget() == true)
-			{ p_speedMult *= StageMultiplier(dynamic_cast<bfx::ModSpeed*>(b.get())->GetStages()); }
-			if (dynamic_cast<bfx::ModSpeed*>(b.get()) != nullptr && b.get()->GetTarget() == false)
-			{ r_speedMult *= StageMultiplier(dynamic_cast<bfx::ModSpeed*>(b.get())->GetStages()); }
+			if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::SpeedMod) {
+				if (b.get()->GetTarget()) { p_speedMult *= StageMultiplier(dynamic_cast<bfx::ModSpeed*>(b.get())->GetStages()); }
+				else { r_speedMult *= StageMultiplier(dynamic_cast<bfx::ModSpeed*>(b.get())->GetStages()); }
+			}
 		}
 
 		int p_speed = std::floor(player.GetFinalSpd() * p_speedMult);
@@ -144,12 +145,13 @@ bat::Battle::Battle(mon::Pokemon& _player, mon::Pokemon& _rival) :
 	pre_moveFuncs.emplace(297, std::bind(&mv::CheckTargetMinimized, std::placeholders::_1)); // Umbral Punch
 	pre_moveFuncs.emplace(311, std::bind(&mv::CheckTargetMinimized, std::placeholders::_1)); // Magnet Bomb
 	pre_moveFuncs.emplace(365, std::bind(&mv::CheckTargetMinimized, std::placeholders::_1)); // Magical Leaf
-	pre_moveFuncs.emplace(67, std::bind(&mv::CanHitDuringFlyFreefall, std::placeholders::_1)); // Twister
-	pre_moveFuncs.emplace(202, std::bind(&mv::CanHitDuringFlyFreefall, std::placeholders::_1)); // Sky Uppercut
-	pre_moveFuncs.emplace(228, std::bind(&mv::CanHitDuringFlyFreefall, std::placeholders::_1)); // Gust
-	pre_moveFuncs.emplace(229, std::bind(&mv::CanHitDuringFlyFreefall, std::placeholders::_1)); // Hurricane
-	pre_moveFuncs.emplace(260, std::bind(&mv::CanHitDuringDig, std::placeholders::_1, false)); // Earthquake
-	pre_moveFuncs.emplace(343, std::bind(&mv::CanHitDuringDive, std::placeholders::_1, false)); // Surf
+	pre_moveFuncs.emplace(67, std::bind(&mv::CanHitDuringFlyFreefall, std::placeholders::_1, false)); // Twister
+	pre_moveFuncs.emplace(202, std::bind(&mv::CanHitDuringFlyFreefall, std::placeholders::_1, false)); // Sky Uppercut
+	pre_moveFuncs.emplace(228, std::bind(&mv::CanHitDuringFlyFreefall, std::placeholders::_1, false)); // Gust
+	pre_moveFuncs.emplace(229, std::bind(&mv::CanHitDuringFlyFreefall, std::placeholders::_1, false)); // Hurricane
+	pre_moveFuncs.emplace(260, std::bind(&mv::CanHitDuringSemiInvulnerable, std::placeholders::_1, 258, false)); // Earthquake
+	pre_moveFuncs.emplace(343, std::bind(&mv::CanHitDuringSemiInvulnerable, std::placeholders::_1, 328, false)); // Surf
+	pre_moveFuncs.emplace(299, std::bind(&mv::DoublePowerIfStatusEffect, std::placeholders::_1)); // Hex
 
 	post_moveFuncs.emplace(8, std::bind(&mv::Hit2to5Times, std::placeholders::_1)); // Pin Missile
 	post_moveFuncs.emplace(38, std::bind(&mv::Hit2to5Times, std::placeholders::_1)); // Harass
@@ -203,7 +205,6 @@ bat::Battle::Battle(mon::Pokemon& _player, mon::Pokemon& _rival) :
 	post_moveFuncs.emplace(73, std::bind(&mv::ChanceParalyze, std::placeholders::_1, 100)); // Nuzzle
 	post_moveFuncs.emplace(75, std::bind(&mv::ChanceParalyze, std::placeholders::_1, 20)); // Spark Punch
 	post_moveFuncs.emplace(77, std::bind(&mv::ChanceParalyze, std::placeholders::_1, 30)); // Discharge
-	post_moveFuncs.emplace(79, std::bind(&mv::ChanceParalyze, std::placeholders::_1, 30)); // Lightning Strike
 	post_moveFuncs.emplace(84, std::bind(&mv::ChanceParalyze, std::placeholders::_1, 10)); // Thunderbolt
 	post_moveFuncs.emplace(86, std::bind(&mv::ChanceParalyze, std::placeholders::_1, 100)); // Zap Cannon
 	post_moveFuncs.emplace(93, std::bind(&mv::ChanceParalyze, std::placeholders::_1, 100)); // Stun Wave
@@ -214,7 +215,6 @@ bat::Battle::Battle(mon::Pokemon& _player, mon::Pokemon& _rival) :
 	post_moveFuncs.emplace(423, std::bind(&mv::ChanceDrowsy, std::placeholders::_1, 20)); // Relic Song
 	post_moveFuncs.emplace(227, std::bind(&mv::ChanceFrostbite, std::placeholders::_1, 30)); // Bleakwind Storm
 	post_moveFuncs.emplace(380, std::bind(&mv::ChanceFrostbite, std::placeholders::_1, 20)); // Freeze Punch
-	post_moveFuncs.emplace(386, std::bind(&mv::ChanceFrostbite, std::placeholders::_1, 20)); // Blizzard
 	post_moveFuncs.emplace(390, std::bind(&mv::ChanceFrostbite, std::placeholders::_1, 20)); // Ice beam
 	post_moveFuncs.emplace(237, std::bind(&mv::ChancePoison, std::placeholders::_1, 30)); // Barbed Strike
 	post_moveFuncs.emplace(238, std::bind(&mv::ChancePoison, std::placeholders::_1, 10)); // Cross Poison
@@ -318,4 +318,13 @@ bat::Battle::Battle(mon::Pokemon& _player, mon::Pokemon& _rival) :
 	post_moveFuncs.emplace(479, std::bind(&mv::ModMultipleStats, std::placeholders::_1, 100, 2, 0, 2, 0, 0, 0, 0, 0, true)); // Swords Dance
 	post_moveFuncs.emplace(484, std::bind(&mv::ModMultipleStats, std::placeholders::_1, 100, -1, -1, 0, 0, 0, 0, 0, 0, false)); // Tickle
 	post_moveFuncs.emplace(488, std::bind(&mv::ModMultipleStats, std::placeholders::_1, 100, 1, 0, 0, 0, 1, 0, 0, 0, true)); // Work Up
+	post_moveFuncs.emplace(15, std::bind(&mv::PassiveDamageTrap, std::placeholders::_1, "Infestation"));
+	post_moveFuncs.emplace(83, std::bind(&mv::PassiveDamageTrap, std::placeholders::_1, "Thunder Cage"));
+	post_moveFuncs.emplace(129, std::bind(&mv::PassiveDamageTrap, std::placeholders::_1, "Heat Swirl"));
+	post_moveFuncs.emplace(264, std::bind(&mv::PassiveDamageTrap, std::placeholders::_1, "Sand Tomb"));
+	post_moveFuncs.emplace(344, std::bind(&mv::PassiveDamageTrap, std::placeholders::_1, "Whirlpool"));
+	post_moveFuncs.emplace(395, std::bind(&mv::PassiveDamageTrap, std::placeholders::_1, "Bind"));
+	post_moveFuncs.emplace(172, std::bind(&mv::Reflect, std::placeholders::_1));
+	post_moveFuncs.emplace(164, std::bind(&mv::LightScreen, std::placeholders::_1));
+	post_moveFuncs.emplace(492, std::bind(&mv::AuroraVeil, std::placeholders::_1));
 }

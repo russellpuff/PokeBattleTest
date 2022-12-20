@@ -94,7 +94,6 @@ namespace mv {
 	// Nuzzle - 100%
 	// Spark Punch - 20%
 	// Discharge - 30%
-	// Lightning Strike - 30%
 	// Thunderbolt - 10%
 	// Zap Cannon - 100%
 	// Stun Wave - 100%
@@ -109,7 +108,6 @@ namespace mv {
 
 	// Bleakwind Storm - 30%
 	// Freeze Punch - 20%
-	// Blizzard - 20%
 	// Ice Beam - 20%
 	void ChanceFrostbite(bat::Battle& battle, int proc); // post
 
@@ -266,12 +264,9 @@ namespace mv {
 	// Hurricane
 	void CanHitDuringFlyFreefall(bat::Battle& battle, bool moveIsSwift); // pre
 
-	// Earthquake
-	void CanHitDuringDig(bat::Battle& battle, bool moveIsSwift); // pre
-
-	// Surf
-	void CanHitDuringDive(bat::Battle& battle, bool moveIsSwift); // pre
-	void CanHitDuringPhantomForce(bat::Battle& battle); // pre
+	// Earthquake, 258, false
+	// Surf, 328, false
+	void CanHitDuringSemiInvulnerable(bat::Battle& battle, int moveID, bool moveIsSwift); // pre
 
 	// Solar Blade
 	// Solar Beam
@@ -297,31 +292,31 @@ namespace mv {
 	// Sand Tomb
 	// Whirlpool
 	// Bind
-	void PassiveDamageTrap(bat::Battle& battle); // post
-
-	void LightningStrikeCheckRain(bat::Battle& battle); // pre
-	void BlizzardCheckForHail(bat::Battle& battle); // pre
+	void PassiveDamageTrap(bat::Battle& battle, std::string cause); // post
 
 	void ElectricField(bat::Battle& battle); // Creates Electric terrain for 5 turns.
-	void IonDeluge(bat::Battle& battle); // Causes all Normal moves to become Electric moves for 3 turns. 
-	void SunnyDay(bat::Battle& battle); // Creates harsh sunlight for 5 turns. 
-	void MistyTerrain(bat::Battle& battle); // Creates Misty terrain for 5 turns.
-	void Gravity(bat::Battle& battle); // Creates intense gravity for 5 turns.
-	void MagicRoom(bat::Battle& battle); // Creates magic room for 5 turns. 
+	void MistField(bat::Battle& battle); // Creates Misty terrain for 5 turns.
 	void PsychoField(bat::Battle& battle); // Creates psychic terrain for 5 turns. 
+	void GrassField(bat::Battle& battle); // Creates grassy terrain for 5 turns. 
+
+	void SunnyDay(bat::Battle& battle); // Creates harsh sunlight for 5 turns.
+	void RainDance(bat::Battle& battle); // Creates rain for 5 turns. 
+	void Sandstorm(bat::Battle& battle); // Creates sandstorm for 5 turns.
+	void Hail(bat::Battle& battle); // Creates hail for 5 turns. 
+	void Turbulence(bat::Battle& battle); // Creates Strong Winds for 5 turns.
+	void Gravity(bat::Battle& battle); // Creates intense gravity for 5 turns.
+
+	void MagicRoom(bat::Battle& battle); // Creates magic room for 5 turns. 
 	void TrickRoom(bat::Battle& battle); // Creates trick room for 5 turns. 
 	void WonderRoom(bat::Battle& battle); // Creates wonder room for 5 turns.
-	void Sandstorm(bat::Battle& battle); // Creates sandstorm for 5 turns.
+
 	void MudSport(bat::Battle& battle); // Base power of all Electric-type moves is reduced by 67% for 5 turns.
-	void RainDance(bat::Battle& battle); // Creates rain for 5 turns. 
 	void SplashSport(bat::Battle& battle); // Base power of all Fire-type moves is reduced by 67% for 5 turns. 
-	void Hail(bat::Battle& battle); // Creates hail for 5 turns. 
-	void GrassField(bat::Battle& battle); // Creates grassy terrain for 5 turns. 
-	void Turbulence(bat::Battle& battle); // Creates Strong Winds for 5 turns.
+	void IonDeluge(bat::Battle& battle); // Causes all Normal moves to become Electric moves for 3 turns. 
 
 	void LightScreen(bat::Battle& battle); // Halves damage done to user and allies from Special moves. 
 	void Reflect(bat::Battle& battle); // Halves damage done to user and allies from Physical moves. 
-	void AuroraVeil(bat::Battle& battle); // Halves damage done to user from Physical and Special moves. If allies are present, all benefit but only reduces damage by 33%
+	void AuroraVeil(bat::Battle& battle); // Reduce damage by physical and special moves by 33%
 
 	void FuryCutter(bat::Battle& battle); // Power doubles on consecutive hits to a maximum of 160.
 	void TwinNeedle(bat::Battle& battle); // Hits twice. Each strike has a 20% chance to Poison.
@@ -477,4 +472,6 @@ namespace mv {
 	void AncientPower(bat::Battle& battle); // 10% chance to raise the user's Attack, Defense, Special Attack, Special Defense, and Speed by 1 stage each. 
 	void OminousWind(bat::Battle& battle); // 10% chance to raise the user's Attack, Defense, Special Attack, Special Defense, and Speed by 1 stage each. 
 	void DisarmingVoice(bat::Battle& battle); // 10% chance to flinch the target, is surehit so it checks target minimized.
+	void LightningStrike(bat::Battle& battle);
+	void Blizzard(bat::Battle& battle);
 }

@@ -6,8 +6,8 @@
 #include "BattleEffect.h"
 float ModStageMultiplier(int stageVal);
 
-bfx::ModStat::ModStat(bool _target, int _stages) :
-	BattleEffect(_target, -1, TurnPhase::BeforeMoveExecuted)
+bfx::ModStat::ModStat(bool _target, int _stages, ChildType _childtype) :
+	BattleEffect(_target, -1, TurnPhase::BeforeMoveExecuted, _childtype)
 {
 	stages = 0;
 	ModStages(_stages);
@@ -276,4 +276,74 @@ float ModStageMultiplier(int stageVal) { // Rounds to 3 decimal places because I
 	else { return roundf((2.0F / (2.0F - stageVal)) * 1000.0F) / 1000.0F; }
 }
 
+void bfx::DamageTrap::Execute(bat::Turn& turn)
+{
+	if (targetIsPlayer == turn.attackerIsPlayer) {
+		int dmgVal = std::floor(turn.attacker.GetFinalHP() / 8.0F) * -1;
+		turn.attacker.ModCurrentHP(dmgVal);
+		std::string msg = turn.attacker.GetName() + " took damage from the " + cause;
+		Events::WriteToScreen(msg);
+		msg = "Attacker took " + std::to_string(dmgVal) + " damage.";
+		Events::Log(msg);
+	}
+}
 
+bfx::DamageTrap::~DamageTrap()
+{
+	std::string msg = cause + " wore off.";
+	Events::WriteToScreen(msg);
+}
+
+void bfx::ReflectDefenseBoost::Execute(bat::Turn& turn)
+{
+	if (targetIsPlayer != turn.attackerIsPlayer) { turn.d_defMod *= 2.0F; }
+}
+
+bfx::ReflectDefenseBoost::~ReflectDefenseBoost() {
+	std::string msg = "Reflect wore off.";
+	Events::WriteToScreen(msg);
+}
+
+void bfx::LightScreenSpecialDefenseBoost::Execute(bat::Turn& turn)
+{
+	if (targetIsPlayer != turn.attackerIsPlayer) { turn.d_spDefMod *= 2.0F; }
+}
+
+
+bfx::LightScreenSpecialDefenseBoost::~LightScreenSpecialDefenseBoost() {
+	std::string msg = "Light Screen wore off.";
+	Events::WriteToScreen(msg);
+}
+
+void bfx::AuroraVeilDefSpdefBoost::Execute(bat::Turn& turn)
+{
+	if (targetIsPlayer != turn.attackerIsPlayer) { 
+		turn.d_defMod *= 2732.0F / 4096.0F;
+		turn.d_spDefMod *= 2732.0F / 4096.0F;
+	}
+}
+
+bfx::AuroraVeilDefSpdefBoost::~AuroraVeilDefSpdefBoost() {
+	std::string msg = "Aurora Veil wore off.";
+	Events::WriteToScreen(msg);
+}
+
+void bfx::ElectricTerrain::Execute(bat::Turn& turn)
+{
+	if (turn.attackerIsPlayer && turn.a_groun)
+}
+
+void bfx::MistyTerrain::Execute(bat::Turn& turn)
+{
+
+}
+
+void bfx::PsychicTerrain::Execute(bat::Turn& turn)
+{
+
+}
+
+void bfx::GrassyTerrain::Execute(bat::Turn& turn)
+{
+
+}
