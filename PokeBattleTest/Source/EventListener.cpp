@@ -37,7 +37,7 @@ void Events::EventListener(sf::RenderWindow& window) {
     shape.setFillColor(sf::Color::Green);
     int x = 0, y = 0; // mouse cursor position
 
-    std::tuple<mon::Pokemon, mon::Pokemon> pokemon = sc::PrepareAndConstructPokemon();
+    std::tuple<pkmn::Pokemon, pkmn::Pokemon> pokemon = sc::PrepareAndConstructPokemon();
     while (window.isOpen())
     {
         std::string msg;

@@ -8,7 +8,7 @@
 sqlite3_stmt* RunQuery(sqlite3* db, std::string q, std::string currentDB);
 int CalculateCurrentStats(int base, int ev, int level, bool isHP, float mod);
 
-mon::Move::Move(int _moveID) {
+pkmn::Move::Move(int _moveID) {
 	sqlite3* movedb;
 	int rc = sqlite3_open("resource\\move.db", &movedb); // Load move.db
 	if (rc) {
@@ -53,7 +53,7 @@ mon::Move::Move(int _moveID) {
 	sqlite3_finalize(st);
 }
 
-mon::Pokemon::Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<mon::Move, 4>& m) : moves(m)
+pkmn::Pokemon::Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<pkmn::Move, 4>& m) : moves(m)
 {
 	sqlite3* speciesdb;
 	int rc = sqlite3_open("resource\\species.db", &speciesdb); // Load species.db
@@ -158,7 +158,7 @@ mon::Pokemon::Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<mon::Move, 
 	if (name == "Shedinja") { stats.hpFinal = 1; } // Special exception. 
 }
 
-mon::Stats::Stats() { // Fake constructor because C++ is a load of bullshit. 
+pkmn::Stats::Stats() { // Fake constructor because C++ is a load of bullshit. 
 	hpBase = atkBase = defBase = spAtkBase = spDefBase = spdBase = hpFinal = hpCurrent =
 		atkFinal = defFinal = spAtkFinal = spDefFinal = spdFinal = 1;
 }

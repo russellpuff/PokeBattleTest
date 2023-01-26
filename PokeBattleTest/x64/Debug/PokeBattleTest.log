@@ -1,4 +1,5 @@
-﻿  Battle.cpp
+﻿  Program.cpp
+  Battle.cpp
 C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\Battle.cpp(30,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\Battle.cpp(31,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\Battle.cpp(78,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
@@ -10,8 +11,22 @@ C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\BattleEffect.cpp(
 C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\BattleEffect.cpp(134,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\BattleEffect.cpp(175,11): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\BattleEffect.cpp(282,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\BattleEffect.cpp(380,16): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\BattleEffect.cpp(401,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\BattleEffect.cpp(454,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\BattleEffect.cpp(476,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  EventListener.cpp
   MoveLogic.cpp
-C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\MoveLogic.cpp(48,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\MoveLogic.cpp(67,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\MoveLogic.cpp(619,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\MoveLogic.cpp(638,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Pokemon.cpp
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\Pokemon.cpp(152,85): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\Pokemon.cpp(153,85): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\Pokemon.cpp(154,91): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\Pokemon.cpp(155,91): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\Pokemon.cpp(156,85): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Ben\source\repos\PokeBattleTest\PokeBattleTest\Source\Pokemon.cpp(184,31): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  SceneConstructor.cpp
   Generating Code...
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
   PokeBattleTest.vcxproj -> C:\Users\Ben\source\repos\PokeBattleTest\output\PokeBattleTest.exe

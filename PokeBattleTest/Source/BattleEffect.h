@@ -3,7 +3,8 @@
 namespace bat { class Turn; } // Forward declaration to avoid an include loop. 
 
 namespace bfx {
-	class BattleEffect { // The parent, the beeg boye.
+#pragma region TheBeegBoye
+	class BattleEffect {
 	public:
 		enum ChildType : short { // Enum to discern child type cuts down on resources being devoured by multiple dynamic_cast calls.
 			AttackMod,
@@ -21,19 +22,21 @@ namespace bfx {
 			PoisonedStatus,
 			ConfusionStatus,
 			FlinchStatus,
-			MultiHitOther,
-			AutoHitOther,
-			FlatDamageModOther,
-			BypassSemiInvulnerableOther,
-			InterruptMoveOther,
-			DamageTrapOther,
-			ReflectGuard,
-			LightScreenGuard,
-			AuroraVeilGuard,
-			PsychicTerrain,
-			MistyTerrain,
-			GrassyTerrain,
-			ElectricTerrain,
+			MultiHit,
+			AutoHit,
+			FlatDamageMod,
+			BypassSemiInvulnerable,
+			InterruptMove,
+			MoveOverride,
+			DamageTrap,
+			FieldGuard,
+			Terrain,
+			Weather,
+			TrickRoom,
+			WonderRoom,
+			MudSport,
+			SplashSport,
+			IonDeluge,
 		};
 		enum TurnPhase : short { // What phase of Turn() does this effect take place. 
 			BeforeUpkeep, // This is before the upkeep phase that checks the remaining duration of Battle effect and cleanses expired ones.
@@ -48,6 +51,7 @@ namespace bfx {
 		bool GetTarget() { return targetIsPlayer; }
 		int GetDuration() { return duration; }
 		void DecrementDuration() { if (duration > 0) { --duration; } }
+		virtual ~BattleEffect() {}
 	protected:
 		ChildType childType;
 		TurnPhase turnPhase;
@@ -56,9 +60,9 @@ namespace bfx {
 		BattleEffect(bool _target, int _duration, TurnPhase _turnphase, ChildType _childtype) :
 			targetIsPlayer(_target), duration(_duration), turnPhase(_turnphase), childType(_childtype) {}
 	};
-	//
-	// Stat mods. All of these increase or decrease a stat based on stages, resolved in their respective Execute functions.
-	//
+#pragma endregion
+
+#pragma region StatMods
 	class ModStat : public BattleEffect {
 	protected:
 		int stages; // Range between -6 and 6.
@@ -94,7 +98,7 @@ namespace bfx {
 
 	struct ModSpeed : ModStat {
 		void Execute(bat::Turn& turn) override;
-		ModSpeed(bool _target,int _stages) :
+		ModSpeed(bool _target, int _stages) :
 			ModStat(_target, _stages, ChildType::SpeedMod) {}
 	};
 
@@ -121,9 +125,9 @@ namespace bfx {
 		TemporaryCritIncrease(bool _target) :
 			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, ChildType::CriticalRatioMod) {}
 	};
-	//
-	// Status effects
-	//
+#pragma endregion
+
+#pragma region StatusEffects
 	struct BurnAttackReduction : BattleEffect {
 		void Execute(bat::Turn& turn) override;
 		BurnAttackReduction(bool _target) :
@@ -168,13 +172,13 @@ namespace bfx {
 
 	struct Poisoned : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		Poisoned(bool _target) : 
+		Poisoned(bool _target) :
 			BattleEffect(_target, -1, TurnPhase::AfterMoveExecuted, ChildType::PoisonedStatus) {}
 	};
 
 	struct BadlyPoisoned : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		BadlyPoisoned(bool _target) : 
+		BadlyPoisoned(bool _target) :
 			BattleEffect(_target, -1, TurnPhase::AfterMoveExecuted, ChildType::PoisonedStatus) {}
 	private:
 		int cumulativeTurns = 1;
@@ -188,7 +192,7 @@ namespace bfx {
 
 	struct ConfusionAttackSelf : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		ConfusionAttackSelf(bool _target, int _duration) : 
+		ConfusionAttackSelf(bool _target, int _duration) :
 			BattleEffect(_target, _duration, TurnPhase::AfterMoveExecuted, ChildType::ConfusionStatus) {}
 	};
 
@@ -198,38 +202,206 @@ namespace bfx {
 		Flinch(bool _target) :
 			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, ChildType::FlinchStatus) {}
 	};
-	//
-	// Weather & Terrain
-	//
-	struct ElectricTerrain : BattleEffect { // Terrains are programmed to affect the player, but their Execute() functions let them affect both without needing dupes.
+#pragma endregion
+
+#pragma region Terrain
+	class Terrain : public BattleEffect {
+	public:
+		enum TerrainType {
+			ElectricTerrain,
+			MistyTerrain,
+			PsychicTerrain,
+			GrassyTerrain
+		};
+		TerrainType GetTerrainType() { return terrainType; }
+		void RefreshDuration() { duration = 5; }
+	protected:
+		TerrainType terrainType;
+		Terrain(TerrainType _terraintype, TurnPhase _turnphase) :	// Terrains are programmed to affect the player, but their Execute() functions let them affect both without needing dupes.
+			BattleEffect(true, 5, _turnphase, ChildType::Terrain), terrainType(_terraintype) {}
+	};
+	struct ElectricTerrain : Terrain {
 		void Execute(bat::Turn& turn) override;
 		ElectricTerrain() :
-			BattleEffect(true, 5, TurnPhase::BeforeMoveExecuted, ChildType::ElectricTerrain) {}
+			Terrain(TerrainType::ElectricTerrain, TurnPhase::BeforeMoveExecuted) {}
 	};
 
-	struct MistyTerrain : BattleEffect {
+	struct MistyTerrain : Terrain {
 		void Execute(bat::Turn& turn) override;
 		MistyTerrain() :
-			BattleEffect(true, 5, TurnPhase::BeforeMoveExecuted, ChildType::MistyTerrain) {}
+			Terrain(TerrainType::MistyTerrain, TurnPhase::BeforeMoveExecuted) {}
 	};
 
-	struct PsychicTerrain : BattleEffect {
+	struct PsychicTerrain : Terrain {
 		void Execute(bat::Turn& turn) override;
 		PsychicTerrain() :
-			BattleEffect(true, 5, TurnPhase::BeforeMoveExecuted, ChildType::PsychicTerrain) {}
+			Terrain(TerrainType::PsychicTerrain, TurnPhase::BeforeMoveExecuted) {}
 	};
 
-	struct GrassyTerrain : BattleEffect {
+	struct GrassyTerrain : Terrain {
 		void Execute(bat::Turn& turn) override;
 		GrassyTerrain() :
-			BattleEffect(true, 5, TurnPhase::BeforeMoveExecuted, ChildType::GrassyTerrain) {}
+			Terrain(TerrainType::GrassyTerrain, TurnPhase::BeforeMoveExecuted) {}
 	};
 
-	// Other
+	struct GrassyTerrainHeal : Terrain {
+		void Execute(bat::Turn& turn) override;
+		GrassyTerrainHeal() :
+			Terrain(TerrainType::GrassyTerrain, TurnPhase::AfterMoveExecuted) {}
+	};
+#pragma endregion
+
+#pragma region Weather
+	class Weather : public BattleEffect {
+	public:
+		enum WeatherType {
+			HarshSunlight,
+			Rain,
+			Sandstorm,
+			Hail,
+			StrongWinds,
+			IntenseGravity
+		};
+		WeatherType GetWeatherType() { return weatherType; }
+		void RefreshDuration() { duration = 5; }
+	protected:
+		WeatherType weatherType;
+		Weather(WeatherType _weathertype, BattleEffect::TurnPhase _turnphase) :
+			BattleEffect(true, 5, _turnphase, BattleEffect::Weather), weatherType(_weathertype) {}
+	};
+
+	struct HarshSunlight : Weather {
+		void Execute(bat::Turn& turn) override;
+		HarshSunlight() :
+			Weather(Weather::HarshSunlight, TurnPhase::BeforeMoveExecuted) {}
+	};
+
+	struct Rain : Weather {
+		void Execute(bat::Turn& turn) override;
+		Rain() :
+			Weather(Weather::Rain, TurnPhase::BeforeMoveExecuted) {}
+	};
+
+	struct Sandstorm : Weather {
+		void Execute(bat::Turn& turn) override;
+		Sandstorm() :
+			Weather(Weather::Sandstorm, TurnPhase::BeforeMoveExecuted) {}
+	};
+
+	struct SandstormDamage : Weather {
+		void Execute(bat::Turn& turn) override;
+		SandstormDamage() :
+			Weather(Weather::Sandstorm, TurnPhase::AfterMoveExecuted) {}
+	};
+
+	struct Hail : Weather {
+		void Execute(bat::Turn& turn) override;
+		Hail() :
+			Weather(Weather::Hail, TurnPhase::BeforeMoveExecuted) {}
+	};
+
+	struct HailDamage : Weather {
+		void Execute(bat::Turn& turn) override;
+		HailDamage() :
+			Weather(Weather::Hail, TurnPhase::AfterMoveExecuted) {}
+	};
+
+	struct StrongWinds : Weather {
+		void Execute(bat::Turn& turn) override;
+		StrongWinds() :
+			Weather(Weather::StrongWinds, TurnPhase::BeforeMoveExecuted) {}
+	};
+
+	struct IntenseGravity : Weather {
+		void Execute(bat::Turn& turn) override;
+		IntenseGravity() :
+			Weather(Weather::IntenseGravity, TurnPhase::BeforeMoveExecuted) {}
+	};
+#pragma endregion
+
+#pragma region FieldGuards
+	class FieldGuard : public BattleEffect {
+	public:
+		enum GuardType {
+			Reflect,
+			LightScreen,
+			AuroraVeil
+		};
+		void RefreshDuration() { duration = 5; }
+		GuardType GetGuardType() { return guardType; }
+	protected:
+		GuardType guardType;
+		FieldGuard(bool _target, GuardType _guardtype) :
+			BattleEffect(_target, 5, TurnPhase::BeforeMoveExecuted, ChildType::FieldGuard), guardType(_guardtype) {}
+	};
+
+	struct ReflectDefenseBoost : FieldGuard {
+		void Execute(bat::Turn& turn) override;
+		void RefreshDuration() { duration = 5; }
+		ReflectDefenseBoost(bool _target) :
+			FieldGuard(_target, FieldGuard::GuardType::Reflect) {}
+		virtual ~ReflectDefenseBoost();
+	};
+
+	struct LightScreenSpecialDefenseBoost : FieldGuard {
+		void Execute(bat::Turn& turn) override;
+		void RefreshDuration() { duration = 5; }
+		LightScreenSpecialDefenseBoost(bool _target) :
+			FieldGuard(_target, FieldGuard::GuardType::LightScreen) {}
+		virtual ~LightScreenSpecialDefenseBoost();
+	};
+
+	struct AuroraVeilDefSpdefBoost : FieldGuard {
+		void Execute(bat::Turn& turn) override;
+		void RefreshDuration() { duration = 5; }
+		AuroraVeilDefSpdefBoost(bool _target) :
+			FieldGuard(_target, FieldGuard::GuardType::AuroraVeil) {}
+		virtual ~AuroraVeilDefSpdefBoost();
+	};
+#pragma endregion
+
+#pragma region Rooms
+	struct TrickRoom : BattleEffect { // This BattleEffect doesn't have an execute function as it is only considered during the turn order calculator.
+		void Execute(bat::Turn& turn) override {}
+		TrickRoom() :
+			BattleEffect(true, -1, TurnPhase::BeforeMoveExecuted, ChildType::TrickRoom) {}
+	};
+
+	struct WonderRoom : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		WonderRoom() :
+			BattleEffect(true, -1, TurnPhase::BeforeMoveExecuted, ChildType::WonderRoom) {}
+	};
+#pragma endregion
+
+#pragma region FieldEffects
+	struct MudSport : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		void RefreshDuration() { duration = 5; }
+		MudSport() :
+			BattleEffect(true, 5, TurnPhase::BeforeMoveExecuted, ChildType::MudSport) {}
+	};
+
+	struct SplashSport : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		void RefreshDuration() { duration = 5; }
+		SplashSport() :
+			BattleEffect(true, 5, TurnPhase::BeforeMoveExecuted, ChildType::SplashSport) {}
+	};
+
+	struct IonDeluge : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		void RefreshDuration() { duration = 5; }
+		IonDeluge() :
+			BattleEffect(true, 5, TurnPhase::BeforeMoveExecuted, ChildType::IonDeluge) {}
+	};
+#pragma endregion
+
+#pragma region Other
 	struct MultiHit : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		MultiHit(bool _target, int _hits) : 
-			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, ChildType::MultiHitOther), hits(_hits) {}
+		MultiHit(bool _target, int _hits) :
+			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, ChildType::MultiHit), hits(_hits) {}
 	private:
 		int hits;
 	};
@@ -237,13 +409,13 @@ namespace bfx {
 	struct MoveAutoHit : BattleEffect {
 		void Execute(bat::Turn& turn) override;
 		MoveAutoHit(bool _target) :
-			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, ChildType::AutoHitOther) {}
+			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, ChildType::AutoHit) {}
 	};
 
 	struct FlatDamageMod : BattleEffect {
 		void Execute(bat::Turn& turn) override;
 		FlatDamageMod(bool _target, int _duration, float _mod) :
-			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted, ChildType::FlatDamageModOther), mod(_mod) {}
+			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted, ChildType::FlatDamageMod), mod(_mod) {}
 	private:
 		float mod;
 	};
@@ -251,45 +423,30 @@ namespace bfx {
 	struct BypassSemiInvulnerable : BattleEffect {
 		void Execute(bat::Turn& turn) override;
 		BypassSemiInvulnerable(bool _target) :
-			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, ChildType::BypassSemiInvulnerableOther) {}
+			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, ChildType::BypassSemiInvulnerable) {}
 	};
 
 	struct InterruptMove : BattleEffect {
 		void Execute(bat::Turn& turn) override;
 		InterruptMove(bool _target, int _duration) :
-			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted, ChildType::InterruptMoveOther) {}
+			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted, ChildType::InterruptMove) {}
 	};
 
 	struct DamageTrap : BattleEffect {
 		void Execute(bat::Turn& turn) override;
 		DamageTrap(bool _target, std::string _cause) :
-			BattleEffect(_target, 5, TurnPhase::AfterMoveExecuted, ChildType::DamageTrapOther), cause(_cause) {}
+			BattleEffect(_target, 5, TurnPhase::AfterMoveExecuted, ChildType::DamageTrap), cause(_cause) {}
 		~DamageTrap();
 	private:
 		std::string cause;
 	};
 
-	struct ReflectDefenseBoost : BattleEffect {
+	struct MoveOverride : BattleEffect {
 		void Execute(bat::Turn& turn) override;
-		void RefreshDuration() { duration = 5; }
-		ReflectDefenseBoost(bool _target) :
-			BattleEffect(_target, 5, TurnPhase::BeforeMoveExecuted, ChildType::ReflectGuard) {}
-		~ReflectDefenseBoost();
+		MoveOverride(bool _target, int _newMove) :
+			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, ChildType::MoveOverride) : newMove(_newMove){}
+	private:
+		int newMove;
 	};
-
-	struct LightScreenSpecialDefenseBoost : BattleEffect {
-		void Execute(bat::Turn& turn) override;
-		void RefreshDuration() { duration = 5; }
-		LightScreenSpecialDefenseBoost(bool _target) :
-			BattleEffect(_target, 5, TurnPhase::BeforeMoveExecuted, ChildType::LightScreenGuard) {}
-		~LightScreenSpecialDefenseBoost();
-	};
-
-	struct AuroraVeilDefSpdefBoost : BattleEffect {
-		void Execute(bat::Turn& turn) override;
-		void RefreshDuration() { duration = 5; }
-		AuroraVeilDefSpdefBoost(bool _target) :
-			BattleEffect(_target, 5, TurnPhase::BeforeMoveExecuted, ChildType::AuroraVeilGuard) {}
-		~AuroraVeilDefSpdefBoost();
-	};
+#pragma endregion
 }

@@ -4,7 +4,7 @@
 #include "Pokemon.h"
 #include "EventListener.h"
 #include "SceneConstructor.h"
-void LogConstructionResults(mon::Pokemon player, mon::Pokemon rival);
+void LogConstructionResults(pkmn::Pokemon player, pkmn::Pokemon rival);
 enum sc::MoveRestriction {
     NoRestriction,
     MustUseThisMove,
@@ -13,7 +13,7 @@ enum sc::MoveRestriction {
 std::array<sc::MoveRestriction, 4> p_restrictMoves = { sc::NoRestriction, sc::NoRestriction, sc::NoRestriction, sc::NoRestriction };
 std::array<sc::MoveRestriction, 4> r_restrictMoves = { sc::NoRestriction, sc::NoRestriction, sc::NoRestriction, sc::NoRestriction };
 
-std::tuple<mon::Pokemon, mon::Pokemon> sc::PrepareAndConstructPokemon() {
+std::tuple<pkmn::Pokemon, pkmn::Pokemon> sc::PrepareAndConstructPokemon() {
     std::string pMonFile = "resource\\p-pkmn.json";
     std::string rMonFile = "resource\\r-pkmn.json";
     std::string pTemFile = "resource\\p-template.json";
@@ -47,17 +47,17 @@ std::tuple<mon::Pokemon, mon::Pokemon> sc::PrepareAndConstructPokemon() {
     const jt::JsonTemplate rTem = nlohmann::adl_serializer<jt::JsonTemplate>::from_json(monData);
     rt.close();
 
-    std::array<mon::Move, 4> pMoves = { pMon.Move1, pMon.Move2, pMon.Move3, pMon.Move4 };
-    std::array<mon::Move, 4> oMoves = { rMon.Move1, rMon.Move2, rMon.Move3, rMon.Move4 };
+    std::array<pkmn::Move, 4> pMoves = { pMon.Move1, pMon.Move2, pMon.Move3, pMon.Move4 };
+    std::array<pkmn::Move, 4> oMoves = { rMon.Move1, rMon.Move2, rMon.Move3, rMon.Move4 };
 
-    mon::Pokemon playerPokemon(pMon, pTem, pMoves);
-    mon::Pokemon rivalPokemon(rMon, rTem, oMoves);
+    pkmn::Pokemon playerPokemon(pMon, pTem, pMoves);
+    pkmn::Pokemon rivalPokemon(rMon, rTem, oMoves);
 
     LogConstructionResults(playerPokemon, rivalPokemon);
     return std::make_pair(playerPokemon, rivalPokemon);
 }
 
-void LogConstructionResults(mon::Pokemon player, mon::Pokemon rival) {
+void LogConstructionResults(pkmn::Pokemon player, pkmn::Pokemon rival) {
     std::string pInfo = "Created " + player.GetName() + " for player.";
     pInfo += "\nWith form: " + player.GetForm() + ", Type1: " + tc::typeToString.at(player.GetType1()) + 
         ", Type2: " + tc::typeToString.at(player.GetType2());

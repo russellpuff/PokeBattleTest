@@ -2,7 +2,7 @@
 #include <string>
 #include "JsonStructs.h"
 #include "TypeCategory.h"
-namespace mon {
+namespace pkmn {
 	class Move {
 	private:
 		int moveID;
@@ -84,6 +84,6 @@ namespace mon {
 		int GetFinalSpDef() { return stats.spDefFinal; }
 		int GetFinalSpd() { return stats.spdFinal; }
 		void ModCurrentHP(int val) { stats.hpCurrent += val; }
-		Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<mon::Move, 4>& m);
+		Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<pkmn::Move, 4>& m);
 	};
 }

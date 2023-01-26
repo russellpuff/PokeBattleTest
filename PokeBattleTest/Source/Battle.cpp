@@ -4,8 +4,9 @@
 #include "EventListener.h"
 float StageMultiplier(int stageVal);
 
-void bat::Battle::Round(mon::Move& playerMove, mon::Move& rivalMove) // Battle::Round() and Turn::Act() cover all the logic for a single round of Battle.
+void bat::Battle::Round(pkmn::Move& playerMove, pkmn::Move& rivalMove) // Battle::Round() and Turn::Act() cover all the logic for a single round of Battle.
 {
+	bool trickRoomActive = false;
 	p_move = playerMove;
 	r_move = rivalMove;
 	p_dmgThisTurn = r_dmgThisTurn = 0;
@@ -17,14 +18,16 @@ void bat::Battle::Round(mon::Move& playerMove, mon::Move& rivalMove) // Battle::
 		// Calculate speed
 		for (const std::unique_ptr<bfx::BattleEffect>& b : battleEffects) {
 			// Check for paralysis.
-			if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::ParalysisStatus) {
+			if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ParalysisStatus) {
 				if (b.get()->GetTarget()) { p_speedMult *= 0.5F; } else { r_speedMult *= 0.5F; }
 			}
 			// Check for speed mods.
-			if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::SpeedMod) {
+			if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::SpeedMod) {
 				if (b.get()->GetTarget()) { p_speedMult *= StageMultiplier(dynamic_cast<bfx::ModSpeed*>(b.get())->GetStages()); }
 				else { r_speedMult *= StageMultiplier(dynamic_cast<bfx::ModSpeed*>(b.get())->GetStages()); }
 			}
+			// Check for trick room.
+			if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::TrickRoom) { trickRoomActive = true; }
 		}
 
 		int p_speed = std::floor(player.GetFinalSpd() * p_speedMult);
@@ -36,7 +39,10 @@ void bat::Battle::Round(mon::Move& playerMove, mon::Move& rivalMove) // Battle::
 			std::uniform_int_distribution<int> uniform_dist(1, 2);
 			playerGoesFirst = uniform_dist(eng) == 1;
 		}
-		else { playerGoesFirst = p_speed > r_speed; }
+		else { 
+			if (trickRoomActive) { playerGoesFirst = r_speed > p_speed; }
+			else { playerGoesFirst = p_speed > r_speed; }
+		}
 	}
 	else { playerGoesFirst = playerMove.GetPriority() > rivalMove.GetPriority(); }
 
@@ -63,7 +69,7 @@ bool bat::Turn::Act(Battle& battle)
 	}
 
 	// Action phase
-	if (!interruptTurn) { 
+	if (not interruptTurn) { 
 		bool autoMiss = false;
 		// Check for grounded if applicable
 		// Check here if move is noneffective.
@@ -71,7 +77,7 @@ bool bat::Turn::Act(Battle& battle)
 		interruptTurn = autoMiss;
 	}
 
-	if (!interruptTurn) { // True means something like Paralysis or Drowsy skipped the Action phase.
+	if (not interruptTurn) { // True means something like Paralysis or Drowsy skipped the Action phase.
 		if (move.GetIsProcMutable() && !moveHits) { // moveHits starts out at false, if a battleEffect sets it to true prematurely, skip accuracy check. 
 			int netAccuracy = a_accuracyStages - d_evasionStages;
 			int accModified = move.GetAccuracy();
@@ -103,12 +109,22 @@ bool bat::Turn::Act(Battle& battle)
 	if (moveHits && battle.post_moveFuncs.count(move.GetID())) { battle.post_moveFuncs[move.GetID()](battle); }
 
 	for (const std::unique_ptr<bfx::BattleEffect>& b : battle.battleEffects) {
-		if (b.get()->GetTurnPhase() == bfx::BattleEffect::AfterMoveExecuted &&
-			b.get()->GetTarget() == attackerIsPlayer) { b.get()->Execute(*this); }
+		if (b.get()->GetTurnPhase() == bfx::BattleEffect::AfterMoveExecuted) { b.get()->Execute(*this); }
 	}
 
 	// Check for death. True means no death and continue.
 	return attacker.GetCurrentHP() > 0 && defender.GetCurrentHP() > 0;
+}
+
+bat::Turn::Turn(pkmn::Pokemon& _attacker, pkmn::Pokemon& _defender, pkmn::Move _move, bool _atkr) :
+	attacker(_attacker), defender(_defender), move(_move), attackerIsPlayer(_atkr)
+{
+	// Discern whether the attacker/defender is grounded or not. 
+	a_grounded = _attacker.GetType1() == tc::Flying || _attacker.GetType2() == tc::Flying;
+	d_grounded = _defender.GetType1() == tc::Flying || _defender.GetType2() == tc::Flying;
+	//
+	// Look for grounded related battle effects. 
+	//
 }
 
 float StageMultiplier(int stageVal) {
@@ -116,7 +132,7 @@ float StageMultiplier(int stageVal) {
 	else { return roundf((2.0F / (2.0F - stageVal)) * 1000.0F) / 1000.0F; }
 }
 
-bat::Battle::Battle(mon::Pokemon& _player, mon::Pokemon& _rival) :
+bat::Battle::Battle(pkmn::Pokemon& _player, pkmn::Pokemon& _rival) :
 	player(_player), rival(_rival), p_move(0), r_move(0)
 {
 	p_movesUsed.push_front(0);
@@ -152,6 +168,12 @@ bat::Battle::Battle(mon::Pokemon& _player, mon::Pokemon& _rival) :
 	pre_moveFuncs.emplace(260, std::bind(&mv::CanHitDuringSemiInvulnerable, std::placeholders::_1, 258, false)); // Earthquake
 	pre_moveFuncs.emplace(343, std::bind(&mv::CanHitDuringSemiInvulnerable, std::placeholders::_1, 328, false)); // Surf
 	pre_moveFuncs.emplace(299, std::bind(&mv::DoublePowerIfStatusEffect, std::placeholders::_1)); // Hex
+	pre_moveFuncs.emplace(56, std::bind(&mv::HitTwice, std::placeholders::_1)); // Dual Chop
+	pre_moveFuncs.emplace(191, std::bind(&mv::HitTwice, std::placeholders::_1)); // Double Kick
+	pre_moveFuncs.emplace(218, std::bind(&mv::HitTwice, std::placeholders::_1)); // Dual Wingbeat
+	pre_moveFuncs.emplace(402, std::bind(&mv::HitTwice, std::placeholders::_1)); // Double Hit
+	pre_moveFuncs.emplace(10, std::bind(&mv::HitTwice, std::placeholders::_1)); // Twin Needle
+	pre_moveFuncs.emplace(31, std::bind(&mv::Payback, std::placeholders::_1));
 
 	post_moveFuncs.emplace(8, std::bind(&mv::Hit2to5Times, std::placeholders::_1)); // Pin Missile
 	post_moveFuncs.emplace(38, std::bind(&mv::Hit2to5Times, std::placeholders::_1)); // Harass
@@ -161,10 +183,6 @@ bat::Battle::Battle(mon::Pokemon& _player, mon::Pokemon& _rival) :
 	post_moveFuncs.emplace(333, std::bind(&mv::Hit2to5Times, std::placeholders::_1)); // Water Shuriken
 	post_moveFuncs.emplace(350, std::bind(&mv::Hit2to5Times, std::placeholders::_1)); // Bullet Seed
 	post_moveFuncs.emplace(409, std::bind(&mv::Hit2to5Times, std::placeholders::_1)); // Fury Attack
-	post_moveFuncs.emplace(56, std::bind(&mv::HitTwice, std::placeholders::_1)); // Dual Chop
-	post_moveFuncs.emplace(191, std::bind(&mv::HitTwice, std::placeholders::_1)); // Double Kick
-	post_moveFuncs.emplace(218, std::bind(&mv::HitTwice, std::placeholders::_1)); // Dual Wingbeat
-	post_moveFuncs.emplace(402, std::bind(&mv::HitTwice, std::placeholders::_1)); // Double Hit
 	post_moveFuncs.emplace(20, std::bind(&mv::InstantHealSelf, std::placeholders::_1, 50)); // Heal Order
 	post_moveFuncs.emplace(108, std::bind(&mv::InstantHealSelf, std::placeholders::_1, 50)); // Floral Healing
 	post_moveFuncs.emplace(346, std::bind(&mv::InstantHealSelf, std::placeholders::_1, 25)); // Life Dew
@@ -327,4 +345,19 @@ bat::Battle::Battle(mon::Pokemon& _player, mon::Pokemon& _rival) :
 	post_moveFuncs.emplace(172, std::bind(&mv::Reflect, std::placeholders::_1));
 	post_moveFuncs.emplace(164, std::bind(&mv::LightScreen, std::placeholders::_1));
 	post_moveFuncs.emplace(492, std::bind(&mv::AuroraVeil, std::placeholders::_1));
+	post_moveFuncs.emplace(89, std::bind(&mv::ElectricField, std::placeholders::_1));
+	post_moveFuncs.emplace(110, std::bind(&mv::MistField, std::placeholders::_1));
+	post_moveFuncs.emplace(171, std::bind(&mv::PsychoField, std::placeholders::_1));
+	post_moveFuncs.emplace(372, std::bind(&mv::GrassField, std::placeholders::_1));
+	post_moveFuncs.emplace(134, std::bind(&mv::SunnyDay, std::placeholders::_1));
+	post_moveFuncs.emplace(347, std::bind(&mv::RainDance, std::placeholders::_1));
+	post_moveFuncs.emplace(287, std::bind(&mv::Sandstorm, std::placeholders::_1));
+	post_moveFuncs.emplace(393, std::bind(&mv::Hail, std::placeholders::_1));
+	post_moveFuncs.emplace(489, std::bind(&mv::Turbulence, std::placeholders::_1));
+	post_moveFuncs.emplace(157, std::bind(&mv::Gravity, std::placeholders::_1));
+	post_moveFuncs.emplace(182, std::bind(&mv::TrickRoom, std::placeholders::_1));
+	post_moveFuncs.emplace(183, std::bind(&mv::WonderRoom, std::placeholders::_1));
+	post_moveFuncs.emplace(269, std::bind(&mv::MudSport, std::placeholders::_1));
+	post_moveFuncs.emplace(349, std::bind(&mv::SplashSport, std::placeholders::_1));
+	post_moveFuncs.emplace(10, std::bind(&mv::TwinNeedle, std::placeholders::_1));
 }

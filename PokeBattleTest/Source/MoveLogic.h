@@ -306,7 +306,6 @@ namespace mv {
 	void Turbulence(bat::Battle& battle); // Creates Strong Winds for 5 turns.
 	void Gravity(bat::Battle& battle); // Creates intense gravity for 5 turns.
 
-	void MagicRoom(bat::Battle& battle); // Creates magic room for 5 turns. 
 	void TrickRoom(bat::Battle& battle); // Creates trick room for 5 turns. 
 	void WonderRoom(bat::Battle& battle); // Creates wonder room for 5 turns.
 
@@ -316,7 +315,7 @@ namespace mv {
 
 	void LightScreen(bat::Battle& battle); // Halves damage done to user and allies from Special moves. 
 	void Reflect(bat::Battle& battle); // Halves damage done to user and allies from Physical moves. 
-	void AuroraVeil(bat::Battle& battle); // Reduce damage by physical and special moves by 33%
+	void AuroraVeil(bat::Battle& battle); // Reduce damage by physical and special moves by half, can only be used in hail.
 
 	void FuryCutter(bat::Battle& battle); // Power doubles on consecutive hits to a maximum of 160.
 	void TwinNeedle(bat::Battle& battle); // Hits twice. Each strike has a 20% chance to Poison.
@@ -418,7 +417,7 @@ namespace mv {
 	void Aromatherapy(bat::Battle& battle); // User and all allies are cured of their status effects.
 	void Ingrain(bat::Battle& battle); // User becomes grounded and heals 1/16 their maximum HP each turn. User becomes unable to switch out. 
 	void LeechSeed(bat::Battle& battle); // Target takes 1/8 their maximum HP per turn, user heals the damage dealt. If the user switches out, their replacement benefits from the healing. 
-	void Syntehsis(bat::Battle& battle); // User heals HP depending on weather. In harsh sunlight, heal 75% HP. During no weather, heal 25% maximum HP. In any other weather, heal 12.5% maximum HP. 
+	void Synthesis(bat::Battle& battle); // User heals HP depending on weather. In harsh sunlight, heal 75% HP. During no weather, heal 25% maximum HP. In any other weather, heal 12.5% maximum HP. 
 	void Avalanche(bat::Battle& battle); // If the target has already damaged the user when this move executes, power is doubled.  
 	void IceBall(bat::Battle& battle); // Power doubles on consecutive hits to a maximum of 480. Power resets if the move is interrupted. 
 	void IceFang(bat::Battle& battle); // 20% chance to frostbite the target, separate 10% chance to flinch the target. 

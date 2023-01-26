@@ -8,10 +8,11 @@
 #include "TypeCategory.h"
 bool AttemptProc(int proc);
 bool CheckForExistingStatus(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, bool attackerIsPlayer);
+bool CheckForTerrain(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, bfx::Terrain::TerrainType type);
 void DisplayStatChangeResults(int code, std::string who, std::string stat);
-void RaiseFieldGuard(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, bool attackerIsPlayer, std::string msg);
-void CheckForAndEraseExistingTerrain(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, std::string terrain);
-void AnalyzeExistingTerrain(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, std::string terrain, bfx::BattleEffect::ChildType ct);
+bool RaiseOrRefreshFieldGuard(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, bfx::FieldGuard::GuardType type);
+bool EraseOrRefreshTerrain(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, bfx::Terrain::TerrainType type);
+bool EraseOrRefreshWeather(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, bfx::Weather::WeatherType type);
 //
 // Using battle.attackerIsPlayer as the target will resolve to the target being the attacker.
 // If not battle.attackerIsPlayer is passed, the target is the defender.
@@ -55,6 +56,7 @@ void mv::ChanceConfusion(bat::Battle& battle, int proc)
 void mv::ChanceStatusEffect(bat::Battle& battle, StatusEffect status, tc::Type typeImmune, int proc) // post
 {
 	std::string st;
+	std::string who = battle.attackerIsPlayer ? battle.rival.GetName() : battle.player.GetName();
 	switch (status) {
 	case Burn: st = "Burn"; break;
 	case Paralysis: st = "Paralysis"; break;
@@ -80,10 +82,13 @@ void mv::ChanceStatusEffect(bat::Battle& battle, StatusEffect status, tc::Type t
 			}
 		}
 	}
+	if (CheckForTerrain(battle.battleEffects, bfx::Terrain::MistyTerrain)) {
+		msg = who + " couldn't be affected by the " + st + " because of the Misty Terrain!";
+		okTryProc = false;
+	}
 	if (okTryProc) {
 		if (CheckForExistingStatus(battle.battleEffects, not battle.attackerIsPlayer) || status == Confusion) { // Check for existing status effect. Confusion can coexist.
 			if (AttemptProc(proc)) {
-				std::string who = battle.attackerIsPlayer ? battle.rival.GetName() : battle.player.GetName();
 				switch (status) {
 				case Burn:
 					battle.battleEffects.push_back(std::make_unique<bfx::BurnAttackReduction>(not battle.attackerIsPlayer));
@@ -100,9 +105,14 @@ void mv::ChanceStatusEffect(bat::Battle& battle, StatusEffect status, tc::Type t
 					msg = who + " was inflicted with frostbite!";
 					break;
 				case Drowsy:
-					battle.battleEffects.push_back(std::make_unique<bfx::Drowsy>(not battle.attackerIsPlayer));
-					battle.battleEffects.push_back(std::make_unique<bfx::DrowsyDamageBoost>(battle.attackerIsPlayer)); // Attacker gets damage boost.
-					msg = who + " became drowsy!";
+					if (CheckForTerrain(battle.battleEffects, bfx::Terrain::ElectricTerrain)) {
+						msg = who + " couldn't become drowsy due to the Electric Terrain!";
+					}
+					else {
+						battle.battleEffects.push_back(std::make_unique<bfx::Drowsy>(not battle.attackerIsPlayer));
+						battle.battleEffects.push_back(std::make_unique<bfx::DrowsyDamageBoost>(battle.attackerIsPlayer)); // Attacker gets damage boost.
+						msg = who + " became drowsy!";
+					}
 					break;
 				case Poison:
 					battle.battleEffects.push_back(std::make_unique<bfx::Poisoned>(not battle.attackerIsPlayer));
@@ -138,22 +148,32 @@ bool CheckForExistingStatus(std::vector<std::unique_ptr<bfx::BattleEffect>>& bat
 {
 	for (const std::unique_ptr<bfx::BattleEffect>& b : battleEffects) {
 		// Check for burn.
-		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::BurnStatus && 
+		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::BurnStatus && 
 			b.get()->GetTarget() == !attackerIsPlayer) { return false; }
 		// Check for frostbite.
-		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::FrostbiteStatus && 
+		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::FrostbiteStatus && 
 			b.get()->GetTarget() == !attackerIsPlayer) { return false; }
 		// Check for paralysis.
-		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::ParalysisStatus &&
+		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ParalysisStatus &&
 			b.get()->GetTarget() == !attackerIsPlayer) { return false; }
 		// Check for poison.
-		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::PoisonedStatus &&
+		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::PoisonedStatus &&
 			b.get()->GetTarget() == !attackerIsPlayer) { return false; }
 		// Check for drowsy.
-		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::DrowsyStatus &&
+		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::DrowsyStatus &&
 			b.get()->GetTarget() == !attackerIsPlayer) { return false; }
 	}
 	return true;
+}
+
+// For the purpose of blocking the sleep status effect. This is its own function because le transfer of control meme.
+bool CheckForTerrain(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, bfx::Terrain::TerrainType type) {
+	auto it = std::find_if(battleEffects.begin(), battleEffects.end(), [&type](const std::unique_ptr<bfx::BattleEffect>& x)
+		{ return
+		x.get()->GetTypeOfEffect() == bfx::BattleEffect::Terrain &&
+		dynamic_cast<bfx::Terrain*>(x.get())->GetTerrainType() == type;
+		});
+	return it != battleEffects.end();
 }
 #pragma endregion
 
@@ -207,28 +227,28 @@ void mv::ModMultipleStats(bat::Battle& battle, int proc, int atk, int def, int s
 	std::string stats[8] = { "Attack", "Defense", "Special Attack", "Special Defense", "Speed", "Accuracy", "Evasion", "Critical Ratio" };
 	if (AttemptProc(proc)) {
 		for (const std::unique_ptr<bfx::BattleEffect>& b : battle.battleEffects) { // Check for active battle effects. I don't know if this is the most efficient, but it heavily cuts down on reused code. 
-			if (atk != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::AttackMod && b.get()->GetTarget() == be_Affects) {
+			if (atk != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::AttackMod && b.get()->GetTarget() == be_Affects) {
 				results[0] = dynamic_cast<bfx::ModAttack*>(b.get())->ModStages(atk); atk = 0; continue;
 			}
-			if (def != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::DefenseMod && b.get()->GetTarget() == be_Affects) {
+			if (def != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::DefenseMod && b.get()->GetTarget() == be_Affects) {
 				results[1] = dynamic_cast<bfx::ModDefense*>(b.get())->ModStages(def); def = 0; continue;
 			}
-			if (spatk != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::SpecialAttackMod && b.get()->GetTarget() == be_Affects) {
+			if (spatk != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::SpecialAttackMod && b.get()->GetTarget() == be_Affects) {
 				results[2] = dynamic_cast<bfx::ModSpecialAttack*>(b.get())->ModStages(spatk); spatk = 0; continue;
 			}
-			if (spdef != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::SpecialDefenseMod && b.get()->GetTarget() == be_Affects) {
+			if (spdef != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::SpecialDefenseMod && b.get()->GetTarget() == be_Affects) {
 				results[3] = dynamic_cast<bfx::ModSpecialDefense*>(b.get())->ModStages(spdef); spdef = 0; continue;
 			}
-			if (spd != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::SpeedMod && b.get()->GetTarget() == be_Affects) {
+			if (spd != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::SpeedMod && b.get()->GetTarget() == be_Affects) {
 				results[4] = dynamic_cast<bfx::ModSpeed*>(b.get())->ModStages(spd); spd = 0; continue;
 			}
-			if (acc != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::AccuracyMod && b.get()->GetTarget() == be_Affects) {
+			if (acc != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::AccuracyMod && b.get()->GetTarget() == be_Affects) {
 				results[5] = dynamic_cast<bfx::ModAccuracy*>(b.get())->ModStages(acc); acc = 0; continue;
 			}
-			if (eva != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::EvasionMod && b.get()->GetTarget() == be_Affects) {
+			if (eva != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::EvasionMod && b.get()->GetTarget() == be_Affects) {
 				results[6] = dynamic_cast<bfx::ModEvasion*>(b.get())->ModStages(eva); eva = 0; continue;
 			}
-			if (crit != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::CriticalRatioMod && b.get()->GetTarget() == be_Affects) {
+			if (crit != 0 && b.get()->GetTypeOfEffect() == bfx::BattleEffect::CriticalRatioMod && b.get()->GetTarget() == be_Affects) {
 				results[7] = dynamic_cast<bfx::ModCriticalRatio*>(b.get())->ModStages(crit); crit = 0; continue;
 			}
 		}
@@ -349,98 +369,314 @@ void mv::CanHitDuringSemiInvulnerable(bat::Battle& battle, int moveID, bool move
 #pragma region FieldGuards
 void mv::Reflect(bat::Battle& battle)
 {
-	std::string msg = "Reflect raised Defense on their side!";
-	RaiseFieldGuard(battle.battleEffects, battle.attackerIsPlayer, msg);
+	if (RaiseOrRefreshFieldGuard(battle.battleEffects, bfx::FieldGuard::GuardType::Reflect)) {
+		std::string msg = "Reflect raised Defense on their side!";
+		Events::WriteToScreen(msg);
+		battle.battleEffects.push_back(std::make_unique<bfx::ReflectDefenseBoost>(battle.attackerIsPlayer));
+	}
 }
 
 void mv::LightScreen(bat::Battle& battle)
 {
-	std::string msg = "Light Screen raised Special Defense on their side!";
-	RaiseFieldGuard(battle.battleEffects, battle.attackerIsPlayer, msg);
+	if (RaiseOrRefreshFieldGuard(battle.battleEffects, bfx::FieldGuard::GuardType::LightScreen)) {
+		std::string msg = "Light Screen raised Special Defense on their side!";
+		Events::WriteToScreen(msg);
+		battle.battleEffects.push_back(std::make_unique<bfx::LightScreenSpecialDefenseBoost>(battle.attackerIsPlayer));
+	}
 }
 
 void mv::AuroraVeil(bat::Battle& battle)
-{
-	std::string msg = "Aurora Veil raised Defense and Special Defense on their side!";
-	RaiseFieldGuard(battle.battleEffects, battle.attackerIsPlayer, msg);
-}
-
-void RaiseFieldGuard(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, bool attackerIsPlayer, std::string msg) {
-	bool noGuard = true;
-	for (const std::unique_ptr<bfx::BattleEffect>& b : battleEffects) { // Check for existing field guards. If so, refresh duration.
-		if (msg[0] == 'R' && b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::ReflectGuard && b.get()->GetTarget() == attackerIsPlayer) {
-			noGuard = false;
-			dynamic_cast<bfx::ReflectDefenseBoost*>(b.get())->RefreshDuration();
-			break;
-		}
-		if (msg[0] == 'L' && b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::LightScreenGuard && b.get()->GetTarget() == attackerIsPlayer) {
-			noGuard = false;
-			dynamic_cast<bfx::LightScreenSpecialDefenseBoost*>(b.get())->RefreshDuration();
-			break;
-		}
-		if (msg[0] == 'A' && b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::AuroraVeilGuard && b.get()->GetTarget() == attackerIsPlayer) {
-			noGuard = false;
-			dynamic_cast<bfx::AuroraVeilDefSpdefBoost*>(b.get())->RefreshDuration();
-			break;
+{ // Aurora Veil can only be used in Hail.
+	auto it = std::find_if(battle.battleEffects.begin(), battle.battleEffects.end(), [](const std::unique_ptr<bfx::BattleEffect>& x)
+		{ return
+		x.get()->GetTypeOfEffect() == bfx::BattleEffect::Weather &&
+		dynamic_cast<bfx::Weather*>(x.get())->GetWeatherType() == bfx::Weather::Hail;
+		});
+	if (it != battle.battleEffects.end()) {
+		if (RaiseOrRefreshFieldGuard(battle.battleEffects, bfx::FieldGuard::GuardType::AuroraVeil)) {
+			std::string msg = "Aurora Veil raised Defense and Special Defense on their side!";
+			Events::WriteToScreen(msg);
+			battle.battleEffects.push_back(std::make_unique<bfx::AuroraVeilDefSpdefBoost>(battle.attackerIsPlayer));
 		}
 	}
-	if (noGuard) {
-		switch (msg[0]) {
-		case 'R': battleEffects.push_back(std::make_unique<bfx::ReflectDefenseBoost>(attackerIsPlayer)); break;
-		case 'L': battleEffects.push_back(std::make_unique<bfx::LightScreenSpecialDefenseBoost>(attackerIsPlayer)); break;
-		case 'A': battleEffects.push_back(std::make_unique<bfx::AuroraVeilDefSpdefBoost>(attackerIsPlayer)); break;
-		}
+	else {
+		std::string msg = "But it failed!";
 		Events::WriteToScreen(msg);
 	}
+}
+
+// Works the same was as the similar Terrain algorithm.
+bool RaiseOrRefreshFieldGuard(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, bfx::FieldGuard::GuardType type) {
+	auto it = std::find_if(battleEffects.begin(), battleEffects.end(), [&type](const std::unique_ptr<bfx::BattleEffect>& x)
+		{ return
+		x.get()->GetTypeOfEffect() == bfx::BattleEffect::FieldGuard &&
+		dynamic_cast<bfx::FieldGuard*>(x.get())->GetGuardType() == type;
+		});
+	if (it != battleEffects.end()) {
+		auto index = std::distance(battleEffects.begin(), it);
+		dynamic_cast<bfx::FieldGuard*>(battleEffects[index].get())->RefreshDuration();
+		std::map<bfx::FieldGuard::GuardType, std::string> guards = {
+			{ bfx::FieldGuard::GuardType::Reflect, "Reflect" },
+			{ bfx::FieldGuard::GuardType::LightScreen, "Light Screen" },
+			{ bfx::FieldGuard::GuardType::AuroraVeil, "Aurora Veil" },
+		};
+		std::string msg = guards.at(type) + "'s duration was extended!";
+		Events::WriteToScreen(msg);
+		return false;
+	}
+	else { return true; }
 }
 #pragma endregion
 
 #pragma region Terrain
 void mv::ElectricField(bat::Battle& battle)
 {
-	CheckForAndEraseExistingTerrain(battle.battleEffects, "Electric");
-	battle.battleEffects.push_back(std::make_unique<bfx::ElectricTerrain>());
+	if (EraseOrRefreshTerrain(battle.battleEffects, bfx::Terrain::ElectricTerrain)) {
+		std::string msg = "An electric current ran across the battlefield!";
+		Events::WriteToScreen(msg);
+		battle.battleEffects.push_back(std::make_unique<bfx::ElectricTerrain>());
+	}
 }
 
 void mv::MistField(bat::Battle& battle)
 {
-	CheckForAndEraseExistingTerrain(battle.battleEffects, "Misty");
-	battle.battleEffects.push_back(std::make_unique<bfx::MistyTerrain>());
+	if (EraseOrRefreshTerrain(battle.battleEffects, bfx::Terrain::MistyTerrain)) {
+		std::string msg = "Mist swirls around the battlefield!";
+		Events::WriteToScreen(msg);
+		battle.battleEffects.push_back(std::make_unique<bfx::MistyTerrain>());
+	}
 }
 
 void mv::PsychoField(bat::Battle& battle)
 {
-	CheckForAndEraseExistingTerrain(battle.battleEffects, "Psychic");
-	battle.battleEffects.push_back(std::make_unique<bfx::PsychicTerrain>());
+	if (EraseOrRefreshTerrain(battle.battleEffects, bfx::Terrain::PsychicTerrain)) {
+		std::string msg = "The battlefield got weird!";
+		Events::WriteToScreen(msg);
+		battle.battleEffects.push_back(std::make_unique<bfx::PsychicTerrain>());
+	}
 }
 
 void mv::GrassField(bat::Battle& battle)
 {
-	CheckForAndEraseExistingTerrain(battle.battleEffects, "Grassy");
-	battle.battleEffects.push_back(std::make_unique<bfx::GrassyTerrain>());
+	if (EraseOrRefreshTerrain(battle.battleEffects, bfx::Terrain::GrassyTerrain)) {
+		std::string msg = "Grass grew to cover the battlefield!";
+		Events::WriteToScreen(msg);
+		battle.battleEffects.push_back(std::make_unique<bfx::GrassyTerrain>());
+	}
 }
 
-void CheckForAndEraseExistingTerrain(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, std::string terrain) {
-	AnalyzeExistingTerrain(battleEffects, terrain, bfx::BattleEffect::ChildType::ElectricTerrain);
-	AnalyzeExistingTerrain(battleEffects, terrain, bfx::BattleEffect::ChildType::MistyTerrain);
-	AnalyzeExistingTerrain(battleEffects, terrain, bfx::BattleEffect::ChildType::PsychicTerrain);
-	AnalyzeExistingTerrain(battleEffects, terrain, bfx::BattleEffect::ChildType::GrassyTerrain);
+// Return value indicates whether the terrain was made anew (true) or extended (false).
+// If a terrain is refreshed, the operation is done so here since an iterator is already made.
+bool EraseOrRefreshTerrain(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, bfx::Terrain::TerrainType type) {
+	auto it = std::find_if(battleEffects.begin(), battleEffects.end(), [&type](const std::unique_ptr<bfx::BattleEffect>& x) 
+		{ return 
+			x.get()->GetTypeOfEffect() == bfx::BattleEffect::Terrain &&
+			dynamic_cast<bfx::Terrain*>(x.get())->GetTerrainType() == type;
+		});
+	if (it != battleEffects.end()) {
+		auto index = std::distance(battleEffects.begin(), it);
+		dynamic_cast<bfx::Terrain*>(battleEffects[index].get())->RefreshDuration();
+		std::map<bfx::Terrain::TerrainType, std::string> terrains = {
+			{ bfx::Terrain::ElectricTerrain, "Electric" },
+			{ bfx::Terrain::MistyTerrain, "Misty" },
+			{ bfx::Terrain::PsychicTerrain, "Psychic" },
+			{ bfx::Terrain::GrassyTerrain, "Grassy" },
+		};
+		std::string msg = terrains.at(type) + " Terrain's duration was extended!";
+		Events::WriteToScreen(msg);
+		return false;
+	}
+	else {
+		std::erase_if(battleEffects, [](const std::unique_ptr<bfx::BattleEffect>& x) 
+			{ return x.get()->GetTypeOfEffect() == bfx::BattleEffect::Terrain; });
+		return true;
+	}
+}
+#pragma endregion
+
+#pragma region Weather
+void mv::SunnyDay(bat::Battle& battle)
+{
+	if (EraseOrRefreshWeather(battle.battleEffects, bfx::Weather::HarshSunlight)) {
+		std::string msg = "The sunlight turned harsh!";
+		Events::WriteToScreen(msg);
+		battle.battleEffects.push_back(std::make_unique<bfx::HarshSunlight>());
+	}
 }
 
-void AnalyzeExistingTerrain(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, std::string terrain, bfx::BattleEffect::ChildType ct) {
-	static const std::map<std::string, bfx::BattleEffect::ChildType> terrains = {
-		{ "Electric", bfx::BattleEffect::ChildType::ElectricTerrain },
-		{ "Misty", bfx::BattleEffect::ChildType::MistyTerrain },
-		{ "Psychic", bfx::BattleEffect::ChildType::PsychicTerrain },
-		{ "Grassy", bfx::BattleEffect::ChildType::GrassyTerrain },
-	};
-
-	std::string msg = "";
-	auto count = std::erase_if(battleEffects, [&](const std::unique_ptr<bfx::BattleEffect>& x)
-		{ return x.get()->GetTypeOfEffect() == ct; });
-	if (count != 0 && ct == terrains.at(terrain)) { msg = terrain + " Terrain's duration was extended!"; }
-	if (msg != "") { Events::WriteToScreen(msg); }
+void mv::RainDance(bat::Battle& battle)
+{
+	if (EraseOrRefreshWeather(battle.battleEffects, bfx::Weather::Rain)) {
+		std::string msg = "It started to rain!";
+		Events::WriteToScreen(msg);
+		battle.battleEffects.push_back(std::make_unique<bfx::Rain>());
+	}
 }
+
+void mv::Sandstorm(bat::Battle& battle)
+{
+	if (EraseOrRefreshWeather(battle.battleEffects, bfx::Weather::Sandstorm)) {
+		std::string msg = "A sandstorm kicked up!";
+		Events::WriteToScreen(msg);
+		battle.battleEffects.push_back(std::make_unique<bfx::Sandstorm>());
+		battle.battleEffects.push_back(std::make_unique<bfx::SandstormDamage>());
+	}
+}
+
+void mv::Hail(bat::Battle& battle)
+{
+	if (EraseOrRefreshWeather(battle.battleEffects, bfx::Weather::Hail)) {
+		std::string msg = "It started to hail!";
+		Events::WriteToScreen(msg);
+		battle.battleEffects.push_back(std::make_unique<bfx::Hail>());
+		battle.battleEffects.push_back(std::make_unique<bfx::HailDamage>());
+	}
+}
+
+void mv::Turbulence(bat::Battle& battle)
+{
+	if (EraseOrRefreshWeather(battle.battleEffects, bfx::Weather::StrongWinds)) {
+		std::string msg = "String winds begin to blow!";
+		Events::WriteToScreen(msg);
+		battle.battleEffects.push_back(std::make_unique<bfx::StrongWinds>());
+	}
+}
+
+void mv::Gravity(bat::Battle& battle)
+{
+	if (EraseOrRefreshWeather(battle.battleEffects, bfx::Weather::IntenseGravity)) {
+		std::string msg = "Gravity intensified!";
+		Events::WriteToScreen(msg);
+		battle.battleEffects.push_back(std::make_unique<bfx::IntenseGravity>());
+	}
+}
+
+bool EraseOrRefreshWeather(std::vector<std::unique_ptr<bfx::BattleEffect>>& battleEffects, bfx::Weather::WeatherType type) 
+{
+	auto it = std::find_if(battleEffects.begin(), battleEffects.end(), [&type](const std::unique_ptr<bfx::BattleEffect>& x)
+		{ return
+		x.get()->GetTypeOfEffect() == bfx::BattleEffect::Weather &&
+		dynamic_cast<bfx::Weather*>(x.get())->GetWeatherType() == type;
+		});
+	if (it != battleEffects.end()) {
+		auto index = std::distance(battleEffects.begin(), it);
+		dynamic_cast<bfx::Weather*>(battleEffects[index].get())->RefreshDuration();
+		std::map<bfx::Weather::WeatherType, std::string> weather = {
+			{ bfx::Weather::HarshSunlight, "Harsh Sunlight was" },
+			{ bfx::Weather::Rain, "Rain was" },
+			{ bfx::Weather::Sandstorm, "Sandstorm was" },
+			{ bfx::Weather::Hail, "Hail was" },
+			{ bfx::Weather::StrongWinds, "Strong Winds were" },
+			{ bfx::Weather::IntenseGravity, "Intense Gravity was" },
+		};
+		std::string msg = "The " + weather.at(type) + " extended!";
+		Events::WriteToScreen(msg);
+		return false;
+	}
+	else {
+		std::erase_if(battleEffects, [](const std::unique_ptr<bfx::BattleEffect>& x)
+			{ return x.get()->GetTypeOfEffect() == bfx::BattleEffect::Weather; });
+		return true;
+	}
+}
+#pragma endregion
+
+#pragma region Rooms
+// Extrapolate a method from these functions later.
+void mv::TrickRoom(bat::Battle& battle)
+{
+	std::string msg;
+	auto it = std::find_if(battle.battleEffects.begin(), battle.battleEffects.end(), [](const std::unique_ptr<bfx::BattleEffect>& x)
+		{ return x.get()->GetTypeOfEffect() == bfx::BattleEffect::TrickRoom; });
+	if (it != battle.battleEffects.end()) {
+		msg = "But it was already in effect!";
+	}
+	else {
+		std::erase_if(battle.battleEffects, [](const std::unique_ptr<bfx::BattleEffect>& x) // Overwrite Wonder Room if applicable.
+			{ return x.get()->GetTypeOfEffect() == bfx::BattleEffect::WonderRoom; });
+		battle.battleEffects.push_back(std::make_unique<bfx::TrickRoom>());
+		msg = "The dimensions were twisted!";
+	}
+	Events::WriteToScreen(msg);
+}
+
+void mv::WonderRoom(bat::Battle& battle)
+{
+	std::string msg;
+	auto it = std::find_if(battle.battleEffects.begin(), battle.battleEffects.end(), [](const std::unique_ptr<bfx::BattleEffect>& x)
+		{ return x.get()->GetTypeOfEffect() == bfx::BattleEffect::WonderRoom; });
+	if (it != battle.battleEffects.end()) {
+		msg = "But it was already in effect!";
+	}
+	else {
+		std::erase_if(battle.battleEffects, [](const std::unique_ptr<bfx::BattleEffect>& x) // Overwrite Trick Room if applicable.
+			{ return x.get()->GetTypeOfEffect() == bfx::BattleEffect::TrickRoom; });
+		battle.battleEffects.push_back(std::make_unique<bfx::TrickRoom>());
+		msg = "It created a bizarre Defense and Special Defense swapping area!";
+	}
+	Events::WriteToScreen(msg);
+}
+#pragma endregion
+
+#pragma region FieldEffects
+// These aren't mutually exclusive. Pull a method out of these later.
+void mv::MudSport(bat::Battle& battle)
+{
+	std::string msg;
+	bool refreshed = false;
+	for (const std::unique_ptr<bfx::BattleEffect>& b : battle.battleEffects) {
+		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::MudSport) {
+			dynamic_cast<bfx::MudSport*>(b.get())->RefreshDuration();
+			refreshed = true;
+			msg = "Mud Sport's duration was extended!";
+			break;
+		}
+	}
+	if (not refreshed) { 
+		battle.battleEffects.push_back(std::make_unique<bfx::MudSport>()); 
+		msg = "Electricity's power was weakened!";
+	}
+	Events::WriteToScreen(msg);
+}
+
+void mv::SplashSport(bat::Battle& battle)
+{
+	std::string msg;
+	bool refreshed = false;
+	for (const std::unique_ptr<bfx::BattleEffect>& b : battle.battleEffects) {
+		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::SplashSport) {
+			dynamic_cast<bfx::SplashSport*>(b.get())->RefreshDuration();
+			refreshed = true;
+			msg = "Splash Sport's duration was extended!";
+			break;
+		}
+	}
+	if (not refreshed) { 
+		battle.battleEffects.push_back(std::make_unique<bfx::SplashSport>()); 
+		msg = "Fire's power was weakened!";
+	}
+	Events::WriteToScreen(msg);
+}
+
+void mv::IonDeluge(bat::Battle& battle)
+{
+	std::string msg;
+	bool refreshed = false;
+	for (const std::unique_ptr<bfx::BattleEffect>& b : battle.battleEffects) {
+		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::IonDeluge) {
+			dynamic_cast<bfx::IonDeluge*>(b.get())->RefreshDuration();
+			refreshed = true;
+			msg = "Ion Deluge's duration was extended!";
+			break;
+		}
+	}
+	if (not refreshed) { 
+		battle.battleEffects.push_back(std::make_unique<bfx::IonDeluge>()); 
+		msg = "A deluge of ions showers the battlefield!";
+	}
+	Events::WriteToScreen(msg);
+}
+
 #pragma endregion
 
 #pragma region MiscEffects
@@ -465,7 +701,7 @@ void mv::Hit2to5Times(bat::Battle& battle) // pre
 	battle.battleEffects.push_back(std::make_unique<bfx::MultiHit>(battle.attackerIsPlayer, hits));
 }
 
-void mv::HitTwice(bat::Battle& battle) // post
+void mv::HitTwice(bat::Battle& battle) // pre
 {
 	battle.battleEffects.push_back(std::make_unique<bfx::MultiHit>(battle.attackerIsPlayer, 2));
 }
@@ -532,7 +768,7 @@ void mv::PassiveDamageTrap(bat::Battle& battle, std::string cause)
 {
 	bool noTrap = true;
 	for (const std::unique_ptr<bfx::BattleEffect>& b : battle.battleEffects) { // Check for existing damage trap.
-		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ChildType::DamageTrapOther && 
+		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::DamageTrap && 
 			b.get()->GetTarget() == not battle.attackerIsPlayer) { noTrap = false; break; }
 	}
 	if (noTrap) {
@@ -545,6 +781,723 @@ void mv::PassiveDamageTrap(bat::Battle& battle, std::string cause)
 		std::string msg = "Wanted to damage trap defender but they were already trapped.";
 		Events::Log(msg);
 	}
+}
+#pragma endregion
+
+#pragma region UniqueMoves
+void mv::FuryCutter(bat::Battle& battle)
+{
+	int dmg_mult = 1;
+	for (int i = 0; i < 3; ++i) {
+		if (battle.p_movesUsed.at(i) == 5) { ++dmg_mult; }
+		else { dmg_mult = 1; break; }
+	}
+	battle.battleEffects.push_back(std::make_unique<bfx::FlatDamageMod>(battle.attackerIsPlayer, 1, (float)dmg_mult));
+}
+
+void mv::TwinNeedle(bat::Battle& battle)
+{ // This move will use the HitTwice method in pre, and this unique TwinNeedle method in post. 
+	ChancePoison(battle, 20);
+	ChancePoison(battle, 20);
+}
+
+void mv::DarkestLariat(bat::Battle& battle)
+{
+	// NOT IMPLIMENTED
+	// Reason: Relies on knowledge of other BEs.
+}
+
+void mv::Payback(bat::Battle& battle)
+{ // Temporary implementation of checking whether the defender has gone first, if they have more used moves in their deque, they already moved. 
+	bool commit_payback;
+	if (battle.attackerIsPlayer) { commit_payback = battle.r_movesUsed.size() > battle.p_movesUsed.size(); }
+	else { commit_payback = battle.r_movesUsed.size() < battle.p_movesUsed.size(); }
+
+	if (commit_payback) { battle.battleEffects.push_back(std::make_unique<bfx::FlatDamageMod>(battle.attackerIsPlayer, 1, 2.0F)); }
+}
+
+void mv::Punishment(bat::Battle& battle)
+{
+	// NOT IMPLIMENTED
+	// Reason: Relies on knowledge of other BEs.
+}
+
+void mv::Obstruct(bat::Battle& battle)
+{
+	pkmn::Move d_move = battle.attackerIsPlayer ? battle.r_move : battle.p_move;
+
+	if (d_move.GetCategory() != tc::Special) {
+		battle.battleEffects.push_back(std::make_unique<bfx::InterruptMove>(not battle.attackerIsPlayer, 1));
+		if (d_move.GetCategory() == tc::Physical) {
+			battle.battleEffects.push_back(std::make_unique<bfx::ModDefense>(not battle.attackerIsPlayer, -2)); // This might display out of order. Needs testing.
+		}
+	}
+}
+
+void mv::Snatch(bat::Battle& battle)
+{
+	std::string msg = "But nothing happened!";
+	if (battle.p_movesUsed.size() == battle.r_movesUsed.size()) {
+		pkmn::Move d_move = battle.attackerIsPlayer ? battle.r_move : battle.p_move;
+		std::vector<int> valid_moves = { 19, 20, 21, 24, 44, 46, 47, 69, 87, 91, 92, 106, 108, 152, 153, 154, 155, 156, 164,
+			166, 168, 172, 173, 178, 211, 212, 213, 234, 235, 247, 250, 252, 272, 286, 320, 321, 322, 323, 326, 345, 346,
+			369, 370, 373, 378, 391, 429, 432, 434, 437, 439, 442, 446, 447, 449, 450, 452, 457, 458, 464, 465, 466, 468,
+			470, 471, 476, 479, 487, 488, 492 };
+		if (std::find(valid_moves.begin(), valid_moves.end(), d_move.GetID()) != valid_moves.end()) {
+			battle.battleEffects.push_back(std::make_unique<bfx::InterruptMove>(not battle.attackerIsPlayer, 1));
+			battle.battleEffects.push_back(std::make_unique<bfx::MoveOverride>(battle.attackerIsPlayer, d_move.GetID()));
+			msg = battle.attackerIsPlayer ? battle.player.GetName() : battle.rival.GetName();
+			msg += " stole " + d_move.GetName() + "!";
+		}
+	}
+	Events::WriteToScreen(msg);
+}
+
+void mv::Taunt(bat::Battle& battle)
+{
+	// NOT IMPLEMENTED
+	// Reason: Relies on move restrictions, which also isn't implemented. 
+}
+
+void mv::TopsyTurvy(bat::Battle& battle)
+{
+	int stages = 0;
+	for (const std::unique_ptr<bfx::BattleEffect>& b : battle.battleEffects) {
+		if (b.get()->GetTarget() == not battle.attackerIsPlayer) {
+			switch (b.get()->GetTypeOfEffect()) {
+			case bfx::BattleEffect::AttackMod:
+				stages = dynamic_cast<bfx::ModAttack*>(b.get())->GetStages() * -1;
+				dynamic_cast<bfx::ModAttack*>(b.get())->ModStages(stages);
+				break;
+			case bfx::BattleEffect::DefenseMod:
+				stages = dynamic_cast<bfx::ModDefense*>(b.get())->GetStages() * -1;
+				dynamic_cast<bfx::ModDefense*>(b.get())->ModStages(stages);
+				break;
+			case bfx::BattleEffect::SpecialAttackMod:
+				stages = dynamic_cast<bfx::ModSpecialAttack*>(b.get())->GetStages() * -1;
+				dynamic_cast<bfx::ModSpecialAttack*>(b.get())->ModStages(stages);
+				break;
+			case bfx::BattleEffect::SpecialDefenseMod:
+				stages = dynamic_cast<bfx::ModSpecialDefense*>(b.get())->GetStages() * -1;
+				dynamic_cast<bfx::ModSpecialDefense*>(b.get())->ModStages(stages);
+				break;
+			case bfx::BattleEffect::SpeedMod:
+				stages = dynamic_cast<bfx::ModSpeed*>(b.get())->GetStages() * -1;
+				dynamic_cast<bfx::ModSpeed*>(b.get())->ModStages(stages);
+				break;
+			case bfx::BattleEffect::AccuracyMod:
+				stages = dynamic_cast<bfx::ModAccuracy*>(b.get())->GetStages() * -1;
+				dynamic_cast<bfx::ModAccuracy*>(b.get())->ModStages(stages);
+				break;
+			case bfx::BattleEffect::EvasionMod:
+				stages = dynamic_cast<bfx::ModEvasion*>(b.get())->GetStages() * -1;
+				dynamic_cast<bfx::ModEvasion*>(b.get())->ModStages(stages);
+				break;
+			case bfx::BattleEffect::CriticalRatioMod:
+				stages = dynamic_cast<bfx::ModCriticalRatio*>(b.get())->GetStages() * -1;
+				dynamic_cast<bfx::ModCriticalRatio*>(b.get())->ModStages(stages);
+				break;
+			}
+		}
+	}
+
+	std::string who = battle.attackerIsPlayer ? battle.rival.GetName() : battle.player.GetName();
+	std::string msg = who + " had their stat changes reversed!";
+	Events::WriteToScreen(msg);
+}
+
+void mv::Torment(bat::Battle& battle)
+{
+	// NOT IMPLEMENTED
+	// Reason: Relies on move restrictions, which also isn't implemented. 
+}
+
+void mv::BoltBeak(bat::Battle& battle)
+{
+	if (battle.attackerIsPlayer && battle.playerGoesFirst) {
+
+	}
+}
+
+void mv::SparkFang(bat::Battle& battle)
+{
+}
+
+void mv::VoltTackle(bat::Battle& battle)
+{
+}
+
+void mv::Charge(bat::Battle& battle)
+{
+}
+
+void mv::MagnetRise(bat::Battle& battle)
+{
+}
+
+void mv::NaturesMadness(bat::Battle& battle)
+{
+}
+
+void mv::CraftyShield(bat::Battle& battle)
+{
+}
+
+void mv::FireFang(bat::Battle& battle)
+{
+}
+
+void mv::FlareWheel(bat::Battle& battle)
+{
+}
+
+void mv::InfernoDrive(bat::Battle& battle)
+{
+}
+
+void mv::VCreate(bat::Battle& battle)
+{
+}
+
+void mv::BurnUp(bat::Battle& battle)
+{
+}
+
+void mv::BurningJealosy(bat::Battle& battle)
+{
+}
+
+void mv::PsychicFang(bat::Battle& battle)
+{
+}
+
+void mv::StoredPower(bat::Battle& battle)
+{
+}
+
+void mv::Extrasensory(bat::Battle& battle)
+{
+}
+
+void mv::MirrorCoat(bat::Battle& battle)
+{
+}
+
+void mv::MysticalPower(bat::Battle& battle)
+{
+}
+
+void mv::Psyshock(bat::Battle& battle)
+{
+}
+
+void mv::GuardSplit(bat::Battle& battle)
+{
+}
+
+void mv::GuardSwap(bat::Battle& battle)
+{
+}
+
+void mv::HealBlock(bat::Battle& battle)
+{
+}
+
+void mv::MagicCoat(bat::Battle& battle)
+{
+}
+
+void mv::Meditate(bat::Battle& battle)
+{
+}
+
+void mv::PowerSplit(bat::Battle& battle)
+{
+}
+
+void mv::PowerSwap(bat::Battle& battle)
+{
+}
+
+void mv::Rest(bat::Battle& battle)
+{
+}
+
+void mv::SoulSwap(bat::Battle& battle)
+{
+}
+
+void mv::SpeedSwap(bat::Battle& battle)
+{
+}
+
+void mv::StatTrick(bat::Battle& battle)
+{
+}
+
+void mv::StatusShift(bat::Battle& battle)
+{
+}
+
+void mv::Telekenesis(bat::Battle& battle)
+{
+}
+
+void mv::WakeUpSlap(bat::Battle& battle)
+{
+}
+
+void mv::BodyPress(bat::Battle& battle)
+{
+}
+
+void mv::BrickBreak(bat::Battle& battle)
+{
+}
+
+void mv::Counter(bat::Battle& battle)
+{
+}
+
+void mv::FocusPunch(bat::Battle& battle)
+{
+}
+
+void mv::HighJumpKick(bat::Battle& battle)
+{
+}
+
+void mv::SacredSword(bat::Battle& battle)
+{
+}
+
+void mv::StormThrow(bat::Battle& battle)
+{
+}
+
+void mv::MysterySword(bat::Battle& battle)
+{
+}
+
+void mv::Acrobatics(bat::Battle& battle)
+{
+}
+
+void mv::BraveBird(bat::Battle& battle)
+{
+}
+
+void mv::Fly(bat::Battle& battle)
+{
+}
+
+void mv::Freefall(bat::Battle& battle)
+{
+}
+
+void mv::SkyAttack(bat::Battle& battle)
+{
+}
+
+void mv::Defog(bat::Battle& battle)
+{
+}
+
+void mv::MirrorMove(bat::Battle& battle)
+{
+}
+
+void mv::Roost(bat::Battle& battle)
+{
+}
+
+void mv::Tailwind(bat::Battle& battle)
+{
+}
+
+void mv::BarbBarrage(bat::Battle& battle)
+{
+}
+
+void mv::DireClaw(bat::Battle& battle)
+{
+}
+
+void mv::VenomFang(bat::Battle& battle)
+{
+}
+
+void mv::BanefulThread(bat::Battle& battle)
+{
+}
+
+void mv::Pillbox(bat::Battle& battle)
+{
+}
+
+void mv::Toxic(bat::Battle& battle)
+{
+}
+
+void mv::VenomTrap(bat::Battle& battle)
+{
+}
+
+void mv::Dig(bat::Battle& battle)
+{
+}
+
+void mv::StompingTantrum(bat::Battle& battle)
+{
+}
+
+void mv::SandsearStorm(bat::Battle& battle)
+{
+}
+
+void mv::Rototiller(bat::Battle& battle)
+{
+}
+
+void mv::SandAttack(bat::Battle& battle)
+{
+}
+
+void mv::SoilGather(bat::Battle& battle)
+{
+}
+
+void mv::HeadSmash(bat::Battle& battle)
+{
+}
+
+void mv::Rollout(bat::Battle& battle)
+{
+}
+
+void mv::SmackDown(bat::Battle& battle)
+{
+}
+
+void mv::MeteorBeam(bat::Battle& battle)
+{
+}
+
+void mv::Astonish(bat::Battle& battle)
+{
+}
+
+void mv::Lick(bat::Battle& battle)
+{
+}
+
+void mv::PhantomForce(bat::Battle& battle)
+{
+}
+
+void mv::SpectralThief(bat::Battle& battle)
+{
+}
+
+void mv::BitterMalice(bat::Battle& battle)
+{
+}
+
+void mv::InfernalParade(bat::Battle& battle)
+{
+}
+
+void mv::DoublePanzer(bat::Battle& battle)
+{
+}
+
+void mv::MirrorBurst(bat::Battle& battle)
+{
+}
+
+void mv::SteelRoller(bat::Battle& battle)
+{
+}
+
+void mv::AssistGear(bat::Battle& battle)
+{
+}
+
+void mv::Dive(bat::Battle& battle)
+{
+}
+
+void mv::Brine(bat::Battle& battle)
+{
+}
+
+void mv::Scald(bat::Battle& battle)
+{
+}
+
+void mv::SparklingAria(bat::Battle& battle)
+{
+}
+
+void mv::AquaRing(bat::Battle& battle)
+{
+}
+
+void mv::Soak(bat::Battle& battle)
+{
+}
+
+void mv::GForce(bat::Battle& battle)
+{
+}
+
+void mv::GrassyGlide(bat::Battle& battle)
+{
+}
+
+void mv::SedativeFang(bat::Battle& battle)
+{
+}
+
+void mv::Chloroblast(bat::Battle& battle)
+{
+}
+
+void mv::Aromatherapy(bat::Battle& battle)
+{
+}
+
+void mv::Ingrain(bat::Battle& battle)
+{
+}
+
+void mv::LeechSeed(bat::Battle& battle)
+{
+}
+
+void mv::Synthesis(bat::Battle& battle)
+{
+}
+
+void mv::Avalanche(bat::Battle& battle)
+{
+}
+
+void mv::IceBall(bat::Battle& battle)
+{
+}
+
+void mv::IceFang(bat::Battle& battle)
+{
+}
+
+void mv::FreezeDry(bat::Battle& battle)
+{
+}
+
+void mv::FrostBreath(bat::Battle& battle)
+{
+}
+
+void mv::Mist(bat::Battle& battle)
+{
+}
+
+void mv::Haze(bat::Battle& battle)
+{
+}
+
+void mv::BodySlam(bat::Battle& battle)
+{
+}
+
+void mv::Bravado(bat::Battle& battle)
+{
+}
+
+void mv::Cut(bat::Battle& battle)
+{
+}
+
+void mv::DoubleEdge(bat::Battle& battle)
+{
+}
+
+void mv::Endeavor(bat::Battle& battle)
+{
+}
+
+void mv::FalseSwipe(bat::Battle& battle)
+{
+}
+
+void mv::RapidSpin(bat::Battle& battle)
+{
+}
+
+void mv::SmellingSalts(bat::Battle& battle)
+{
+}
+
+void mv::Strength(bat::Battle& battle)
+{
+}
+
+void mv::Struggle(bat::Battle& battle)
+{
+}
+
+void mv::SuperFang(bat::Battle& battle)
+{
+}
+
+void mv::RevelationDance(bat::Battle& battle)
+{
+}
+
+void mv::Swift(bat::Battle& battle)
+{
+}
+
+void mv::TriAttack(bat::Battle& battle)
+{
+}
+
+void mv::WeatherBall(bat::Battle& battle)
+{
+}
+
+void mv::Acupressure(bat::Battle& battle)
+{
+}
+
+void mv::BellyDrum(bat::Battle& battle)
+{
+}
+
+void mv::Conversion(bat::Battle& battle)
+{
+}
+
+void mv::CourtChange(bat::Battle& battle)
+{
+}
+
+void mv::Disable(bat::Battle& battle)
+{
+}
+
+void mv::Encore(bat::Battle& battle)
+{
+}
+
+void mv::Endure(bat::Battle& battle)
+{
+}
+
+void mv::Glare(bat::Battle& battle)
+{
+
+}
+
+void mv::HealBell(bat::Battle& battle)
+{
+}
+
+void mv::LaserFocus(bat::Battle& battle)
+{
+}
+
+void mv::LockOn(bat::Battle& battle)
+{
+}
+
+void mv::LuckyChant(bat::Battle& battle)
+{
+}
+
+void mv::MeFirst(bat::Battle& battle)
+{
+}
+
+void mv::Metronome(bat::Battle& battle)
+{
+}
+
+void mv::NaturePower(bat::Battle& battle)
+{
+}
+
+void mv::OdorSleuth(bat::Battle& battle)
+{
+}
+
+void mv::PainSplit(bat::Battle& battle)
+{
+}
+
+void mv::PowerShift(bat::Battle& battle)
+{
+}
+
+void mv::Protect(bat::Battle& battle)
+{
+}
+
+void mv::PsychUp(bat::Battle& battle)
+{
+}
+
+void mv::Regeneration(bat::Battle& battle)
+{
+}
+
+void mv::Safeguard(bat::Battle& battle)
+{
+}
+
+void mv::ShellSmash(bat::Battle& battle)
+{
+}
+
+void mv::Substitute(bat::Battle& battle)
+{
+}
+
+void mv::SweetScent(bat::Battle& battle)
+{
+}
+
+void mv::Wish(bat::Battle& battle)
+{
+}
+
+void mv::DreamEater(bat::Battle& battle)
+{
+}
+
+void mv::Corrode(bat::Battle& battle)
+{
+}
+
+void mv::AncientPower(bat::Battle& battle)
+{
+}
+
+void mv::OminousWind(bat::Battle& battle)
+{
+}
+
+void mv::DisarmingVoice(bat::Battle& battle)
+{
+}
+
+void mv::LightningStrike(bat::Battle& battle)
+{
+}
+
+void mv::Blizzard(bat::Battle& battle)
+{
 }
 #pragma endregion
 
