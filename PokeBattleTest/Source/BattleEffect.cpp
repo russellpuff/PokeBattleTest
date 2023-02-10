@@ -537,3 +537,33 @@ void bfx::MoveOverride::Execute(bat::Turn& turn)
 		turn.move = pkmn::Move(newMove);
 	}
 }
+
+void bfx::ExactDamageOverride::Execute(bat::Turn& turn)
+{ // This battleeffect overrides the normal attack formula with an exact damage value determined by the move.
+	if (targetIsPlayer == turn.attackerIsPlayer) {
+		turn.interruptTurn = true;
+		turn.a_absoluteDamageOverride = exactDamage;
+	}
+}
+
+void bfx::ShedType::Execute(bat::Turn& turn)
+{
+	if (targetIsPlayer == turn.attackerIsPlayer) { // Attacker type override
+		turn.a_typeOverrideInEffect = true;
+		if (turn.attacker.GetType1() == typeToShed) { turn.a_type1Override = tc::NoType; }
+		else if (turn.attacker.GetType2() == typeToShed) { turn.a_type2Override = tc::NoType; }
+		else { std::string msg = "Attempted to shed the attacker's type but couldn't find a matching type."; Events::Log(msg); }
+	}
+	else { // Defender type override
+		turn.d_typeOverrideInEffect = true;
+		if (turn.defender.GetType1() == typeToShed) { turn.d_type1Override = tc::NoType; }
+		else if (turn.defender.GetType2() == typeToShed) { turn.d_type2Override = tc::NoType; }
+		else { std::string msg = "Attempted to shed the defender's type but couldn't find a matching type."; Events::Log(msg); }
+	}
+}
+
+void bfx::SpecialDefenseOverride::Execute(bat::Turn& turn)
+{
+	if (targetIsPlayer == turn.attackerIsPlayer) { turn.a_spDefOverride = spDefOverride; }
+	else { turn.d_spDefOverride = spDefOverride; }
+}

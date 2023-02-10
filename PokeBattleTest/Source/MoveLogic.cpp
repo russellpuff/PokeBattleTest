@@ -149,19 +149,19 @@ bool CheckForExistingStatus(std::vector<std::unique_ptr<bfx::BattleEffect>>& bat
 	for (const std::unique_ptr<bfx::BattleEffect>& b : battleEffects) {
 		// Check for burn.
 		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::BurnStatus && 
-			b.get()->GetTarget() == !attackerIsPlayer) { return false; }
+			b.get()->GetTarget() == not attackerIsPlayer) { return false; }
 		// Check for frostbite.
 		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::FrostbiteStatus && 
-			b.get()->GetTarget() == !attackerIsPlayer) { return false; }
+			b.get()->GetTarget() == not attackerIsPlayer) { return false; }
 		// Check for paralysis.
 		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::ParalysisStatus &&
-			b.get()->GetTarget() == !attackerIsPlayer) { return false; }
+			b.get()->GetTarget() == not attackerIsPlayer) { return false; }
 		// Check for poison.
 		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::PoisonedStatus &&
-			b.get()->GetTarget() == !attackerIsPlayer) { return false; }
+			b.get()->GetTarget() == not attackerIsPlayer) { return false; }
 		// Check for drowsy.
 		if (b.get()->GetTypeOfEffect() == bfx::BattleEffect::DrowsyStatus &&
-			b.get()->GetTarget() == !attackerIsPlayer) { return false; }
+			b.get()->GetTarget() == not attackerIsPlayer) { return false; }
 	}
 	return true;
 }
@@ -935,96 +935,184 @@ void mv::MagnetRise(bat::Battle& battle)
 {
 }
 
-void mv::NaturesMadness(bat::Battle& battle)
+void mv::NaturesMadness(bat::Battle& battle) // post
 {
+	int dmgVal = battle.attackerIsPlayer ? battle.rival.GetCurrentHP() : battle.player.GetCurrentHP();
+	dmgVal /= 2;
+	if (dmgVal == 0) { dmgVal = 1; }
+	battle.battleEffects.push_back(std::make_unique<bfx::ExactDamageOverride>(battle.attackerIsPlayer, dmgVal));
 }
 
-void mv::CraftyShield(bat::Battle& battle)
+void mv::CraftyShield(bat::Battle& battle) // pre
 {
+	pkmn::Move d_move = battle.attackerIsPlayer ? battle.r_move : battle.p_move;
+	if (d_move.GetCategory() == tc::Status) {
+		battle.battleEffects.push_back(std::make_unique<bfx::InterruptMove>(not battle.attackerIsPlayer, 1));
+	}
 }
 
-void mv::FireFang(bat::Battle& battle)
+void mv::FireFang(bat::Battle& battle) // post
 {
+	mv::ChanceBurn(battle, 20);
+	mv::ChanceFlinch(battle, 10);
 }
 
-void mv::FlareWheel(bat::Battle& battle)
+void mv::FlareWheel(bat::Battle& battle) // post
 {
+	mv::ChanceBurn(battle, 20);
+	//
+	// Copy the volt tackle code to cure user's frostbite
+	//
 }
 
-void mv::InfernoDrive(bat::Battle& battle)
+void mv::InfernoDrive(bat::Battle& battle) // post
 {
+	mv::ChanceBurn(battle, 10);
+	// Copy the volt tackle for curing frostbite AND recoil damage. 
 }
 
-void mv::VCreate(bat::Battle& battle)
+void mv::VCreate(bat::Battle& battle) // post
 {
+	mv::ModDefense(battle, 100, -1, true);
+	mv::ModSpecialDefense(battle, 100, -1, true);
+	mv::ModSpeed(battle, 100, -1, true);
 }
 
-void mv::BurnUp(bat::Battle& battle)
+void mv::BurnUp(bat::Battle& battle) // post
 {
+	// Copy volt tackle for curing frostbite.
+	battle.battleEffects.push_back(std::make_unique<bfx::ShedType>(battle.attackerIsPlayer, tc::Fire, -1));
+
 }
 
-void mv::BurningJealosy(bat::Battle& battle)
+void mv::BurningJealosy(bat::Battle& battle) // post
 {
+	bool commitBurn = false;
+	for (const std::unique_ptr<bfx::BattleEffect>& b : battle.battleEffects) {
+		if (dynamic_cast<bfx::ModStat*>(b.get()) != nullptr &&
+			dynamic_cast<bfx::ModStat*>(b.get())->GetStages() > 0) {
+			commitBurn = true;
+			break;
+		}
+	}
+	if (commitBurn) { mv::ChanceBurn(battle, 100); }
 }
 
-void mv::PsychicFang(bat::Battle& battle)
+void mv::PsychicFang(bat::Battle& battle) // post
 {
+	bool targ = not battle.attackerIsPlayer;
+	int res = std::erase_if(battle.battleEffects, [&targ](const std::unique_ptr<bfx::BattleEffect>& x)
+		{ return x.get()->GetTypeOfEffect() == bfx::BattleEffect::FieldGuard && 
+		x.get()->GetTarget() == targ; });
+	if (res != 0) {
+		std::string msg = battle.attackerIsPlayer ? battle.rival.GetName() : battle.player.GetName();
+		msg += " had their field guards broken!";
+		Events::WriteToScreen(msg);
+	}
 }
 
 void mv::StoredPower(bat::Battle& battle)
 {
+	//
+	// bepis lol
+	// I don't feel like writing this right now
+	// just don't forget it
+	//
 }
 
-void mv::Extrasensory(bat::Battle& battle)
+void mv::Extrasensory(bat::Battle& battle) // post
 {
+	mv::ModSpeed(battle, 100, -1, false);
+	mv::ChanceFlinch(battle, 10);
 }
 
 void mv::MirrorCoat(bat::Battle& battle)
 {
+	//
+	// Damage tracking function too flawed to implement this. 
+	//
 }
 
-void mv::MysticalPower(bat::Battle& battle)
+void mv::MysticalPower(bat::Battle& battle) // post
 {
+	if (battle.attackerIsPlayer) {
+		if (battle.player.GetBaseSpAtk() > battle.player.GetBaseSpDef()) { mv::ModSpecialAttack(battle, 100, 1, true); }
+		else { mv::ModSpecialDefense(battle, 100, 1, true); }
+	}
+	else {
+		if (battle.rival.GetBaseSpAtk() > battle.rival.GetBaseSpDef()) { mv::ModSpecialAttack(battle, 100, 1, false); }
+		else { mv::ModSpecialDefense(battle, 100, 1, false); }
+	}
 }
 
-void mv::Psyshock(bat::Battle& battle)
+void mv::Psyshock(bat::Battle& battle) // pre
 {
+	int override = battle.attackerIsPlayer ? battle.rival.GetBaseDef() : battle.player.GetBaseDef();
+	battle.battleEffects.push_back(
+		std::make_unique<bfx::SpecialDefenseOverride>(not battle.attackerIsPlayer, 1, override)
+	);
 }
 
 void mv::GuardSplit(bat::Battle& battle)
 {
+	//
+	// ree
+	//
 }
 
 void mv::GuardSwap(bat::Battle& battle)
 {
+	//
+	// bengis
+	// 
 }
 
 void mv::HealBlock(bat::Battle& battle)
 {
+	// NOT IMPLEMENTED
+	// Reason: Relies on knowledge of other BEs.
 }
 
 void mv::MagicCoat(bat::Battle& battle)
 {
+	// get list of valid magic coat status moves, can't be fucked rn
 }
 
 void mv::Meditate(bat::Battle& battle)
 {
+	// why is this its own method??
+	mv::ModAttack(battle, 100, 2, true);
 }
 
 void mv::PowerSplit(bat::Battle& battle)
 {
+	// stop with these moves
 }
 
 void mv::PowerSwap(bat::Battle& battle)
 {
+	// KYS IRL DELETE THESE FUCKING MOVES
 }
 
 void mv::Rest(bat::Battle& battle)
 {
+	mv::InstantHealSelf(battle, 75);
+	std::string msg = battle.attackerIsPlayer ? battle.player.GetName() : battle.rival.GetName();
+	if (CheckForTerrain(battle.battleEffects, bfx::Terrain::ElectricTerrain)) {
+		msg += " couldn't become drowsy due to the Electric Terrain!";
+	}
+	else {
+		battle.battleEffects.push_back(std::make_unique<bfx::Drowsy>(battle.attackerIsPlayer));
+		battle.battleEffects.push_back(std::make_unique<bfx::DrowsyDamageBoost>(not battle.attackerIsPlayer));
+		msg += " became drowsy!";
+	}
 }
 
 void mv::SoulSwap(bat::Battle& battle)
 {
+	int atk, def, spatk, spdef, spd, acc, eva, crit;
+	atk = def = spatk = spdef = spd = acc = eva = crit = 0;
+	// finish this
 }
 
 void mv::SpeedSwap(bat::Battle& battle)

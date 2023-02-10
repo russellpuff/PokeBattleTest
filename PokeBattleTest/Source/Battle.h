@@ -35,6 +35,7 @@ namespace bat {
 		int a_spDefOverride = -1;
 		int d_defOverride = -1;
 		int d_spDefOverride = -1;
+		int a_absoluteDamageOverride = -1;
 		// Non-grounded pokemon are immune to ground-type moves and terrain. Constructor discerns who is grounded.
 		bool a_grounded;
 		bool d_grounded;
@@ -46,11 +47,13 @@ namespace bat {
 		bool interruptBecauseConfused = false; // A temporary? Workaround to a problem with ConfusionAttackSelf not being able to selectively execute. 
 		bool a_bypassInvulnerable = false;
 		bool d_SemiInvulnerable = false;
-		tc::Type a_type1Override = tc::Type::NoType;
-		tc::Type a_type2Override = tc::Type::NoType;
-		tc::Type d_type1Override = tc::Type::NoType;
-		tc::Type d_type2Override = tc::Type::NoType;
-		tc::Type a_moveTypeOverride = tc::Type::NoType;
+		bool a_typeOverrideInEffect = false; // A workaround to the problem of overriding the type to intentionally be tc::NoType
+		bool d_typeOverrideInEffect = false;
+		tc::Type a_type1Override = tc::NoType;
+		tc::Type a_type2Override = tc::NoType;
+		tc::Type d_type1Override = tc::NoType;
+		tc::Type d_type2Override = tc::NoType;
+		tc::Type a_moveTypeOverride = tc::NoType;
 		int critChance = 24; // Algorithm will generate a number between 1 and this to determine crit. Default 1/24, mod can be 1/8, 1/2, or 1/1 (always crit) 
 		int numAttacks = 1; // Some BattleEffects hit twice, others 2-5 times.
 	public:
@@ -109,6 +112,9 @@ namespace bat {
 		friend void bfx::AuroraVeilDefSpdefBoost::Execute(bat::Turn& turn);
 		friend void bfx::WonderRoom::Execute(bat::Turn& turn);
 		friend void bfx::MoveOverride::Execute(bat::Turn& turn);
+		friend void bfx::ExactDamageOverride::Execute(bat::Turn& turn);
+		friend void bfx::ShedType::Execute(bat::Turn& turn);
+		friend void bfx::SpecialDefenseOverride::Execute(bat::Turn& turn);
 	};
 
 	class Battle {
