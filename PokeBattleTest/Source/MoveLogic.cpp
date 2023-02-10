@@ -730,7 +730,7 @@ void mv::HealOnDamage(bat::Battle& battle, int percent) // post
 
 	int maxVal = battle.attackerIsPlayer ? battle.player.GetFinalHP() : battle.rival.GetFinalHP();
 	int current = battle.attackerIsPlayer ? battle.player.GetCurrentHP() : battle.rival.GetCurrentHP();
-	int damageDealt = battle.attackerIsPlayer ? battle.p_dmgThisTurn : battle.r_dmgThisTurn;
+	int damageDealt = battle.attackerIsPlayer ? battle.p_dmgThisRound : battle.r_dmgThisRound;
 	int healVal = std::floor(damageDealt * (percent / 100.0F));
 
 	if ((healVal + current) > maxVal) { healVal = maxVal - current; }
@@ -757,14 +757,14 @@ void mv::ChanceFlinch(bat::Battle& battle, int proc) // post
 	Events::Log(msg);
 }
 
-void mv::DoublePowerIfStatusEffect(bat::Battle& battle)
+void mv::DoublePowerIfStatusEffect(bat::Battle& battle) // pre
 {
 	if (CheckForExistingStatus(battle.battleEffects, not battle.attackerIsPlayer)) {
 		battle.battleEffects.push_back(std::make_unique<bfx::FlatDamageMod>(battle.attackerIsPlayer, 1, 2.0F));
 	}
 }
 
-void mv::PassiveDamageTrap(bat::Battle& battle, std::string cause)
+void mv::PassiveDamageTrap(bat::Battle& battle, std::string cause) // post
 {
 	bool noTrap = true;
 	for (const std::unique_ptr<bfx::BattleEffect>& b : battle.battleEffects) { // Check for existing damage trap.
@@ -785,7 +785,7 @@ void mv::PassiveDamageTrap(bat::Battle& battle, std::string cause)
 #pragma endregion
 
 #pragma region UniqueMoves
-void mv::FuryCutter(bat::Battle& battle)
+void mv::FuryCutter(bat::Battle& battle) // pre
 {
 	int dmg_mult = 1;
 	for (int i = 0; i < 3; ++i) {
@@ -807,7 +807,7 @@ void mv::DarkestLariat(bat::Battle& battle)
 	// Reason: Relies on knowledge of other BEs.
 }
 
-void mv::Payback(bat::Battle& battle)
+void mv::Payback(bat::Battle& battle) // pre
 { // Temporary implementation of checking whether the defender has gone first, if they have more used moves in their deque, they already moved. 
 	bool commit_payback;
 	if (battle.attackerIsPlayer) { commit_payback = battle.r_movesUsed.size() > battle.p_movesUsed.size(); }
@@ -822,7 +822,7 @@ void mv::Punishment(bat::Battle& battle)
 	// Reason: Relies on knowledge of other BEs.
 }
 
-void mv::Obstruct(bat::Battle& battle)
+void mv::Obstruct(bat::Battle& battle) // post
 {
 	pkmn::Move d_move = battle.attackerIsPlayer ? battle.r_move : battle.p_move;
 
@@ -834,7 +834,7 @@ void mv::Obstruct(bat::Battle& battle)
 	}
 }
 
-void mv::Snatch(bat::Battle& battle)
+void mv::Snatch(bat::Battle& battle) // pre
 {
 	std::string msg = "But nothing happened!";
 	if (battle.p_movesUsed.size() == battle.r_movesUsed.size()) {
@@ -859,7 +859,7 @@ void mv::Taunt(bat::Battle& battle)
 	// Reason: Relies on move restrictions, which also isn't implemented. 
 }
 
-void mv::TopsyTurvy(bat::Battle& battle)
+void mv::TopsyTurvy(bat::Battle& battle) //post
 {
 	int stages = 0;
 	for (const std::unique_ptr<bfx::BattleEffect>& b : battle.battleEffects) {
@@ -912,27 +912,46 @@ void mv::Torment(bat::Battle& battle)
 	// Reason: Relies on move restrictions, which also isn't implemented. 
 }
 
-void mv::BoltBeak(bat::Battle& battle)
+void mv::BoltBeak(bat::Battle& battle) // pre
 {
-	if (battle.attackerIsPlayer && battle.playerGoesFirst) {
-
+	if ((battle.attackerIsPlayer && battle.playerGoesFirst) ||
+		not battle.attackerIsPlayer && not battle.playerGoesFirst) {
+		battle.battleEffects.push_back(std::make_unique<bfx::FlatDamageMod>(battle.attackerIsPlayer, 1, 2.0F));
 	}
 }
 
-void mv::SparkFang(bat::Battle& battle)
+void mv::SparkFang(bat::Battle& battle) // post
 {
+	mv::ChanceParalyze(battle, 20);
+	mv::ChanceFlinch(battle, 10);
 }
 
-void mv::VoltTackle(bat::Battle& battle)
+void mv::VoltTackle(bat::Battle& battle) // post
 {
+	bool temp = battle.attackerIsPlayer;
+	int count = std::erase_if(battle.battleEffects, [&temp](const std::unique_ptr<bfx::BattleEffect>& x)
+		{ return (x.get()->GetTypeOfEffect() == bfx::BattleEffect::DrowsyStatus) && (x.get()->GetTarget() == temp); });
+	if (count != 0) {
+		std::string msg = battle.attackerIsPlayer ? battle.player.GetName() : battle.rival.GetName();
+		msg += " was cured of their Drowsiness!";
+		Events::WriteToScreen(msg);
+	}
+
+	mv::ChanceParalyze(battle, 30);
+	battle.battleEffects.push_back(std::make_unique<bfx::Recoil>(battle.attackerIsPlayer, 33));
 }
 
-void mv::Charge(bat::Battle& battle)
+void mv::Charge(bat::Battle& battle) // post
 {
+	mv::ModSpecialDefense(battle, 100, 1, true);
+	//
+	// NEED SPECIAL BE FOR CHARGE
+	//
 }
 
 void mv::MagnetRise(bat::Battle& battle)
 {
+
 }
 
 void mv::NaturesMadness(bat::Battle& battle)

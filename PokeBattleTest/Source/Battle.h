@@ -17,6 +17,7 @@ namespace bat {
 		pkmn::Move move;
 		bool attackerIsPlayer;
 		bool moveHits = false;
+		int a_dmgThisTurn = 0;
 		// Mods in terms of a flat multiplier.
 		float a_atkMod = 1.0F;
 		float a_defMod = 1.0F;
@@ -55,6 +56,7 @@ namespace bat {
 		int numAttacks = 1; // Some BattleEffects hit twice, others 2-5 times.
 	public:
 		bool Act(Battle& battle); // If this returns false, a pokemon was knocked out and the Round() method instantly ends.
+		int GetDmgThisTurn() { return a_dmgThisTurn; }
 		Turn(pkmn::Pokemon& _attacker, pkmn::Pokemon& _defender, pkmn::Move _move, bool _atkr); // The move isn't passed by reference because it may be modified dynamically.
 		// BattleEffect friends
 		friend void bfx::ModAttack::Execute(Turn& turn);
@@ -109,6 +111,7 @@ namespace bat {
 		friend void bfx::AuroraVeilDefSpdefBoost::Execute(bat::Turn& turn);
 		friend void bfx::WonderRoom::Execute(bat::Turn& turn);
 		friend void bfx::MoveOverride::Execute(bat::Turn& turn);
+		friend void bfx::Recoil::Execute(bat::Turn& turn);
 	};
 
 	class Battle {
@@ -125,8 +128,8 @@ namespace bat {
 		pkmn::Move r_move;
 		float p_speedMult = 1.0F;
 		float r_speedMult = 1.0F;
-		int p_dmgThisTurn = 0;
-		int r_dmgThisTurn = 0;
+		int p_dmgThisRound = 0;
+		int r_dmgThisRound = 0;
 		bool attackerIsPlayer = false;
 		bool playerGoesFirst = false;
 		bool victorDeclared = false;

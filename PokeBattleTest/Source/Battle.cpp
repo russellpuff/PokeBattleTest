@@ -9,7 +9,7 @@ void bat::Battle::Round(pkmn::Move& playerMove, pkmn::Move& rivalMove) // Battle
 	bool trickRoomActive = false;
 	p_move = playerMove;
 	r_move = rivalMove;
-	p_dmgThisTurn = r_dmgThisTurn = 0;
+	p_dmgThisRound = r_dmgThisRound = 0;
 	// Upkeep phase, remove all expired BattleEffects
 	std::erase_if(battleEffects, [](const std::unique_ptr<bfx::BattleEffect>& x) { return x.get()->GetDuration() == 0; });
 

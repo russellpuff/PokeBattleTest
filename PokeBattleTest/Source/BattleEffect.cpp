@@ -537,3 +537,13 @@ void bfx::MoveOverride::Execute(bat::Turn& turn)
 		turn.move = pkmn::Move(newMove);
 	}
 }
+
+void bfx::Recoil::Execute(bat::Turn& turn)
+{
+	if (targetIsPlayer == turn.attackerIsPlayer) {
+		// Unimplemented for now, my method for tracking damage during the round is flawed and it's a low priority to restructure anything.
+		std::string msg = turn.attacker.GetName() + " was supposed to take recoil damage but it wasn't coded in. " +
+			"Kindly hit yourself sufficiently hard enough in the head with a mallet to take the appropriate amount of damage.";
+		Events::WriteToScreen(msg);
+	}
+}

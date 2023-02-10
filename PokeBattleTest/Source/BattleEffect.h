@@ -37,6 +37,7 @@ namespace bfx {
 			MudSport,
 			SplashSport,
 			IonDeluge,
+			Recoil
 		};
 		enum TurnPhase : short { // What phase of Turn() does this effect take place. 
 			BeforeUpkeep, // This is before the upkeep phase that checks the remaining duration of Battle effect and cleanses expired ones.
@@ -444,9 +445,17 @@ namespace bfx {
 	struct MoveOverride : BattleEffect {
 		void Execute(bat::Turn& turn) override;
 		MoveOverride(bool _target, int _newMove) :
-			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, ChildType::MoveOverride) : newMove(_newMove){}
+			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, ChildType::MoveOverride), newMove(_newMove) {}
 	private:
 		int newMove;
+	};
+
+	struct Recoil : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		Recoil(bool _target, int _percent) :
+			BattleEffect(_target, 1, TurnPhase::AfterMoveExecuted, ChildType::Recoil), percent(_percent) {}
+	private:
+		int percent;
 	};
 #pragma endregion
 }
