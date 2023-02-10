@@ -27,7 +27,6 @@ namespace bfx {
 			FlatDamageMod,
 			BypassSemiInvulnerable,
 			InterruptMove,
-			MoveOverride,
 			DamageTrap,
 			FieldGuard,
 			Terrain,
@@ -37,7 +36,11 @@ namespace bfx {
 			MudSport,
 			SplashSport,
 			IonDeluge,
-			Recoil
+			ShedType,
+			MoveOverride,
+			DefenseOverride,
+			SpecialDefenseOverride,
+			ExactDamageOverride,
 		};
 		enum TurnPhase : short { // What phase of Turn() does this effect take place. 
 			BeforeUpkeep, // This is before the upkeep phase that checks the remaining duration of Battle effect and cleanses expired ones.
@@ -456,6 +459,31 @@ namespace bfx {
 			BattleEffect(_target, 1, TurnPhase::AfterMoveExecuted, ChildType::Recoil), percent(_percent) {}
 	private:
 		int percent;
+	};
+
+	struct ExactDamageOverride : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		ExactDamageOverride(bool _target, int _exactdmg) :
+			BattleEffect(_target, 1, TurnPhase::BeforeMoveExecuted, ChildType::ExactDamageOverride), exactDamage(_exactdmg) {}
+	private:
+		int exactDamage;
+
+	};
+
+	struct ShedType : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		ShedType(bool _target, tc::Type _type, int _duration) :
+			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted, ChildType::ShedType), typeToShed(_type) {}
+	private:
+		tc::Type typeToShed;
+	};
+
+	struct SpecialDefenseOverride : BattleEffect {
+		void Execute(bat::Turn& turn) override;
+		SpecialDefenseOverride(bool _target, int _duration, int _override) :
+			BattleEffect(_target, _duration, TurnPhase::BeforeMoveExecuted, ChildType::SpecialDefenseOverride), spDefOverride(_override) {}
+	private:
+		int spDefOverride;
 	};
 #pragma endregion
 }

@@ -3,6 +3,7 @@
 #include "TypeCategory.h"
 #include "EventListener.h"
 float StageMultiplier(int stageVal);
+void Defensinator(float defs[], tc::Type t1, tc::Type t2);
 
 void bat::Battle::Round(pkmn::Move& playerMove, pkmn::Move& rivalMove) // Battle::Round() and Turn::Act() cover all the logic for a single round of Battle.
 {
@@ -92,12 +93,49 @@ bool bat::Turn::Act(Battle& battle)
 		else { moveHits = true; } // Non proc mutable moves are surehit and bypass accuracy checks. 
 
 		if (moveHits) {
-			//
-			//
-			// check for status move, don't bother doing damage calc if so
-			//
-			//
-			//
+			if (move.GetCategory() != tc::Status) { // If status moves hit, just skip straight to the function code. 
+
+				// Damage math multiplies a random factor of 85-100, divided by 100 to introduce some variance in the damage. 
+				std::random_device rd;
+				std::mt19937_64 eng(rd());
+				std::uniform_int_distribution<int> uniform_dist(85, 100);
+				int rand = uniform_dist(eng);
+
+				// Get attacking and defending stats.
+				int atk = move.GetCategory() == tc::Physical ? attacker.GetFinalAtk() * a_atkMod : attacker.GetFinalSpAtk() * a_spAtkMod;
+				int def = 1;
+				if (move.GetCategory() == tc::Physical && d_defOverride != -1) { def = d_defOverride * d_defMod; }
+				else if (move.GetCategory() == tc::Special && d_spDefOverride != -1) { def = d_spDefOverride * d_spDefMod; }
+				else { def = move.GetCategory() == tc::Physical ? defender.GetFinalDef() * d_defMod : attacker.GetFinalSpDef() * d_spDefMod; }
+
+				float stab = 1.0F;
+				// Check for type overrides and STAB
+				tc::Type movetype = a_moveTypeOverride == tc::NoType ? move.GetType() : a_moveTypeOverride;
+				if (movetype == attacker.GetType1() || movetype == attacker.GetType2()) { stab = 1.5F; }
+
+				// Calculate unique defense combination for defender, then get the index of the defense value that matches the move's type. 
+				tc::Type deftypes[18] = { tc::Fire, tc::Water, tc::Electric, tc::Grass, tc::Normal, 
+					tc::Ice, tc::Fighting, tc::Poison, tc::Ground, tc::Flying, tc::Psychic, tc::Bug, 
+					tc::Rock, tc::Ghost, tc::Dragon, tc::Dark, tc::Steel, tc::Fairy};
+				float defs[18] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, };
+				Defensinator(defs, defender.GetType1(), defender.GetType2());
+				int idx = std::distance(deftypes, std::find(deftypes, deftypes + 18, movetype));
+
+				// Determine critical hit. 
+				int crit = 1;
+				std::random_device rd2;
+				std::mt19937_64 eng2(rd2());
+				std::uniform_int_distribution<int> uniform_dist2(1, critChance);
+				if (uniform_dist2(eng2) == 1) { crit = 2; }
+
+				// https://bulbapedia.bulbagarden.net/wiki/Damage#Generation_V_onward
+				for (int i = 1; i <= numAttacks; ++i) {
+					float damage = (((((2 * attacker.GetLevel()) / 5.0F) + 2.0F) * move.GetPower() * ((float)atk / (float)def)) / 50.0F) + 2;
+					damage *= rand * stab * crit;
+					int finalDamage = damage; // Truncate decimal.
+					if (finalDamage <= 0) { finalDamage = 1; }
+				}
+			}
 		}
 		else {
 			std::string msg = attacker.GetName() + "'s attack missed!";
@@ -114,6 +152,173 @@ bool bat::Turn::Act(Battle& battle)
 
 	// Check for death. True means no death and continue.
 	return attacker.GetCurrentHP() > 0 && defender.GetCurrentHP() > 0;
+}
+
+void Defensinator(float defs[], tc::Type t1, tc::Type t2) {
+	switch (t1)
+	{
+	case tc::Normal:
+		defs[6] = defs[6] * 2.0f;
+		defs[13] = defs[13] * 0.0f;
+		break;
+	case tc::Fire:
+		defs[1] = defs[1] * 0.5f;
+		defs[2] = defs[2] * 2.0f;
+		defs[4] = defs[4] * 0.5f;
+		defs[5] = defs[5] * 0.5f;
+		defs[8] = defs[8] * 2.0f;
+		defs[11] = defs[11] * 0.5f;
+		defs[12] = defs[12] * 2.0f;
+		defs[16] = defs[16] * 0.5f;
+		defs[17] = defs[17] * 0.5f;
+		break;
+	case tc::Water:
+		defs[1] = defs[1] * 0.5f;
+		defs[2] = defs[2] * 0.5f;
+		defs[3] = defs[3] * 2.0f;
+		defs[4] = defs[4] * 2.0f;
+		defs[5] = defs[5] * 0.5f;
+		defs[16] = defs[16] * 0.5f;
+		break;
+	case tc::Electric:
+		defs[3] = defs[3] * 0.5f;
+		defs[8] = defs[8] * 2.0f;
+		defs[9] = defs[9] * 0.5f;
+		defs[16] = defs[16] * 0.5f;
+		break;
+	case tc::Grass:
+		defs[1] = defs[1] * 2.0f;
+		defs[2] = defs[2] * 0.5f;
+		defs[3] = defs[3] * 0.5f;
+		defs[4] = defs[4] * 0.5f;
+		defs[5] = defs[5] * 2.0f;
+		defs[7] = defs[7] * 2.0f;
+		defs[8] = defs[8] * 0.5f;
+		defs[9] = defs[9] * 2.0f;
+		defs[11] = defs[11] * 2.0f;
+		break;
+	case tc::Ice:
+		defs[1] = defs[1] * 2.0f;
+		defs[5] = defs[5] * 0.5f;
+		defs[6] = defs[6] * 2.0f;
+		defs[12] = defs[12] * 2.0f;
+		defs[16] = defs[16] * 2.0f;
+		break;
+	case tc::Fighting:
+		defs[9] = defs[9] * 2.0f;
+		defs[10] = defs[10] * 2.0f;
+		defs[11] = defs[11] * 0.5f;
+		defs[12] = defs[12] * 0.5f;
+		defs[15] = defs[15] * 0.5f;
+		defs[17] = defs[17] * 2.0f;
+		break;
+	case tc::Poison:
+		defs[4] = defs[4] * 0.5f;
+		defs[6] = defs[6] * 0.5f;
+		defs[7] = defs[7] * 0.5f;
+		defs[8] = defs[8] * 2.0f;
+		defs[10] = defs[10] * 2.0f;
+		defs[11] = defs[11] * 0.5f;
+		defs[17] = defs[17] * 0.5f;
+		break;
+	case tc::Ground:
+		defs[2] = defs[2] * 2.0f;
+		defs[3] = defs[3] * 0.0f;
+		defs[4] = defs[4] * 2.0f;
+		defs[5] = defs[5] * 2.0f;
+		defs[7] = defs[7] * 0.5f;
+		defs[12] = defs[12] * 0.5f;
+		break;
+	case tc::Flying:
+		defs[3] = defs[3] * 2.0f;
+		defs[4] = defs[4] * 0.5f;
+		defs[5] = defs[5] * 2.0f;
+		defs[6] = defs[6] * 0.5f;
+		defs[8] = defs[8] * 0.0f;
+		defs[11] = defs[11] * 0.5f;
+		defs[12] = defs[12] * 2.0f;
+		break;
+	case tc::Psychic:
+		defs[6] = defs[6] * 0.5f;
+		defs[10] = defs[10] * 0.5f;
+		defs[11] = defs[11] * 2.0f;
+		defs[13] = defs[13] * 2.0f;
+		defs[15] = defs[15] * 2.0f;
+		break;
+	case tc::Bug:
+		defs[1] = defs[1] * 2.0f;
+		defs[4] = defs[4] * 0.5f;
+		defs[6] = defs[6] * 0.5f;
+		defs[8] = defs[8] * 0.5f;
+		defs[9] = defs[9] * 2.0f;
+		defs[12] = defs[12] * 2.0f;
+		break;
+	case tc::Rock:
+		defs[0] = defs[0] * 0.5f;
+		defs[1] = defs[1] * 0.5f;
+		defs[2] = defs[2] * 2.0f;
+		defs[4] = defs[4] * 2.0f;
+		defs[6] = defs[6] * 2.0f;
+		defs[7] = defs[7] * 0.5f;
+		defs[8] = defs[8] * 2.0f;
+		defs[9] = defs[9] * 0.5f;
+		defs[16] = defs[16] * 2.0f;
+		break;
+	case tc::Ghost:
+		defs[0] = defs[0] * 0.0f;
+		defs[6] = defs[6] * 0.0f;
+		defs[7] = defs[7] * 0.5f;
+		defs[11] = defs[11] * 0.5f;
+		defs[13] = defs[13] * 2.0f;
+		defs[15] = defs[15] * 2.0f;
+		break;
+	case tc::Dragon:
+		defs[1] = defs[1] * 0.5f;
+		defs[2] = defs[2] * 0.5f;
+		defs[3] = defs[3] * 0.5f;
+		defs[4] = defs[4] * 0.5f;
+		defs[5] = defs[5] * 2.0;
+		defs[14] = defs[14] * 2.0f;
+		defs[17] = defs[17] * 2.0f;
+		break;
+	case tc::Dark:
+		defs[6] = defs[6] * 2.0f;
+		defs[10] = defs[10] * 0.0f;
+		defs[11] = defs[11] * 2.0f;
+		defs[13] = defs[13] * 0.5f;
+		defs[15] = defs[15] * 0.5f;
+		defs[17] = defs[17] * 2.0f;
+		break;
+	case tc::Steel:
+		defs[0] = defs[0] * 0.5f;
+		defs[1] = defs[1] * 2.0f;
+		defs[4] = defs[4] * 0.5f;
+		defs[5] = defs[5] * 0.5f;
+		defs[6] = defs[6] * 2.0f;
+		defs[7] = defs[7] * 0.0f;
+		defs[8] = defs[8] * 2.0f;
+		defs[9] = defs[9] * 0.5f;
+		defs[10] = defs[10] * 0.5f;
+		defs[11] = defs[11] * 0.5f;
+		defs[12] = defs[12] * 0.5f;
+		defs[14] = defs[14] * 0.5f;
+		defs[16] = defs[16] * 0.5f;
+		defs[17] = defs[17] * 0.5f;
+		break;
+	case tc::Fairy:
+		defs[6] = defs[6] * 0.5f;
+		defs[7] = defs[7] * 2.0f;
+		defs[11] = defs[11] * 0.5f;
+		defs[14] = defs[14] * 0.0f;
+		defs[15] = defs[15] * 0.5f;
+		defs[16] = defs[16] * 2.0f;
+		break;
+	default:
+		std::string msg = "Type error";
+		Events::Log(msg);
+		break;
+	}
+	if (t2 != tc::NoType) { Defensinator(defs, t2, tc::NoType); }
 }
 
 bat::Turn::Turn(pkmn::Pokemon& _attacker, pkmn::Pokemon& _defender, pkmn::Move _move, bool _atkr) :
