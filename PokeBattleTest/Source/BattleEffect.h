@@ -41,6 +41,7 @@ namespace bfx {
 			DefenseOverride,
 			SpecialDefenseOverride,
 			ExactDamageOverride,
+			Recoil
 		};
 		enum TurnPhase : short { // What phase of Turn() does this effect take place. 
 			BeforeUpkeep, // This is before the upkeep phase that checks the remaining duration of Battle effect and cleanses expired ones.

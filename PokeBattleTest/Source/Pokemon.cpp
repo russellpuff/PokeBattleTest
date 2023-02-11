@@ -163,6 +163,13 @@ pkmn::Stats::Stats() { // Fake constructor because C++ is a load of bullshit.
 		atkFinal = defFinal = spAtkFinal = spDefFinal = spdFinal = 1;
 }
 
+void pkmn::Pokemon::ModCurrentHP(int val)
+{
+	stats.hpCurrent += val;
+	if (stats.hpCurrent > stats.hpFinal) { stats.hpCurrent = stats.hpFinal; }
+	if (stats.hpCurrent < 0) { stats.hpCurrent = 0; }
+}
+
 sqlite3_stmt* RunQuery(sqlite3* db, std::string q, std::string currentDB) {
 	sqlite3_stmt* s;
 	if (sqlite3_prepare_v2(db, q.c_str(), -1, &s, NULL) != SQLITE_OK)

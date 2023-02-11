@@ -141,6 +141,7 @@ namespace bat {
 		bool victorDeclared = false;
 	public:
 		bool GetVictorDeclared() { return victorDeclared; }
+		std::string GetLoserName();
 		void Round(pkmn::Move& playerMove, pkmn::Move& rivalMove);
 		friend bool Turn::Act(Battle& battle);
 		Battle(pkmn::Pokemon& _player, pkmn::Pokemon& _rival);

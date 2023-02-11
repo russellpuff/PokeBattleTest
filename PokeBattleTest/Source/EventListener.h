@@ -9,4 +9,5 @@ namespace Events {
 	void Log(std::string& msg);
 	void WriteLogToFile();
 	void EventListener(sf::RenderWindow& window);
+	void ConsoleBattleControl();
 }

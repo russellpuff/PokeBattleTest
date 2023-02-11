@@ -65,10 +65,7 @@ namespace pkmn {
 		std::string GetForm() { return form; }
 		tc::Type GetType1() { return firstType; }
 		tc::Type GetType2() { return secondType; }
-		Move GetMove1() { return moves[0]; }
-		Move GetMove2() { return moves[1]; }
-		Move GetMove3() { return moves[2]; }
-		Move GetMove4() { return moves[3]; }
+		Move GetMove(int move) { return moves[move - 1]; } // A guard against out-of-range is enforced in the move selector function. 
 		int GetLevel() { return level; }
 		int GetBaseHP() { return stats.hpBase; }
 		int GetBaseAtk() { return stats.atkBase; }
@@ -83,7 +80,7 @@ namespace pkmn {
 		int GetFinalSpAtk() { return stats.spAtkFinal; }
 		int GetFinalSpDef() { return stats.spDefFinal; }
 		int GetFinalSpd() { return stats.spdFinal; }
-		void ModCurrentHP(int val) { stats.hpCurrent += val; }
+		void ModCurrentHP(int val);
 		Pokemon(jt::JsonPkmn p, jt::JsonTemplate t, std::array<pkmn::Move, 4>& m);
 	};
 }

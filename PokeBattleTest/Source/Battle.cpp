@@ -5,6 +5,13 @@
 float StageMultiplier(int stageVal);
 void Defensinator(float defs[], tc::Type t1, tc::Type t2);
 
+std::string bat::Battle::GetLoserName()
+{
+	if (not victorDeclared) { std::string ret = "No loser to declare."; return ret; }
+	if (player.GetCurrentHP() == 0) { return player.GetName(); }
+	else return rival.GetName();
+}
+
 void bat::Battle::Round(pkmn::Move& playerMove, pkmn::Move& rivalMove) // Battle::Round() and Turn::Act() cover all the logic for a single round of Battle.
 {
 	bool trickRoomActive = false;
@@ -32,7 +39,7 @@ void bat::Battle::Round(pkmn::Move& playerMove, pkmn::Move& rivalMove) // Battle
 		}
 
 		int p_speed = std::floor(player.GetFinalSpd() * p_speedMult);
-		int r_speed = std::floor(player.GetFinalSpd() * p_speedMult);
+		int r_speed = std::floor(rival.GetFinalSpd() * p_speedMult);
 
 		if (p_speed == r_speed) { // Speed tie is randomly broken. 
 			std::random_device rd;
@@ -62,6 +69,9 @@ bool bat::Turn::Act(Battle& battle)
 {
 	battle.attackerIsPlayer = attackerIsPlayer; // Clunky. Both battle and turn need to track this, but Turn can't access battle outside of this method.
 
+	std::string foo = attacker.GetName() + " used " + move.GetName() + "!";
+	Events::WriteToScreen(foo);
+
 	// Pre-move phase. First checks for a pre-move function, and runs it, then Executes all battleeffects.
 	if (battle.pre_moveFuncs.count(move.GetID())) { battle.pre_moveFuncs[move.GetID()](battle); }
 
@@ -82,8 +92,8 @@ bool bat::Turn::Act(Battle& battle)
 		if (move.GetIsProcMutable() && !moveHits) { // moveHits starts out at false, if a battleEffect sets it to true prematurely, skip accuracy check. 
 			int netAccuracy = a_accuracyStages - d_evasionStages;
 			int accModified = move.GetAccuracy();
-			if (netAccuracy >= 0) { accModified = std::floor(a_accMod * ((3 + netAccuracy)) / 3); }
-			else { accModified = std::floor((a_accMod * 3) / (3 - netAccuracy)); }
+			if (netAccuracy >= 0) { accModified *= std::floor(a_accMod * ((3 + netAccuracy)) / 3); }
+			else { accModified *= std::floor((a_accMod * 3) / (3 - netAccuracy)); }
 
 			std::random_device rd;
 			std::mt19937_64 eng(rd());
@@ -126,14 +136,27 @@ bool bat::Turn::Act(Battle& battle)
 				std::random_device rd2;
 				std::mt19937_64 eng2(rd2());
 				std::uniform_int_distribution<int> uniform_dist2(1, critChance);
-				if (uniform_dist2(eng2) == 1) { crit = 2; }
+				bool isCrit = false;
+				if (uniform_dist2(eng2) == 1) { crit = 2; isCrit = true; }
 
 				// https://bulbapedia.bulbagarden.net/wiki/Damage#Generation_V_onward
 				for (int i = 1; i <= numAttacks; ++i) {
 					float damage = (((((2 * attacker.GetLevel()) / 5.0F) + 2.0F) * move.GetPower() * ((float)atk / (float)def)) / 50.0F) + 2;
-					damage *= rand * stab * crit;
+					damage *= (rand / 100.0F) * stab * crit;
 					int finalDamage = damage; // Truncate decimal.
 					if (finalDamage <= 0) { finalDamage = 1; }
+					int takeDmg = finalDamage * -1;
+					defender.ModCurrentHP(takeDmg);
+					std::string msg = defender.GetName() + " took " + std::to_string(finalDamage) + " damage.";
+					Events::Log(msg);
+				}
+				if (numAttacks > 1) {
+					std::string m = "Hit " + std::to_string(numAttacks) + " times!";
+					Events::WriteToScreen(m);
+				}
+				if (isCrit) {
+					std::string crit = "A critical hit!";
+					Events::WriteToScreen(crit);
 				}
 			}
 		}

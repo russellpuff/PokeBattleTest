@@ -8,7 +8,9 @@
 #include "date.h"
 #include "UUID.h"
 #include "json.hpp"
+#include "Battle.h"
 std::queue<std::string> Events::log;
+int TryParseInt(std::string s);
 
 void Events::WriteToScreen(std::string& message)
 {
@@ -69,4 +71,48 @@ void Events::EventListener(sf::RenderWindow& window) {
         window.draw(shape);
         window.display();
     }
+}
+
+void Events::ConsoleBattleControl() // This method allows for controlling the battle through the console alone without a UI. 
+{ // It was hastily put together to provide SOMETHING to test the incomplete application for the project submission. 
+    std::tuple<pkmn::Pokemon, pkmn::Pokemon> pokemon = sc::PrepareAndConstructPokemon();
+    bat::Battle battle(std::get<0>(pokemon), std::get<1>(pokemon));
+
+    std::string uin;
+    int p_m, r_m;
+    
+    while (1) {
+        std::cout << std::get<0>(pokemon).GetName() << " has " << std::to_string(std::get<0>(pokemon).GetCurrentHP()) << "hp. " <<
+            "Select a move by typing the number based on the earlier log output.\n";
+        while (1) {
+            std::getline(std::cin, uin);
+            p_m = TryParseInt(uin);
+            if (p_m > 4 || p_m < 1) { std::cout << "Invalid. Try again.\n"; }
+            else { break; }
+        }
+
+        std::cout << std::get<1>(pokemon).GetName() << " has " << std::to_string(std::get<1>(pokemon).GetCurrentHP()) << "hp. " <<
+            "Select a move by typing the number based on the earlier log output.\n";
+        while (1) {
+            std::getline(std::cin, uin);
+            r_m = TryParseInt(uin);
+            if (r_m > 4 || r_m < 1) { std::cout << "Invalid. Try again.\n"; }
+            else { break; }
+        }
+
+        pkmn::Move p_move = std::get<0>(pokemon).GetMove(p_m);
+        pkmn::Move r_move = std::get<1>(pokemon).GetMove(r_m);
+        battle.Round(p_move, r_move);
+        if (battle.GetVictorDeclared()) {
+            std::string who = battle.GetLoserName() + " fainted!";
+            Events::WriteToScreen(who);
+            return;
+        }
+    }
+}
+
+int TryParseInt(std::string s) {
+    int ret = -1;
+    try { ret = stoi(s); } catch (...) {}
+    return ret;
 }

@@ -978,16 +978,33 @@ void mv::FireFang(bat::Battle& battle) // post
 
 void mv::FlareWheel(bat::Battle& battle) // post
 {
+	
+	bool temp = battle.attackerIsPlayer;
+	int count = std::erase_if(battle.battleEffects, [&temp](const std::unique_ptr<bfx::BattleEffect>& x)
+		{ return (x.get()->GetTypeOfEffect() == bfx::BattleEffect::FrostbiteStatus) && (x.get()->GetTarget() == temp); });
+	if (count != 0) {
+		std::string msg = battle.attackerIsPlayer ? battle.player.GetName() : battle.rival.GetName();
+		msg += " was cured of their Frostbite!";
+		Events::WriteToScreen(msg);
+	}
+
 	mv::ChanceBurn(battle, 20);
-	//
-	// Copy the volt tackle code to cure user's frostbite
-	//
+	battle.battleEffects.push_back(std::make_unique<bfx::Recoil>(battle.attackerIsPlayer, 33));
 }
 
 void mv::InfernoDrive(bat::Battle& battle) // post
 {
+	bool temp = battle.attackerIsPlayer;
+	int count = std::erase_if(battle.battleEffects, [&temp](const std::unique_ptr<bfx::BattleEffect>& x)
+		{ return (x.get()->GetTypeOfEffect() == bfx::BattleEffect::FrostbiteStatus) && (x.get()->GetTarget() == temp); });
+	if (count != 0) {
+		std::string msg = battle.attackerIsPlayer ? battle.player.GetName() : battle.rival.GetName();
+		msg += " was cured of their Frostbite!";
+		Events::WriteToScreen(msg);
+	}
+
 	mv::ChanceBurn(battle, 10);
-	// Copy the volt tackle for curing frostbite AND recoil damage. 
+	battle.battleEffects.push_back(std::make_unique<bfx::Recoil>(battle.attackerIsPlayer, 33));
 }
 
 void mv::VCreate(bat::Battle& battle) // post
@@ -999,9 +1016,16 @@ void mv::VCreate(bat::Battle& battle) // post
 
 void mv::BurnUp(bat::Battle& battle) // post
 {
-	// Copy volt tackle for curing frostbite.
-	battle.battleEffects.push_back(std::make_unique<bfx::ShedType>(battle.attackerIsPlayer, tc::Fire, -1));
+	bool temp = battle.attackerIsPlayer;
+	int count = std::erase_if(battle.battleEffects, [&temp](const std::unique_ptr<bfx::BattleEffect>& x)
+		{ return (x.get()->GetTypeOfEffect() == bfx::BattleEffect::FrostbiteStatus) && (x.get()->GetTarget() == temp); });
+	if (count != 0) {
+		std::string msg = battle.attackerIsPlayer ? battle.player.GetName() : battle.rival.GetName();
+		msg += " was cured of their Frostbite!";
+		Events::WriteToScreen(msg);
+	}
 
+	battle.battleEffects.push_back(std::make_unique<bfx::ShedType>(battle.attackerIsPlayer, tc::Fire, -1));
 }
 
 void mv::BurningJealosy(bat::Battle& battle) // post
@@ -1099,8 +1123,7 @@ void mv::MagicCoat(bat::Battle& battle)
 
 void mv::Meditate(bat::Battle& battle)
 {
-	// why is this its own method??
-	mv::ModAttack(battle, 100, 2, true);
+	mv::ModAttack(battle, 100, 2, true); // why is this its own method??
 }
 
 void mv::PowerSplit(bat::Battle& battle)

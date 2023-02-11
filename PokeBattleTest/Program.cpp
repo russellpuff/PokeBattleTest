@@ -13,8 +13,9 @@ int main()
     int retval = 0;
     try {
         sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-        Events::EventListener(window); // When this returns, PokeBattleTest execution starts to end. 
+        //Events::EventListener(window); // When this returns, PokeBattleTest execution starts to end. 
         // If MonDesigner started this, it should return control back to MonDesigner.
+        Events::ConsoleBattleControl();
         errorOccured = false;
     }
     catch (ex::PokemonConstructionException pce) {
@@ -37,12 +38,10 @@ int main()
         error = "Encountered a problem assembling stats: " + e;
         retval = 104;
     }
-    /*
     catch (...) {
         std::string error = "Encountered an unexpected problem with no details.";
         retval = 201;
     }
-    */
     if (errorOccured) { Events::Log(error); }
     Events::WriteLogToFile();
     return retval;

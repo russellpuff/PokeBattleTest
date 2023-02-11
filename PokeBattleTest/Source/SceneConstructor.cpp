@@ -61,10 +61,10 @@ void LogConstructionResults(pkmn::Pokemon player, pkmn::Pokemon rival) {
     std::string pInfo = "Created " + player.GetName() + " for player.";
     pInfo += "\nWith form: " + player.GetForm() + ", Type1: " + tc::typeToString.at(player.GetType1()) + 
         ", Type2: " + tc::typeToString.at(player.GetType2());
-    pInfo += "\nWith move1: " + player.GetMove1().GetName() + ", Type: " + tc::typeToString.at(player.GetMove1().GetType());
-    pInfo += "\nWith move2: " + player.GetMove2().GetName() + ", Type: " + tc::typeToString.at(player.GetMove2().GetType());
-    pInfo += "\nWith move3: " + player.GetMove3().GetName() + ", Type: " + tc::typeToString.at(player.GetMove3().GetType());
-    pInfo += "\nWith move4: " + player.GetMove4().GetName() + ", Type: " + tc::typeToString.at(player.GetMove4().GetType());
+    pInfo += "\nWith move1: " + player.GetMove(1).GetName() + ", Type: " + tc::typeToString.at(player.GetMove(1).GetType());
+    pInfo += "\nWith move2: " + player.GetMove(2).GetName() + ", Type: " + tc::typeToString.at(player.GetMove(2).GetType());
+    pInfo += "\nWith move3: " + player.GetMove(3).GetName() + ", Type: " + tc::typeToString.at(player.GetMove(3).GetType());
+    pInfo += "\nWith move4: " + player.GetMove(4).GetName() + ", Type: " + tc::typeToString.at(player.GetMove(4).GetType());
     pInfo += "\nLevel: " + std::to_string(player.GetLevel());
     pInfo += "\nHP current: " + std::to_string(player.GetFinalHP());
     pInfo += "\nAtk current: " + std::to_string(player.GetFinalAtk());
@@ -75,10 +75,10 @@ void LogConstructionResults(pkmn::Pokemon player, pkmn::Pokemon rival) {
     Events::Log(pInfo);
     std::string rInfo = "Created " + rival.GetName() + " for rival.";
     rInfo += "\nWith form: " + rival.GetForm() + ", Type1: " + tc::typeToString.at(rival.GetType1()) + ", Type2: " + tc::typeToString.at(rival.GetType2());
-    rInfo += "\nWith move1: " + rival.GetMove1().GetName() + ", Type: " + tc::typeToString.at(rival.GetMove1().GetType());
-    rInfo += "\nWith move2: " + rival.GetMove2().GetName() + ", Type: " + tc::typeToString.at(rival.GetMove2().GetType());
-    rInfo += "\nWith move3: " + rival.GetMove3().GetName() + ", Type: " + tc::typeToString.at(rival.GetMove3().GetType());
-    rInfo += "\nWith move4: " + rival.GetMove4().GetName() + ", Type: " + tc::typeToString.at(rival.GetMove4().GetType());
+    rInfo += "\nWith move1: " + rival.GetMove(1).GetName() + ", Type: " + tc::typeToString.at(rival.GetMove(1).GetType());
+    rInfo += "\nWith move2: " + rival.GetMove(2).GetName() + ", Type: " + tc::typeToString.at(rival.GetMove(2).GetType());
+    rInfo += "\nWith move3: " + rival.GetMove(3).GetName() + ", Type: " + tc::typeToString.at(rival.GetMove(3).GetType());
+    rInfo += "\nWith move4: " + rival.GetMove(4).GetName() + ", Type: " + tc::typeToString.at(rival.GetMove(4).GetType());
     rInfo += "\nLevel: " + std::to_string(rival.GetLevel());
     rInfo += "\nHP current: " + std::to_string(rival.GetFinalHP());
     rInfo += "\nAtk current: " + std::to_string(rival.GetFinalAtk());
